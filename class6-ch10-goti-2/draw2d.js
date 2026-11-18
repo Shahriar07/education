@@ -325,54 +325,22 @@ function gripHand(x, y, s = 1, o = 1) {
     ${nail('M38 -68 C46 -70 52 -64 49 -57 L40 -58 Z')}</g>`;
 }
 
-/* a right hand writing on a page, seen from above as the writer sees it: upright, wrist and sleeve coming up from the
-   bottom, the pen in the tripod grip (between thumb and index finger, resting on the middle finger, ring and little
-   fingers curled under), tilted with its tip on the paper. (x,y) = pen tip. Local length tip to wrist ≈ 300. */
-function handWrite(x, y, s = 1, o = 1) {
+/* ---------- the pen hand: a 3D model of a right hand in the tripod grip, built from the bones of a real hand
+   (science-video-template/hand: hand3d.js, pose.js, make_hand.py) and rendered once from the thumb side. The thumb and
+   the index finger pinch the pen near its tip, the middle finger supports it, ring and little fingers curl into the palm.
+   HAND_IMG = the pen tip and the pen's angle in that picture (from hand.json; update both after make_hand.py). ---------- */
+const HAND_IMG = { src: '../science-video-template/hand/hand_side.png', size: 2400, tip: [245.6, 1086.0], ang: -54.30, penPx: 326.8 };
+/* pen tip at (x,y), the pen pointing at a degrees from the tip (0 = to the right, -90 = straight up); s = 1: the pen
+   is 300 px long on screen */
+function handPen(x, y, a, s = 1, o = 1) {
   if (o <= 0) return '';
-  const L = SKIN.line;
-  // the pen: tip at the origin, shaft back towards the writer's right shoulder
-  const pa = Math.atan2(175, 112), cx = Math.cos(pa), sy = Math.sin(pa);
-  const pp = (u, v) => `${F(u * cx - v * sy)},${F(u * sy + v * cx)}`;
-  const pen = `<polygon points="${pp(0, 0)} ${pp(20, -5)} ${pp(20, 5)}" fill="#c9ced2"/><circle cx="0" cy="0" r="2.6" fill="#1a1a2e"/>
-    <polygon points="${pp(20, -7)} ${pp(62, -8)} ${pp(62, 8)} ${pp(20, 7)}" fill="#2b2f36"/>
-    <polygon points="${pp(62, -8.5)} ${pp(214, -8.5)} ${pp(220, 0)} ${pp(214, 8.5)} ${pp(62, 8.5)}" fill="#2e86de"/>
-    <polygon points="${pp(66, -6)} ${pp(210, -6)} ${pp(210, -2.5)} ${pp(66, -2.5)}" fill="#fff" opacity=".35"/>`;
-  return `<g transform="translate(${F(x)},${F(y)}) scale(${s})" opacity="${cl(o).toFixed(2)}" stroke-linejoin="round">${skinDefs()}
-    ${sleeve('M44 318 L168 300 L196 560 L60 580 Z', 'M44 318 L168 300 L171 326 L47 344 Z')}
-    <path d="M42 246 C70 236 118 232 150 240 L170 312 C130 322 84 326 48 330 Z" fill="url(#hsk2)" stroke="${L}" stroke-width="2.2"/>
-    <ellipse cx="160" cy="150" rx="19" ry="27" fill="${SKIN.dark}" stroke="${L}" stroke-width="2" transform="rotate(-18 160 150)"/>
-    <ellipse cx="160" cy="196" rx="17" ry="24" fill="${SKIN.deep}" stroke="${L}" stroke-width="2" transform="rotate(-12 160 196)"/>
-    <path d="M58 104 C40 92 26 76 14 60 C8 52 16 44 24 50 C38 62 54 78 72 92 Z" fill="${SKIN.dark}" stroke="${L}" stroke-width="2"/>
-    <path d="M24 122 C8 166 22 228 44 256 L150 246 C172 204 176 156 162 118 C140 96 70 92 24 122 Z" fill="url(#hsk)" stroke="${L}" stroke-width="2.5"/>
-    ${crease('M70 118 C76 112 84 112 90 118')}${crease('M104 120 C110 114 118 114 124 122')}${crease('M132 128 C138 124 144 126 148 134')}
-    <path d="M60 128 C80 140 120 140 140 132" stroke="#fff" stroke-width="7" fill="none" opacity=".15" stroke-linecap="round"/>
-    ${pen}
-    <path d="M100 118 C80 98 56 72 34 46 C28 38 36 28 46 34 C64 52 90 80 116 104 Z" fill="url(#hsk)" stroke="${L}" stroke-width="2.5"/>
-    ${nail('M34 42 C33 34 40 30 46 34 L42 44 Z')}${crease('M66 72 C70 68 76 70 78 74')}${crease('M84 92 C88 88 94 90 96 94')}
-    <path d="M30 168 C10 140 0 104 4 76 C6 62 20 60 22 72 C24 100 36 128 52 150 Z" fill="${SKIN.light}" stroke="${L}" stroke-width="2.5"/>
-    ${nail('M6 78 C6 66 16 62 21 70 L17 82 Z')}${crease('M10 108 C16 106 20 108 22 112')}</g>`;
+  const H = HAND_IMG, k = 300 * s / H.penPx;
+  return `<g transform="translate(${F(x)},${F(y)}) rotate(${F(a - H.ang)}) scale(${k.toFixed(4)}) translate(${-H.tip[0]},${-H.tip[1]})" opacity="${cl(o).toFixed(2)}"><image href="${H.src}" width="${H.size}" height="${H.size}"/></g>`;
 }
-
-/* a right hand holding a pen in the tripod grip, seen from the thumb side; (x,y) = pen tip, a = pen angle in degrees.
-   The pen lies along +u from its tip: the middle finger under it, the index finger on top, the thumb on the near side,
-   the pen's end sticking out over the back of the hand. Realistic skin, knuckles, nails and a shirt cuff. */
-function handPen(x, y, a) {
-  const L = SKIN.line;
-  return `<g transform="translate(${F(x)},${F(y)}) rotate(${F(a)})" stroke-linejoin="round">${skinDefs()}
-    <path d="M300 -46 L410 -64 L428 40 L312 52 Z" fill="#2a6f97" stroke="#1f5577" stroke-width="2"/><path d="M300 -46 L322 -50 L334 50 L312 52 Z" fill="#215a7c"/>
-    <ellipse cx="190" cy="54" rx="26" ry="16" fill="${SKIN.deep}" stroke="${L}" stroke-width="2"/><ellipse cx="226" cy="58" rx="24" ry="15" fill="${SKIN.dark}" stroke="${L}" stroke-width="2"/>
-    <path d="M152 46 C120 44 92 28 72 14 C64 8 68 -2 78 2 C100 12 128 22 154 24 Z" fill="${SKIN.dark}" stroke="${L}" stroke-width="2"/>
-    ${nail('M70 10 C66 4 70 -1 77 2 L74 11 Z')}
-    <path d="M112 -8 C120 -62 182 -92 244 -86 C286 -80 306 -52 306 -20 L306 44 C274 62 212 66 162 52 C130 42 112 22 112 -8 Z" fill="url(#hsk)" stroke="${L}" stroke-width="2.5"/>
-    ${crease('M196 -80 C204 -86 214 -86 220 -80')}${crease('M228 -82 C236 -86 244 -86 250 -80')}
-    ${penShape()}
-    <path d="M128 -26 C160 -42 212 -48 238 -36 L238 26 C200 30 160 26 128 16 Z" fill="url(#hsk)" stroke="${L}" stroke-width="2"/>${crease('M150 -14 C170 -6 196 -4 220 -8')}
-    <path d="M208 -68 C164 -62 102 -40 62 -24 C49 -18 49 -1 64 -1 C104 -7 156 -18 208 -24 Z" fill="url(#hsk2)" stroke="${L}" stroke-width="2.5"/>
-    ${nail('M60 -15 C58 -21 64 -24 71 -21 L68 -12 Z')}${crease('M104 -30 C106 -24 106 -18 104 -12')}${crease('M140 -40 C142 -34 142 -28 140 -22')}
-    <path d="M234 24 C194 20 132 10 96 1 C80 -1 78 17 94 19 C132 27 186 40 228 48 Z" fill="${SKIN.light}" stroke="${L}" stroke-width="2.5"/>
-    ${nail('M88 3 C86 -3 92 -6 99 -3 L96 7 Z')}${crease('M150 10 C152 16 152 22 150 26')}</g>`;
-}
+/* the same hand writing on a page seen from above: the pen points down to the right from its tip, towards the
+   writer's shoulder, and the forearm comes up from the bottom of the picture */
+const WRITE_ANG = 12;
+function handWrite(x, y, s = 1, o = 1) { return handPen(x, y, WRITE_ANG, s, o); }
 
 /* number badge (yellow circle with a Bangla numeral) */
 function badge(x, y, n, p = 1) {

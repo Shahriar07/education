@@ -1,5 +1,5 @@
 /* ২খ: the textbook's pen activity (p. 83), first half: the pen held still. Side view of the study desk. */
-const PEN_REST = { x: 860, y: 470, a: -24 };
+const PEN_REST = { x: 860, y: 470, a: -52 };   // pen tilted 52° up to the right: the forearm then runs off to the right above the desk
 part('s02_p02', { scene: 2, label: '২খ', title: 'বইয়ের কাজ: হাতে স্থির কলম',
   screen: 'পাশ থেকে দেখা পড়ার টেবিল, ওপরে একটা বই ও একটা খাতা। একটা হাত কলম ধরে আছে। কলমের ডগা থেকে বই ও খাতা পর্যন্ত দুটো ডটেড রেখা আঁকা হয়; ঘড়ির কাঁটা ঘোরে, রেখার দৈর্ঘ্য ও দিক একই থাকে, তারপর "স্থির"।' }, [
   { c: "এবার বাড়িতে পড়ার টেবিলে বসো। হাতে একটা কলম শক্ত করে ধরে রাখো।" },
@@ -20,6 +20,6 @@ part('s02_p02', { scene: 2, label: '২খ', title: 'বইয়ের কা�
   s += clock(1700, 220, 80, 25 * pr(t, S.A(2), S.dur), S.fin(2, 0.4));
   let u = '';
   if (t >= S.A(2)) { s += tick(700, 420, 26, S.P(2, 0.5, 0.65)) + tick(1180, 420, 26, S.P(2, 0.6, 0.75)); }
-  u += lab(hx + 40, hy - 150, 'স্থির', 'rest', S.fin(3, 0.4));
+  u += lab(hx - 230, hy - 170, 'স্থির', 'rest', S.fin(3, 0.4));     // up and to the left of the pen tip, clear of the hand
   return { svg: s, ui: u };
 });

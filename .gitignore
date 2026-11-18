@@ -30,3 +30,6 @@ desktop.ini
 .DS_Store
 .vscode/
 .idea/
+
+# check pictures made while comparing hands
+/hand-*.png

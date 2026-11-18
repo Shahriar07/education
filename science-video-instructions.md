@@ -67,6 +67,7 @@ Every diagram and motion must be physically correct, calculated and not drawn by
 - Never draw a complete living creature: no human, animal, bird, fish or insect, and no face, head or human-shaped shadow or silhouette.
 - A separate hand, finger or eye may be drawn when needed (a hand lighting a candle, an eye at the end of a light ray).
 - Hands are drawn realistically: palm and five separate fingers with knuckles and nails, the thumb coming from the right place, skin with light and shade, a wrist and a shirt cuff. Never a mitten or a blob.
+- A hand that holds something (a pen, a tool) is not drawn freehand: build it as a 3D model from the bones of a real hand (a broad palm with the four knuckles along its top, the thumb from the base of the palm beside the index finger) and fit its pose to a photo of a real hand holding the same thing, from the same side. Check the model laid over the photo, and its mismatch map, before using it. Draw the held object after the hand, so it never disappears into the skin; only the parts of the hand that are really in front of it (a thumb pad) are drawn over it.
 - A hand writing in a khata is seen from above as the writer sees it: upright (long up and down), wrist and sleeve coming up from the bottom of the picture. The pen or pencil is held correctly (tripod grip: between thumb and index finger, resting on the middle finger, ring and little fingers curled under), tilted, with its tip on the paper. Students learn the grip from the picture.
 - Do not draw trees, plants or crop fields. A fruit such as a mango is allowed. Sky, sun, moon, stars, water, buildings and objects are allowed.
 - Everything must move: rays travel, objects slide in, numbers count up. No static slides, except title and recap cards.
@@ -108,6 +109,7 @@ Every diagram and motion must be physically correct, calculated and not drawn by
 | (Motion video) A swing swung sideways along its beam instead of forward and back; a flat side view of it was hard to read. | Every motion goes in its real direction. A motion that needs depth to be understood (a swing) is shown in 3D from a raised three-quarter view. |
 | (Motion video) A runner seemed to leave the track because a line was not drawn on half the loop. | When something moves along a drawn line, check once that its computed points lie on the rendered line. |
 | (Motion video) Hands looked like mittens; the writing hand came in sideways with no clear pen grip. | Realistic hands; the writing hand upright, seen from above, the pen in the tripod grip. |
+| (Motion video) Redrawn pen hands were still wrong: the thumb and index finger did not read as neighbours, the palm was missing, the pen sank into the hand. | A hand holding something is a 3D model from real bones, fitted to a photo of a real hand in that grip; the held object is drawn over the hand. |
 
 ## How to work
 

@@ -35,6 +35,29 @@ Each video folder contains:
 
 [`science-video-template/`](science-video-template/) holds the shared fonts (Hind Siliguri), `lib/three.min.js` and the old `core.js`. Its `render.py` is the old per-scene one: do not use it.
 
+[`science-video-template/hand/`](science-video-template/hand/) is the hand that holds the pen: a 3D model of a right hand built from real bone lengths, with one smooth skin, fitted to a photo of a real writing hand (12 measured points and the photo's whole outline), and rendered once to `hand_side.png`. Every video uses that picture through `handPen` and `handWrite` in `draw2d.js`. The first version is kept in [`hand_v1/`](science-video-template/hand_v1/).
+
+| File | What it does |
+|---|---|
+| `hand3d.js` | Skeleton: palm, four fingers, thumb, forearm, sleeve; bone lengths and proportions |
+| `skin.js` | One smooth skin over the skeleton, knuckles, crease shading, nails |
+| `fit.js` | Fits camera, joint angles, proportions and the pen to the photo; keeps the grip correct |
+| `pose.js`, `fit_pose.js` | The pose and views; `fit_pose.js` is written by the fit |
+| `solve.js` | Older helper: finger angles for a given pen line |
+| `make_hand.py` | Runs the fit and renders the picture |
+
+To fit to a photo (the photo is only read, never stored in the project) and render:
+
+```bash
+.venv\Scripts\python.exe -X utf8 science-video-template\hand\make_hand.py fit path\to\photo.jpg
+```
+
+```bash
+.venv\Scripts\python.exe -X utf8 science-video-template\hand\make_hand.py
+```
+
+Then copy the numbers in `hand.json` (pen tip, angle, `penPx`) into `HAND_IMG` in each video's `draw2d.js`.
+
 ## Setting up on a new computer
 
 1. Clone the repository.

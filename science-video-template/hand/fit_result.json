@@ -1,0 +1,119 @@
+{
+ "cost": 205.88,
+ "outlineIoU": 0.9169,
+ "outlineIoUBeforeStage2": 0.7591,
+ "exactOutlineIoUBeforeStage3": 0.9144,
+ "stage3Seconds": 185.2,
+ "reprojPx": {
+  "penTip": 3.3,
+  "penEnd": 1.3,
+  "indexTip": 3.2,
+  "indexDIP": 1.6,
+  "indexPIP": 4.7,
+  "indexMCP": 16.8,
+  "thumbTip": 5.6,
+  "thumbIP": 10.1,
+  "ringTip": 4.1,
+  "littleTip": 3.2,
+  "littleMCP": 9.7,
+  "wrist": 14.2
+ },
+ "gripCost": 5.69,
+ "forearmErrDeg": -5.7,
+ "imageRotDeg": 72,
+ "photoPxPerMm": 1.819,
+ "stage1Cost": 86.83,
+ "pose": {
+  "size": 0.813,
+  "shape": {
+   "len": 1.014,
+   "wid": 1.111,
+   "palmW": 0.996,
+   "tWid": 0.963,
+   "rlLen": 1.134,
+   "web": 1.07,
+   "palmT": 0.988
+  },
+  "arm": {
+   "w": 1.093,
+   "flat": 0.759,
+   "taper": 1.059
+  },
+  "wrist": {
+   "ext": -32.2,
+   "dev": -13.2
+  },
+  "pen": {
+   "tip": [
+    -20,
+    97.6,
+    -75
+   ],
+   "web": [
+    -19.3,
+    52.1,
+    9.9
+   ]
+  },
+  "index": {
+   "abd": -12.5,
+   "flex": [
+    44.4,
+    53,
+    -25
+   ]
+  },
+  "middle": {
+   "abd": 2.9,
+   "flex": [
+    54.9,
+    59.1,
+    -10
+   ]
+  },
+  "ring": {
+   "abd": -15.8,
+   "flex": [
+    77.4,
+    41.1,
+    7.5
+   ]
+  },
+  "little": {
+   "abd": -25,
+   "flex": [
+    96.3,
+    20.3,
+    0.1
+   ]
+  },
+  "thumb": {
+   "dir": [
+    -0.271,
+    0.7612,
+    -0.5892
+   ],
+   "up": [
+    -0.9421,
+    -0.3355,
+    0
+   ],
+   "flex": [
+    16.3,
+    -12.1
+   ]
+  }
+ },
+ "view": {
+  "from": [
+   -0.7306,
+   -0.348,
+   0.5875
+  ],
+  "up": [
+   0.5304,
+   0.2526,
+   0.8093
+  ]
+ }
+}

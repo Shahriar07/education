@@ -1,0 +1,66 @@
+<!doctype html>
+<html><head><meta charset="utf-8"><title>3D hand</title>
+<style>html,body{margin:0;background:transparent}canvas{display:block}</style></head>
+<body><canvas id="c" width="2400" height="2400"></canvas>
+<script src="../lib/three.min.js"></script>
+<script src="hand3d.js"></script>
+<script src="solve.js"></script>
+<script src="fit.js"></script>
+<script src="skin.js"></script>
+<script src="pose.js"></script>
+<script src="fit_pose.js"></script>
+<script>
+/* renders one view of the hand: window.renderView(name) -> meta (pen tip and end in image pixels, px per mm) */
+const T = THREE, V = HAND.V;
+const renderer = new T.WebGLRenderer({ canvas: document.getElementById('c'), alpha: true, antialias: true, preserveDrawingBuffer: true });
+renderer.setClearColor(0x000000, 0);
+const scene = new T.Scene();
+/* solve the grip for the pen line in POSE (see solve.js); returns the angles to copy into pose.js */
+window.solveGrip = function () {
+  const G = HAND.geom(POSE.size), L = HAND.penLine(POSE);
+  const pen = { tip: L.tip.toArray(), dir: L.dir.toArray(), r: L.r, len: L.len, idx: POSE.contact.index, thb: POSE.contact.thumb, mid: POSE.contact.middle };
+  const r = SOLVE.solve(G, pen);
+  return { index: { abd: r.index.abd, flex: r.index.flex, e: r.index.e }, middle: { abd: r.middle.abd, flex: r.middle.flex, e: r.middle.e },
+    thumb: { dir: r.thumb.dir.map(x => +x.toFixed(3)), up: r.thumb.up.map(x => +x.toFixed(3)), flex: r.thumb.flex, e: r.thumb.e } };
+};
+scene.add(new T.HemisphereLight(0xffffff, 0x6e5f56, 0.75));
+const key = new T.DirectionalLight(0xffffff, 0.95); scene.add(key);
+const fill = new T.DirectionalLight(0xffe2cc, 0.3); scene.add(fill);
+// ?flat: the hand open and flat with the thumb out to the side (to compare with a photo of a real hand)
+if (location.search.includes('flat')) {
+  for (const k of ['index', 'middle', 'ring', 'little']) POSE[k] = { abd: { index: 8, middle: 0, ring: -6, little: -14 }[k], flex: [0, 0, 0] };
+  POSE.thumb = { dir: [-0.75, 0.62, -0.2], up: [-0.3, 0, 1], flex: [5, 5] };
+  POSE.pen.tip = [400, 400, 400]; POSE.pen.web = [400, 450, 400];
+}
+const built = HAND.build(POSE), { hand, F } = built;
+scene.add(hand);
+// one smooth skin (skin.js) unless ?blocks
+if (!location.search.includes('blocks')) SKIN3D.apply(built, POSE, HAND.M);
+const P = HAND.placePen(F, POSE);
+P.g.traverse(o => o.layers.set(1));            // the pen is drawn after the hand, over it
+scene.add(P.g);
+scene.traverse(o => { if (o.isLight) o.layers.enableAll(); });
+const PEN_LEN = 148, N = 2400;   // canvas size in pixels
+window.renderView = function (name, opts = {}) {
+  const v = VIEWS[name];
+  const W = v.span, cam = new T.OrthographicCamera(-W / 2, W / 2, W / 2, -W / 2, 1, 3000);
+  const tgt = v.target.clone(), dir = v.from.clone().normalize();
+  cam.position.copy(tgt.clone().add(dir.multiplyScalar(1200)));
+  cam.up.copy(v.up); cam.lookAt(tgt); cam.updateMatrixWorld(true);
+  // light from the upper left of the picture, in front: the same in every view
+  const right = new T.Vector3().setFromMatrixColumn(cam.matrixWorld, 0), up = new T.Vector3().setFromMatrixColumn(cam.matrixWorld, 1), back = new T.Vector3().setFromMatrixColumn(cam.matrixWorld, 2);
+  key.position.copy(tgt.clone().add(right.clone().multiplyScalar(-0.6)).add(up.clone().multiplyScalar(0.8)).add(back.clone().multiplyScalar(0.9)));
+  key.target.position.copy(tgt); key.target.updateMatrixWorld();
+  fill.position.copy(tgt.clone().add(right.clone().multiplyScalar(0.9)).add(up.clone().multiplyScalar(-0.3)).add(back.clone().multiplyScalar(0.5)));
+  fill.target.position.copy(tgt); fill.target.updateMatrixWorld();
+  // three passes: the hand, then the pen over it, then the thumb's last segment over the pen
+  renderer.autoClear = false; renderer.clear();
+  for (const layer of [0, 1, 2]) { cam.layers.set(layer); renderer.render(scene, cam); renderer.clearDepth(); }
+  const px = p => { const q = p.clone().project(cam); return [(q.x + 1) * N / 2, (1 - q.y) * N / 2]; };
+  const end = P.tip.clone().add(P.dir.clone().multiplyScalar(PEN_LEN));
+  const t = px(P.tip), e = px(end);
+  const marks = opts.marks ? { a: px(P.a), b: px(P.b), web: px(HAND.V(...POSE.pen.web)) } : undefined;
+  return { tip: t, end: e, ang: Math.atan2(e[1] - t[1], e[0] - t[0]) * 180 / Math.PI, pxPerMm: N / W, penPx: Math.hypot(e[0] - t[0], e[1] - t[1]), marks };
+};
+window.READY = true;
+</script></body></html>

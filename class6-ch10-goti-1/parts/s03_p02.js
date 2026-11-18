@@ -14,6 +14,6 @@ part('s03_p02', { scene: 3, label: '৩খ', title: 'বইয়ের কা�
   s += measure(hx, hy, bx, by, NAVY) + measure(hx, hy, kx, ky, NAVY);
   s += handPen(hx, hy, a);
   s += txt(bx, by + 110, 'বই', 44, { c: INK }) + txt(kx, ky + 80, 'খাতা', 44, { c: INK });
-  const u = lab(cl(hx + 40, 300, 1600), hy - 150, 'গতিশীল', 'move', S.fin(2, 0.4));
+  const u = lab(cl(hx - 230, 300, 1600), hy - 170, 'গতিশীল', 'move', S.fin(2, 0.4));   // up and to the left of the pen tip, clear of the hand
   return { svg: s, ui: u };
 });
