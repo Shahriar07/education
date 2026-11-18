@@ -1,0 +1,32 @@
+# Keep in git: instructions (CLAUDE.md, science-video-instructions.md, README.md), each video's plan.md and
+# script.md, delivery notes, parts lists, captions (.srt) and all source code (html, js, py, fonts, three.js),
+# so any computer can rebuild a video. Keep out: anything large or regenerated.
+
+# Python environment: recreate it (see README)
+.venv/
+__pycache__/
+*.pyc
+
+# Rendered video and large files
+*.mp4
+*.mov
+*.zip
+*.bin
+
+# The textbook PDF (36 MB, the NCTB book): download it again (see README)
+*.pdf
+
+# Render output that can be regenerated from the part files
+**/out/send/
+**/out/*.png
+**/out/*.jpg
+**/out/*.log
+**/out/info.json
+**/out/list.txt
+
+# OS and editor files
+Thumbs.db
+desktop.ini
+.DS_Store
+.vscode/
+.idea/
