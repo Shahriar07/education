@@ -17,7 +17,7 @@ This project lives on two computers. Check which one you are on before using a p
 
 - The book has 139 pages, about 38 MB, and no text layer: text extraction returns nothing. To read it, render the needed pages to images and look at them. Render only the pages of the chapter you need, not the whole book.
 - PDF page numbers differ from printed page numbers. In the class six book, PDF page = printed page + 5 for chapters nine and ten. Check the offset again for other chapters and books.
-- Before planning any video, read the whole chapter from the PDF, including the exercise pages, and build the table of figures and activities from what you actually see.
+- Before planning any video, read the whole chapter from the PDF, including the exercise pages, and build the table of figures and activities from what you actually see. Send me the brief of the textbook first, then the plan (see "How to work").
 - On this computer the Read tool cannot render PDF pages (no poppler). What works: copy the PDF into a scratch folder under a non-.pdf name, serve the folder with `python -m http.server` on 127.0.0.1, and render the pages with pdf.js (cdnjs) in the built-in browser, then screenshot them. Navigating straight to a .pdf opens a save dialog for the user, so do not.
 - Layout: the shared template folder, then one folder per video with `parts/` (one source file per part, `s05_p03.js`), `out/` (clips, joined video, srt, parts list) and `script.md`.
 - Rendering needs Python with Playwright, Google Chrome, ffmpeg, and the Hind Siliguri font files from the template. Do not install these system-wide. On this computer they are in `.venv` in the project root (`playwright` and `imageio-ffmpeg`, which carries an ffmpeg with libx264); Playwright drives the installed Google Chrome. Run everything as `..\.venv\Scripts\python.exe -X utf8 render.py ...` from the video folder. Check that these work before building, and tell me what is missing.
@@ -208,8 +208,8 @@ Every diagram and motion must be physically correct, calculated and not drawn by
 
 ## How to work
 
-1. Read the textbook chapter for this class and topic (search the web, or use the pages I attach). List what it covers, with its figures and activities. Tell me if the topic belongs to a different class or chapter than I wrote.
-2. Send me a one-page plan and wait for my approval. The plan contains:
+1. Read the textbook chapter for this class and topic (search the web, or use the pages I attach). List what it covers, with its figures and activities. Tell me if the topic belongs to a different class or chapter than I wrote. Then start by giving me a brief of what the textbook has, before any plan: for each lesson of the topic, its main points and definitions in the book's own terms, its figures, activities, worked examples with their numbers, the exercise questions that belong to it, and any mistake or mismatch in the book. Keep it short, only what the book says, with page numbers and none of our own ideas.
+2. After the brief, send me a one-page plan for me to check, and wait for my approval. The plan contains:
    - the hook and the three learning points;
    - the scenes and their parts, one line each;
    - the table of textbook figures and activities and where each is animated;
