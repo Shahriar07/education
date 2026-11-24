@@ -16,8 +16,10 @@ import imageio_ffmpeg
 
 FPS = 30
 HERE = Path(__file__).resolve().parent
-OUT = HERE / "out"
-OUT.mkdir(exist_ok=True)
+# videos are never written under .claude: from a worktree, out is the same video folder in the main project root
+ROOT = next((p.parent for p in HERE.parents if p.name == ".claude"), None)
+OUT = ROOT / HERE.name / "out" if ROOT else HERE / "out"
+OUT.mkdir(parents=True, exist_ok=True)
 CHROME = r"C:\Program Files\Google\Chrome\Application\chrome.exe"
 FFMPEG = imageio_ffmpeg.get_ffmpeg_exe()
 BN = str.maketrans("0123456789", "০১২৩৪৫৬৭৮৯")
@@ -181,6 +183,10 @@ def join():
         f.write("# পর্বের তালিকা\n\n" + "\n".join(rows) + f"\n\nমোট: {int(t // 60)} মিনিট {round(t % 60)} সেকেন্ড, {len(have)}টি পর্ব।\n")
         if missing:
             f.write("\nএখনো রেন্ডার হয়নি: " + ", ".join(missing) + "\n")
+    if ROOT:   # small text files also go back to the worktree, so they can be committed
+        (HERE / "out").mkdir(exist_ok=True)
+        for f in [*OUT.glob("*.srt"), OUT / "parts-list.md"]:
+            (HERE / "out" / f.name).write_bytes(f.read_bytes())
     print("joined", len(have), "parts,", round(t, 1), "s")
 
 
