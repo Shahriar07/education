@@ -878,6 +878,7 @@ const W3 = (function () {
     // ক, খ, গ: one mark on each fan blade at 0.9, 0.62, 0.36 of the blade-tip radius (textbook fig 10.6)
     marks2 = [[0, 0.9, '#e63946'], [1, 0.62, '#FFC83D'], [2, 0.36, '#2e86de']].map(([i, f, c]) => { const r = f * 0.61, a = i * 2 * Math.PI / 3;
       const m = new THREE.Mesh(new THREE.SphereGeometry(0.03, 16, 10), new THREE.MeshStandardMaterial({ color: c, emissive: c, emissiveIntensity: 0.4 })); m.position.set(r * Math.cos(a), -0.025, -r * Math.sin(a)); rm.rot.add(m); m.visible = false; return m; });
+    if (typeof buildV3 === 'function') buildV3({ scene, box, cyl, mat, canvasTex, mkCar });
     built = true;
   }
 
@@ -983,6 +984,7 @@ const W3 = (function () {
     ar.wheel.rotation.z = (av.wheel || 0) * Math.PI / 180;
     ar.cars.forEach((c2, k) => { const a = (av.wheel || 0) * Math.PI / 180 + k * Math.PI / 4; c2.position.set(ar.WC[0] + ar.WR * Math.cos(a), ar.WC[1] + ar.WR * Math.sin(a), 0); });
     ar.needle.position.y = ar.needleY + (av.needle || 0); ar.hw.rotation.x = (av.needle ? av.needle * 60 : 0);
+    if (typeof frameV3 === 'function') frameV3(o);
     renderer.render(scene, camera);
     return (x, y, z) => { const p = v3(x, y, z).project(camera); return [(p.x + 1) * 960, (1 - p.y) * 540, p.z < 1 && p.z > -1]; };
   }
