@@ -38,7 +38,8 @@ Object.assign(POSE, P);
 // rebuild
 while (scene.children.length) scene.remove(scene.children[0]);
 const hem = new T3.HemisphereLight(0xffffff, 0x6e5f56, 0.75); scene.add(hem, key, key.target, fill, fill.target);
-const b2 = HAND.build(POSE); scene.add(b2.hand); const sk = SKIN3D.apply(b2, POSE, HAND.M);
+const b2 = HAND.build(POSE); b2.arm.children[1].scale.y = 150 / 1275;   // the sleeve ends near the elbow: 275 mm x size = 23 cm from the wrist
+scene.add(b2.hand); const sk = SKIN3D.apply(b2, POSE, HAND.M);
 sk.tip.layers.set(0); b2.hand.traverse(o => o.layers.set(0));
 const rod = new T3.Mesh(new T3.CylinderGeometry(R, R, 900, 48), new T3.MeshStandardMaterial({ color: 0xa9743f, roughness: 0.8 }));
 const mid = A0.clone().lerp(A1, 0.45); rod.position.copy(mid); rod.quaternion.setFromUnitVectors(V3(0, 1, 0), ax); scene.add(rod);

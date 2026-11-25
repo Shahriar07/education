@@ -21,7 +21,7 @@ part('s05_p06', { scene: 5, label: '৫চ', last: true, title: "চিত্র
   u += lab(sx, sy - 0.2 * pm, 'ভারী পাথর', 'name', S.P(0, 0.75, 0.85));
   /* arrows: 1 N = 0.55 px, straight down; weight from the middle of the heavy stone, the hand's force from the rod */
   const W = LV.M * LV.G, N = 0.62, a1 = S.P(1, 0.3, 0.6), a2 = t >= S.A(3) ? S.P(3, 0.3, 0.45) : 0;
-  const f = lvForce(th) * N * ease(a1); const ay = hy + pm * 0.075; s += arrow2(hx, ay, hx, ay + f, a1, Y); u += lab(hx - 180, ay + f * 0.55, 'হাতের বল', 'move', a1);
+  const f = lvForce(th) * N * ease(a1); const ay = hy + pm * 0.075; s += arrow2(hx, ay, hx, ay + f, a1, Y); u += lab(hx - 150, ay + f * 0.55, 'হাতের বল', 'move', a1);
   if (a2) { s += arrow2(sx, sy, sx, sy + W * N * ease(a2), a2, '#ff6b5e'); u += lab(sx + 235, sy + W * N * 0.5, 'পাথরের ভার', 'move', a2); }
   return { gl: true, svg: s, ui: u };
 });
