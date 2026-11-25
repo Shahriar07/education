@@ -1,7 +1,7 @@
 @echo off
 rem Chapter 9 video 1: one click from setup to pull request.
 rem   1. creates ..\.venv once (playwright, imageio-ffmpeg)
-rem   2. renders all parts, joins them, splits into 30 MB pieces for sending
+rem   2. renders all parts in parallel (set RENDER_WORKERS to choose how many), joins them, splits into 30 MB pieces for sending
 rem   3. commits the captions and parts list, pushes branch ch09-alo-3d, opens the pull request
 rem Stops at the first failure. Safe to run again: setup is skipped when done, and every part is re-rendered.
 setlocal
@@ -39,8 +39,8 @@ echo === Step 2: Render ===
 if not exist out mkdir out
 echo start> out\render-start.log
 "%PY%" -X utf8 render.py info || goto :fail
-echo Rendering every part. This takes a while; keep the PC awake and plugged in.
-"%PY%" -X utf8 render.py clip all || goto :fail
+echo Rendering every part with several Chrome workers at once. Keep the PC awake and plugged in.
+"%PY%" -X utf8 render.py parallel || goto :fail
 "%PY%" -X utf8 -c "import json,os,sys;i=json.load(open('out/info.json',encoding='utf-8'));m=os.path.getmtime('out/render-start.log');bad=[p['name'] for p in i if not os.path.exists('out/'+p['name']+'.mp4') or os.path.getmtime('out/'+p['name']+'.mp4')<m];print('NOT RENDERED:',' '.join(bad)) if bad else print('all',len(i),'parts rendered');sys.exit(1 if bad else 0)" || goto :fail
 "%PY%" -X utf8 render.py join || goto :fail
 "%PY%" -X utf8 render.py chunks || goto :fail
