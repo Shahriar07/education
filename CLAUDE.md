@@ -89,6 +89,14 @@ Notes for this chapter:
 - The cycle activity of পাঠ ২ is done with a car instead (approved): two friends in the car, one standing by the road, each shown only as a labelled eye. A cycle was rejected because its rider would have to be drawn. For the same reason the rickshaw example of পাঠ ২ (frame of reference: your house) is shown with a car (approved); the narration says the book uses a rickshaw. In চিত্র ১০.২ only the bus and cars are shown; its rickshaw and cycle are left out (approved).
 - Street, bus and car scenes are 3D (three.js, `science-video-template\lib\three.min.js`), under the usual SVG and caption layers.
 
+### Chapter 11, বল ও সরল যন্ত্র (PDF pages 98 to 107, printed 93 to 102)
+
+- Three videos (approved 2026-11-25): (1) পাঠ ১-৩ in `class6-ch11-bol-1\`, (2) পাঠ ৪-৭ লিভার, (3) পাঠ ৮-১২. Plan: `class6-ch11-bol-1\plan.md`.
+- A skull may be shown (2026-11-25: it is not a living being); in video 3 the jaw, foot and arm are shown as bones.
+- Every force and machine is explained simply in the same order: who applies it, where and in which direction (arrow proportional to the force), what happens, where it is used.
+- The book numbers two figures ১১.১৫ (screwdrivers; human body).
+- Video 1: 35 parts, script approved 2026-11-25. ৫চ (চিত্র ১১.৩) approved with one gripping hand: `handGrip(x, y, angle, px per metre)` in `zones11.js`, picture `hand_grip.png` from `make_grip.py`. The rod is called "শক্ত দণ্ড" and rests on a small rounded stone as in the book.
+
 ## Showing what an observer sees (every video, approved 2026-11-17)
 
 - When the narration says what someone sees, the camera is that person's eyes: on the ground at the bus stop for a friend standing there, inside the vehicle at the seat for "তুমি". Never show it from a third place.
@@ -156,7 +164,7 @@ Every diagram and motion must be physically correct, calculated and not drawn by
 
 - **Angles:** compute them. In reflection the angle of incidence equals the angle of reflection, measured from the normal, and the normal is drawn. In refraction use Snell's law with real refractive indices (air 1.00, water 1.33, glass about 1.5).
 - **Motion:** compute positions from the real equations for each frame (uniform velocity: s = vt; uniform acceleration: v = u + at, s = ut + ½at²; free fall with g = 9.8 m/s²; projectile paths as parabolas). If a speed, distance or time is shown on screen, the numbers must be consistent with each other and with the motion drawn.
-- **Forces:** arrows point in the true direction, and their lengths are proportional to the magnitudes.
+- **Forces:** arrows point in the true direction, and their lengths are proportional to the magnitudes. The arrow of a hand's force starts just outside the hand, never over the fingers. Every force is explained in the same order: who applies it, where and in which direction, what happens, where it is used.
 - **Light and shadow:** all rays from a distant source are parallel; shadows fall on the side away from the source and in line with the rays; the lit side of any object faces the source.
 - **Space scenes:** the lit half of the Earth, Moon or a planet always faces the Sun. Day and night sides must be drawn and must agree with every ray in the scene.
 - **Scale:** when true scale is impossible (Sun and Earth, atoms), keep directions and proportions correct where you can and put a small on-screen note: "স্কেল অনুযায়ী নয়".
@@ -172,7 +180,7 @@ Every diagram and motion must be physically correct, calculated and not drawn by
 
 ### 5. Build the video in small parts
 
-- Split every scene into short parts (shots) of roughly 10 to 30 seconds, each showing one idea.
+- Split every scene into short parts (shots) of roughly 10 to 30 seconds, each showing one idea. A part that grows past 30 seconds is split in two.
 - Each part is its own source file and its own rendered clip, named by scene and part: `s03_p02.mp4`. All clips use identical size, frame rate and encoder settings.
 - The full video is made by joining the clips without re-encoding.
 - When I ask for a change, change and re-render only the affected part, then re-join. Never rebuild the whole video for a local change.
@@ -183,6 +191,9 @@ Every diagram and motion must be physically correct, calculated and not drawn by
 
 - Never draw a complete living creature: no human, animal, bird, fish or insect, and no face, head or human-shaped shadow or silhouette.
 - A separate hand, finger or eye may be drawn when needed (a hand lighting a candle, an eye at the end of a light ray).
+- A skull or a bone may be shown (2026-11-25: it is not a living being).
+- The visible arm ends near the elbow: the sleeve ends at most 23 to 25 cm from the wrist, at the hand's own scale. Never a long straight arm reaching out of the picture. The hand is at true scale against the object it holds.
+- When there is no photo of a hand's pose, a drawing from a book may be used for the arrangement only (never copied), and the finger joints are calculated so that every segment rests on the object (make_grip.py in science-video-template\hand). Say in the delivery note that it was not fitted to a photo. Show the old and the new hand side by side and wait for approval.
 - Hands are drawn realistically: palm and five separate fingers with knuckles and nails, the thumb coming from the right place, skin with light and shade, a wrist and a shirt cuff. Never a mitten or a blob.
 - A hand writing in a khata is seen from above as the writer sees it: upright (long up and down), wrist and sleeve coming up from the bottom of the picture. The pen or pencil is held correctly (tripod grip: between thumb and index finger, resting on the middle finger, ring and little fingers curled under), tilted, with its tip on the paper. Students learn the grip from the picture.
 - Do not draw trees, plants or crop fields. A fruit such as a mango is allowed. Sky, sun, moon, stars, water, buildings and objects are allowed.
