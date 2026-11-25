@@ -46,7 +46,8 @@
 
 ```
 cd class6-ch09-alo-1
-..\.venv\Scripts\python.exe -X utf8 render.py clip all
+..\.venv\Scripts\python.exe -X utf8 render.py info
+..\.venv\Scripts\python.exe -X utf8 render.py parallel
 ..\.venv\Scripts\python.exe -X utf8 render.py join
 ..\.venv\Scripts\python.exe -X utf8 render.py chunks
 ```

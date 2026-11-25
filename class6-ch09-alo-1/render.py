@@ -3,13 +3,15 @@
   python render.py info                       part lengths, writes out/info.json
   python render.py stills <part> [t1 t2 ...]  check frames -> out/still_<part>_<t>.jpg  (default: 6 evenly spaced)
   python render.py clip <part> [<part> ...]   out/<part>.mp4 and out/<part>.srt   ("all" = every part)
+  python render.py parallel [N] [<part> ...]  the same as clip, split over N Chrome workers (default: RENDER_WORKERS,
+                                              else half the CPU threads, at most 6); logs in out/clip-<k>.log
   python render.py join                       out/video.mp4, out/video.srt, out/parts-list.md (no re-encoding)
   python render.py phone <part:t> [...]       frames shrunk to phone size (640x360), tiled -> out/phone.png
   python render.py chunks [MB]                whole parts grouped into out/send/ pieces of at most 30 MB
 
 Run with the project venv:  ..\\.venv\\Scripts\\python.exe render.py ...
 """
-import json, os, subprocess, sys
+import json, os, subprocess, sys, time
 from pathlib import Path
 from playwright.sync_api import sync_playwright
 import imageio_ffmpeg
@@ -93,8 +95,76 @@ def chunks(limit_mb=30.0):
     (send / "join-list.txt").write_text("".join(f"file 'video_{i}_of_{n}.mp4'\n" for i in range(1, n + 1)), encoding="utf-8")
 
 
+def free_gb():
+    """Free memory in GB (Windows and Linux), or None if unknown."""
+    try:
+        if os.name == "nt":
+            import ctypes
+            class MS(ctypes.Structure):
+                _fields_ = [("len", ctypes.c_ulong), ("load", ctypes.c_ulong), ("total", ctypes.c_ulonglong), ("avail", ctypes.c_ulonglong),
+                            ("tp", ctypes.c_ulonglong), ("ap", ctypes.c_ulonglong), ("tv", ctypes.c_ulonglong), ("av", ctypes.c_ulonglong),
+                            ("ae", ctypes.c_ulonglong)]
+            m = MS(); m.len = ctypes.sizeof(MS)
+            return m.avail / 2**30 if ctypes.windll.kernel32.GlobalMemoryStatusEx(ctypes.byref(m)) else None
+        for line in open("/proc/meminfo"):
+            if line.startswith("MemAvailable:"):
+                return int(line.split()[1]) / 2**20
+    except Exception:
+        return None
+
+
+def parallel(args):
+    """Render parts with several `render.py clip` processes at once. Each worker is its own Chrome, and one
+    Chrome renders one frame at a time, so workers multiply speed until CPU or GPU is full."""
+    workers = int(args[0]) if args and args[0].isdigit() else int(os.environ.get("RENDER_WORKERS") or min(6, max(1, (os.cpu_count() or 2) // 2)))
+    free = free_gb()
+    if free is not None and not (args and args[0].isdigit()) and not os.environ.get("RENDER_WORKERS"):
+        workers = min(workers, max(1, int(free)))   # about 1 GB per worker (Chrome + ffmpeg)
+    names = [a for a in args if not a.isdigit()]
+    info = json.load(open(OUT / "info.json", encoding="utf-8"))   # written by `render.py info`, run that first
+    by = {i["name"]: i for i in info}
+    unknown = [n for n in names if n not in by]
+    if unknown:
+        sys.exit(f"unknown parts: {' '.join(unknown)}")
+    todo = [by[n] for n in names] if names else info
+    workers = max(1, min(workers, len(todo)))
+    groups = [[] for _ in range(workers)]; load = [0] * workers
+    for part in sorted(todo, key=frames, reverse=True):   # longest first, each to the least loaded worker
+        k = load.index(min(load)); groups[k].append(part["name"]); load[k] += frames(part)
+    total = sum(load)
+    print(f"{len(todo)} parts, {round(total / FPS)} s of video, {workers} workers"
+          + (f" ({free:.1f} GB memory free)" if free is not None else ""), flush=True)
+    procs = []
+    for k, g in enumerate(groups):
+        log = open(OUT / f"clip-{k + 1}.log", "w", encoding="utf-8")
+        procs.append((subprocess.Popen([sys.executable, "-X", "utf8", __file__, "clip", *g], stdout=log, stderr=subprocess.STDOUT,
+                                       env={**os.environ, "PYTHONIOENCODING": "utf-8"}), log, k + 1))
+    t0 = time.time(); shown = -1
+    while True:
+        running = sum(p.poll() is None for p, _, _ in procs)
+        done = sum(line.startswith("wrote ") for _, _, k in procs
+                   for line in open(OUT / f"clip-{k}.log", encoding="utf-8", errors="replace"))
+        if done != shown or not running:
+            m = (time.time() - t0) / 60
+            print(f"  {done}/{len(todo)} parts done, {m:.0f} min", flush=True); shown = done
+        if not running:
+            break
+        time.sleep(15)
+    bad = []
+    for p, log, k in procs:
+        log.close()
+        text = open(OUT / f"clip-{k}.log", encoding="utf-8", errors="replace").read()
+        if p.returncode != 0 or "FFMPEG FAILED" in text or "PAGE ERRORS" in text or "Traceback" in text:
+            bad.append(k); print(f"--- worker {k} had a problem (out/clip-{k}.log) ---\n{text[-2000:]}", flush=True)
+    if bad:
+        sys.exit(1)
+    print(f"all {len(todo)} parts rendered in {(time.time() - t0) / 60:.0f} min", flush=True)
+
+
 def main():
     mode = sys.argv[1] if len(sys.argv) > 1 else "info"
+    if mode == "parallel":
+        return parallel(sys.argv[2:])
     if mode == "join":
         return join()
     if mode == "chunks":
