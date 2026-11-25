@@ -89,6 +89,13 @@ Notes for this chapter:
 - The cycle activity of পাঠ ২ is done with a car instead (approved): two friends in the car, one standing by the road, each shown only as a labelled eye. A cycle was rejected because its rider would have to be drawn. For the same reason the rickshaw example of পাঠ ২ (frame of reference: your house) is shown with a car (approved); the narration says the book uses a rickshaw. In চিত্র ১০.২ only the bus and cars are shown; its rickshaw and cycle are left out (approved).
 - Street, bus and car scenes are 3D (three.js, `science-video-template\lib\three.min.js`), under the usual SVG and caption layers.
 
+### Chapter 11, বল ও সরল যন্ত্র (PDF pages 98 to 107, printed 93 to 102)
+
+- Three videos (approved 2026-11-25): (1) পাঠ ১-৩ in `class6-ch11-bol-1\`, (2) পাঠ ৪-৭ লিভার, (3) পাঠ ৮-১২. Plan: `class6-ch11-bol-1\plan.md`.
+- A skull may be shown (2026-11-25: it is not a living being); in video 3 the jaw, foot and arm are shown as bones.
+- Every force and machine is explained simply in the same order: who applies it, where and in which direction (arrow proportional to the force), what happens, where it is used.
+- The book numbers two figures ১১.১৫ (screwdrivers; human body).
+
 ## Showing what an observer sees (every video, approved 2026-11-17)
 
 - When the narration says what someone sees, the camera is that person's eyes: on the ground at the bus stop for a friend standing there, inside the vehicle at the seat for "তুমি". Never show it from a third place.
