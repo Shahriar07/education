@@ -117,6 +117,7 @@ Every diagram and motion must be physically correct, calculated and not drawn by
 ## How to work
 
 1. Read the textbook chapter for this class and topic (search the web, or use the pages I attach). List what it covers, with its figures and activities. Tell me if the topic belongs to a different class or chapter than I wrote. Then start by giving me a brief of what the textbook has, before any plan: for each lesson of the topic, its main points and definitions in the book's own terms, its figures, activities, worked examples with their numbers, the exercise questions that belong to it, and any mistake or mismatch in the book. Keep it short, only what the book says, with page numbers and none of our own ideas.
+   - At the start of a new chapter, also propose how the chapter is split into videos (my rule, 2026-11-26). There is no fixed number per chapter: split by content, so that each video is about 10 minutes and every textbook figure and activity gets about a minute or more. Keep lessons in book order and do not split one lesson across two videos. For example, chapter 9 (10 lessons) is three videos (lessons 1-3, 4-7, 8-10), chapters 10 and 11 (12 lessons each) are three videos each; a short chapter may need one or two, a long one four. I approve the split with the plan.
 2. After the brief, send me a one-page plan for me to check, and wait for my approval. The plan contains:
    - the hook and the three learning points;
    - the scenes and their parts, one line each;
