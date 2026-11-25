@@ -19,7 +19,7 @@ part('s05_p03', { scene: 5, label: '৫গ', title: "তোমার চোখ�
                        : W3.mix(C9.overview(), C9.eye(), kin);
   /* the light's path, revealed from the flame to the eye in the second half of sentence 4 (drawn in 3D, behind the covers) */
   const kr = kout > 0 ? ease(S.P(3, 0.35, 0.85)) : 0, rb = EXP.CANDLE + (EXP.EYE - EXP.CANDLE) * kr;
-  const P = W3.frame({ cam, dim: 0.55, glow: inEye ? 0.45 : 0.8, exp: { shift, lit: 1, t }, ray: kr > 0 ? { a: EXP.CANDLE, b: rb } : undefined });
+  const P = W3.frame({ cam, t, dim: 0.55, exp: { shift, lit: 1, glow: inEye ? 0.45 : 0.8 }, ray: kr > 0 ? { a: EXP.CANDLE, b: rb } : undefined });
   let s = '', u = '';
   /* who is where, before the flight: your eye at your end of the line */
   /* your eye sits exactly on the line of the flame and the holes */
