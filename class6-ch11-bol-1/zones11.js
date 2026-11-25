@@ -46,6 +46,11 @@ frameV3 = function (o) {
   const th = o.lever; V11.rod.position.set(...lvPt(th, V11.mid)); V11.rod.rotation.z = Math.PI / 2 - th;
   V11.stone.position.set(...lvStone(th)); V11.stone.rotation.z = -th;
 };
-const C11 = { lever: () => ({ pos: [LV.X - 0.3, 0.62, LV.Z + 3.2], look: [LV.X - 0.3, 0.33, LV.Z], fov: 30 }) };
+const C11 = { lever: () => ({ pos: [LV.X - 0.28, 0.6, LV.Z + 3.2], look: [LV.X - 0.28, 0.31, LV.Z], fov: 25.5 }) };
 /* placeholder for a part whose narration is ready and drawing is not */
 const todoDraw = (label, title) => () => ({ svg: bg(NAVY) + txt(960, 480, label, 120, { c: Y }) + txt(960, 600, title, 60) });
+/* the rod-gripping hand (science-video-template/hand/make_grip.py): rod centre under the palm at (x, y), the rod at a degrees
+   on screen, pm = pixels per metre there */
+const GRIP_IMG = { src: '../science-video-template/hand/hand_grip.png', size: 2400, rod: [1466.1, 1833.0], ang: -8.45, pxPerMm: 2.6667 };
+function handGrip(x, y, a, pm, o = 1) { if (o <= 0) return ''; const H = GRIP_IMG, k = pm / 1000 / H.pxPerMm;
+  return `<g transform="translate(${F(x)},${F(y)}) rotate(${F(a - H.ang)}) scale(${k.toFixed(4)}) translate(${-H.rod[0]},${-H.rod[1]})" opacity="${cl(o).toFixed(2)}"><image href="${H.src}" width="${H.size}" height="${H.size}"/></g>`; }
