@@ -57,8 +57,8 @@ function handGrip(x, y, a, pm, o = 1) { if (o <= 0) return ''; const H = GRIP_IM
   return `<g transform="translate(${F(x)},${F(y)}) rotate(${F(a - H.ang)}) scale(${k.toFixed(4)}) translate(${-H.rod[0]},${-H.rod[1]})" opacity="${cl(o).toFixed(2)}"><image href="${H.src}" width="${H.size}" height="${H.size}"/></g>`; }
 /* ---- scenes 1 and 2 ---- */
 /* hand_push.png (mirrored: pushes to the right), palm at (x, y), turned by a degrees; hand_point.png, fingertip at (x, y), a = 0: pointing down */
-function handImg(src, anc, ppm, x, y, a, pm, o, flip) { if (o <= 0) return ''; const k = pm / 1000 / ppm;
-  return `<g transform="translate(${F(x)},${F(y)}) rotate(${F(a)}) scale(${(flip ? -k : k).toFixed(4)},${k.toFixed(4)}) translate(${-anc[0]},${-anc[1]})" opacity="${cl(o).toFixed(2)}"><image href="../science-video-template/hand/${src}" width="2400" height="2400"/></g>`; }
+function handImg(src, anc, ppm, x, y, a, pm, o, flip, flipY) { if (o <= 0) return ''; const k = pm / 1000 / ppm;
+  return `<g transform="translate(${F(x)},${F(y)}) rotate(${F(a)}) scale(${(flip ? -k : k).toFixed(4)},${(flipY ? -k : k).toFixed(4)}) translate(${-anc[0]},${-anc[1]})" opacity="${cl(o).toFixed(2)}"><image href="../science-video-template/hand/${src}" width="2400" height="2400"/></g>`; }
 const handPush3 = (x, y, a, pm, o = 1) => handImg('hand_push.png', [818.6, 1044.9], 3.7500, x, y, a, pm, o, true);
 const handPoint = (x, y, a, pm, o = 1) => handImg('hand_point.png', [1527.7, 1951.2], 3.7500, x, y, a, pm, o, false);
 /* tilt of the rod after the fraction k of the hand's way down (the hand's height falls evenly with k) */
@@ -138,3 +138,12 @@ Object.assign(C11, {
   cart: x => ({ pos: [ST.CART + x + 0.3, 1.35, ST.CZ + 6.2], look: [ST.CART + x + 0.3, 0.58, ST.CZ], fov: 30 }),
 });
 const big = (s) => `<span style="font-size:52px">${s}</span>`;
+/* ---- new hands (2026-11-26) ---- */
+/* how real hands do it: a hooked index finger pulls a ring; the whole hand rests on a mouse; a bent finger's pad presses a switch */
+const handHook = (x, y, a, pm, o = 1) => handImg('hand_hook.png', [928.9, 1397.5], 4.6154, x, y, a, pm, o, false);
+const handMouse = (x, y, a, pm, o = 1) => handImg('hand_mouse.png', [843.5, 1412.0], 4.6154, x, y, a, pm, o, false);
+const handPad = (x, y, a, pm, o = 1, flip = false) => handImg('hand_pad.png', [695.9, 1392.7], 4.6154, x, y, a, pm, o, flip);
+/* the open palm turned upside down: the fingers hang down and their pads push sideways (to the right) */
+const handFingersPush = (x, y, pm, o = 1) => handImg('hand_push.png', [818.6, 1044.9], 3.75, x, y - 0.055 * pm, 0, pm, o, true, true);
+/* the palm pressing straight down, fingers to the right (the heel of the hand on the contact point) */
+const handPalmDown = (x, y, pm, o = 1) => handPush3(x + 0.03 * pm, y, 90, pm, o);

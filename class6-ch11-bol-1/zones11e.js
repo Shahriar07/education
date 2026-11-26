@@ -28,7 +28,7 @@ buildV3 = function (k) {
   const lumps = []; for (let i = 0; i < 9; i++) { const m = new THREE.Mesh(new THREE.DodecahedronGeometry(0.009, 0), mat('#d99a1e', { roughness: 0.8 })); m.position.set(B7.X - 0.08 + (i % 3) * 0.03, B7.TY + 0.046, -0.04 + Math.floor(i / 3) * 0.04); m.rotation.set(i, i * 2, i * 3); m.castShadow = true; scene.add(m); lumps.push(m); }
   const paste = new THREE.Mesh(new THREE.CircleGeometry(1, 40), mat('#e3a422', { roughness: 0.6 })); paste.rotation.x = -Math.PI / 2; paste.position.set(B7.X - 0.05, B7.TY + 0.0405, 0); paste.scale.set(0.001, 0.001, 1); scene.add(paste);
   /* mouse: a smooth body, two buttons split by a groove, a wheel and a cable */
-  const mouse = new THREE.Group(); mouse.position.set(B7.X + 0.75, B7.TY, 0); scene.add(mouse); const pl = mat('#2d3035', { roughness: 0.4 });
+  const mouse = new THREE.Group(); mouse.position.set(B7.X + 0.75, B7.TY, 0); mouse.rotation.y = Math.PI; scene.add(mouse); const pl = mat('#2d3035', { roughness: 0.4 });
   { const b = new THREE.Mesh(new THREE.SphereGeometry(1, 40, 24, 0, Math.PI * 2, 0, Math.PI / 2), pl); b.scale.set(0.06, 0.035, 0.032); mouse.add(b); b.castShadow = true; }
   const btn = new THREE.Group(); btn.position.set(0.028, 0.03, 0.008); mouse.add(btn); { const q = new THREE.Mesh(new THREE.SphereGeometry(1, 24, 12, 0, Math.PI * 2, 0, Math.PI / 2), mat('#3a3e44', { roughness: 0.35 })); q.scale.set(0.03, 0.008, 0.013); btn.add(q); }
   cyl(0.006, 0.006, 0.004, mat('#888'), 0.03, 0.034, 0, mouse, 16).rotation.x = Math.PI / 2;
@@ -53,7 +53,7 @@ function rulerState(p, k) {
 /* o.can (ring lift 0..1) | o.sp {nora x, grind 0..1} | o.mouse (press 0..1) | o.ruler {p, k} | o.ghosts [dx, dx] */
 frameV3 = function (o) {
   _f15(o);
-  const on = o.can !== undefined || !!o.sp || o.mouse !== undefined; V16.G.visible = on;
+  const on = o.can !== undefined || !!o.sp || o.mouse !== undefined || !!o.table7; V16.G.visible = on;
   V16.can.visible = o.can !== undefined; if (V16.can.visible) { const a = o.can; V16.tab.rotation.x = -1.2 * a; V16.flap.rotation.x = -Math.PI / 2 + 1.3 * Math.max(0, a - 0.4) / 0.6; V16.flap.position.y = 0.1265 - 0.006 * Math.max(0, a - 0.4); }
   const sp = o.sp; V16.pata.visible = V16.nora.visible = V16.paste.visible = !!sp; V16.lumps.forEach((m, i) => { m.visible = !!sp && sp.grind < 0.15 + i * 0.09; if (m.visible) m.scale.setScalar(1 - sp.grind * 0.5); });
   if (sp) { V16.nora.position.set(B7.X + sp.x, B7.TY + 0.04 + 0.035, 0); V16.nora.rotation.y = 0; V16.nora.rotation.z = -sp.x / 0.035; const r = 0.02 + 0.07 * sp.grind; V16.paste.scale.set(r * 1.6, r, 1); }

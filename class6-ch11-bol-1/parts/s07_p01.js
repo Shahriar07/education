@@ -6,7 +6,7 @@ part('s07_p01', { scene: 7, label: '৭ক', first: true, title: "ক্যা�
 ], function (t, S) {
   const a = ease(S.P(0, 0.45, 0.85)), P = W3.frame({ cam: C11.b7(-0.7, 28, 0.3), can: a, sun: [-14, 34, 26] }), pm = pxpm(P, [B7.X - 0.7, B7.TY + 0.12, 0]);
   let s = '', u = ''; const [x, y] = P(B7.X - 0.7, B7.TY + 0.128 + 0.012 * a, 0.016 - 0.004 * a);
-  s += handPoint(x + 4, y + 6, 24, pm, S.P(0, 0.2, 0.35)); s += arrow2(x - 90, y + 30, x - 90, y - 120, S.P(0, 0.5, 0.65)); u += lab(x - 210, y - 50, big('টান'), 'move', S.P(0, 0.5, 0.65));
+  s += handHook(x, y + 3, 0, pm, S.P(0, 0.2, 0.35)); s += arrow2(x - 90, y + 30, x - 90, y - 120, S.P(0, 0.5, 0.65)); u += lab(x - 210, y - 50, big('টান'), 'move', S.P(0, 0.5, 0.65));
   if (t >= S.A(1)) u += lab(1300, 760, big('আকৃতি বদল'), 'name', S.P(1, 0.75, 0.9)); u += lab(1640, 170, 'ক্যান', 'name');
   return { gl: true, svg: s, ui: u };
 });
