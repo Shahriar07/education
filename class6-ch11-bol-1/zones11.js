@@ -152,8 +152,8 @@ Object.assign(C11, {
   pump: () => ({ pos: [ST.TW[0] - 0.25, 1.15, ST.TW[1] + 4.2], look: [ST.TW[0] - 0.25, 0.86, ST.TW[1]], fov: 35 }),
   cart: x => ({ pos: [ST.CART + x + 0.4, 1.45, ST.CZ + 5.6], look: [ST.CART + x + 0.4, 0.8, ST.CZ - 1], fov: 36 }),
 });
-/* the cart's hands at cart position C (world x of its centre); rear = pushing palms, front = the puller's fist from above: the back of the hand up, the four fingers round the shaft's outer side, the thumb on its inner side, the forearm coming in from the person between the shafts */
-const cartHands = (C, rear = true, front = true) => [...(rear ? [-0.22, 0.22].map(dz => H3.push([C - 1.11, 0.72, ST.CZ + dz], [1, 0, 0])) : []), ...(front ? [H3.grip([C + 1.75, 0.68, ST.CZ + 0.46], [-1, 0, 0], [0, 1, 0], 'grip')] : [])];
+/* the cart's hands at cart position C (world x of its centre); rear = pushing palms, front = the puller's fist from above: the back of the hand up, the four fingers round the shaft's outer side, the thumb on its inner side, the shaft diagonal in the palm, the forearm rising forward along the shaft to the person ahead */
+const cartHands = (C, rear = true, front = true) => [...(rear ? [-0.22, 0.22].map(dz => H3.push([C - 1.11, 0.72, ST.CZ + dz], [1, 0, 0])) : []), ...(front ? [H3.grip([C + 1.75, 0.68, ST.CZ + 0.46], [1, 0, 0], [0, 1, 0], 'gripX')] : [])];
 const big = (s) => `<span style="font-size:52px">${s}</span>`;
 /* ---- new hands (2026-11-26) ---- */
 /* how real hands do it: a hooked index finger pulls a ring; the whole hand rests on a mouse; a bent finger's pad presses a switch */

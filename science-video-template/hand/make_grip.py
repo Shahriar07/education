@@ -13,7 +13,7 @@ JS = r"""
 () => {
 const T3 = THREE, V3 = HAND.V, R = 18, K = 0.85, G = HAND.geom(K, {wid: 1.14});
 // rod axis: just in front of the crease under the knuckles, a little oblique as in a real power grip
-const zc = -(R + 11.5 * K), A0 = V3(-27 * K, 93 * K, zc), A1 = V3(26 * K, 82 * K, zc - 1), ax = A1.clone().sub(A0).normalize();
+const zc = -(R + 11.5 * K), A0 = V3(-27 * K, 93 * K, zc), A1 = V3(26 * K, A1Y * K, zc - 1), ax = A1.clone().sub(A0).normalize();
 const dist = p => { const d = p.clone().sub(A0); return d.sub(ax.clone().multiplyScalar(d.dot(ax))).length(); };
 const RS = { index: [9.6, 8.6, 7.9, 7.2], middle: [10, 9, 8.2, 7.4], ring: [9.3, 8.4, 7.7, 7], little: [8.2, 7.5, 6.9, 6.3], thumb: [12, 10.4, 9.6, 8.8] };
 const base = { size: K, shape: { wid: 1.14 }, arm: { w: 1.0, flat: 0.74, taper: 1.1 }, wrist: { ext: EXT, dev: DEV }, pen: { tip: [400,400,400], web: [400,450,400], roll: 0 } };
@@ -66,7 +66,7 @@ def main():
         pg = b.new_page(viewport={"width": 2400, "height": 2400})
         pg.set_default_timeout(0); pg.on("pageerror", lambda e: print("ERR", e))
         pg.goto((HERE / "hand3d.html").as_uri(), timeout=0); pg.wait_for_function("window.READY === true", timeout=0)
-        print(json.dumps(pg.evaluate(JS.replace("EXT", "-38").replace("DEV", "26")), indent=None))
+        print(json.dumps(pg.evaluate(JS.replace("EXT", "-38").replace("DEV", "26").replace("A1Y", "82")), indent=None))
         shot = lambda: pg.locator("#c").screenshot(omit_background=True)
         if len(sys.argv) > 1:
             cells = ""
