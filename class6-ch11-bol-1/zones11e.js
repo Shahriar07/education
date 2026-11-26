@@ -56,7 +56,7 @@ frameV3 = function (o) {
   const on = o.can !== undefined || !!o.sp || o.mouse !== undefined || !!o.table7; V16.G.visible = on;
   V16.can.visible = o.can !== undefined; if (V16.can.visible) { const a = o.can; V16.tab.rotation.x = -1.2 * a; V16.flap.rotation.x = -Math.PI / 2 + 1.3 * Math.max(0, a - 0.4) / 0.6; V16.flap.position.y = 0.1265 - 0.006 * Math.max(0, a - 0.4); }
   const sp = o.sp; V16.pata.visible = V16.nora.visible = V16.paste.visible = !!sp; V16.lumps.forEach((m, i) => { m.visible = !!sp && sp.grind < 0.15 + i * 0.09; if (m.visible) m.scale.setScalar(1 - sp.grind * 0.5); });
-  if (sp) { V16.nora.position.set(B7.X + sp.x, B7.TY + 0.04 + 0.035, 0); V16.nora.rotation.y = 0; V16.nora.rotation.z = -sp.x / 0.035; const r = 0.02 + 0.07 * sp.grind; V16.paste.scale.set(r * 1.6, r, 1); }
+  if (sp) { V16.nora.position.set(B7.X + sp.x, B7.TY + 0.04 + 0.035, 0); V16.nora.rotation.y = 0; V16.nora.rotation.z = 0; /* the shil slides to and fro on the pata, level with it; it does not roll */ const r = 0.02 + 0.07 * sp.grind; V16.paste.scale.set(r * 1.6, r, 1); }
   V16.mouse.visible = o.mouse !== undefined; if (V16.mouse.visible) V16.btn.position.y = 0.03 - 0.0018 * o.mouse;
   V16.rset.visible = !!o.ruler; if (o.ruler) { const st = rulerState(o.ruler.p, o.ruler.k), X = V16.RX + 0.12, Y = V16.TOP, Z = V16.TZ, show = o.ruler.show || 7;
     V16.pencil.visible = !!(show & 1); V16.ruler.visible = !!(show & 2); V16.book.visible = !!(show & 4);
