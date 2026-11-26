@@ -50,14 +50,18 @@ buildV3 = function (k) {
 };
 const PINP = [TL.X - 0.45 + TL.PIN.J + 0.002, TL.TY + 0.088, TL.Z + 0.015];     // pivot of the pincers: the jaws reach back to the nail's head
 const TONGP = [TL.X + 0.05, TL.TY + 0.07, TL.Z + 0.02];
+TL.TONG.PHIB = -Math.asin((TONGP[1] - TL.TY - 0.0015) / TL.TONG.L); TL.TONG.RP = 0.275;
+TL.TONG.POTY = TONGP[1] + TL.TONG.RP * Math.sin(TL.TONG.PHIB) + 0.0015 + 0.02;                     // potato centre: on the bottom strip
+TL.TONG.AMIN = Math.asin((TL.TONG.POTY + 0.02 + 0.0015 - TONGP[1]) / TL.TONG.RP) - TL.TONG.PHIB;     // the top strip on the potato's top
+const tongTop = a => TL.TONG.PHIB + a;
 const SCIP = [TL.X + 0.25, TL.TY + 0.012, TL.Z + 0.05];
 /* o.pin = opening (rad), o.tong = {a: opening (rad), lift}, o.sci = {a, cut (m)}, o.well = d (m of rope pulled) */
 frameV3 = function (o) {
   _f14(o);
   V15.G.visible = V15.wl.visible = !!(o.pin !== undefined || o.tong || o.sci || o.well !== undefined);
   V15.pin.visible = o.pin !== undefined; if (V15.pin.visible) { V15.pin.position.set(...PINP); V15.pin.rotation.y = Math.PI; V15.p1.rotation.z = o.pin / 2; V15.p2.rotation.z = -o.pin / 2; }
-  V15.tong.visible = V15.pot.visible = !!o.tong; if (o.tong) { const a = o.tong.a, L = o.tong.lift || 0; V15.tong.position.set(TONGP[0], TONGP[1] + L, TONGP[2]); V15.tong.rotation.z = -0.08; V15.t1.rotation.z = a / 2; V15.t2.rotation.z = -a / 2;
-    V15.pot.position.set(TONGP[0] + TL.TONG.L - 0.02, TL.TY + 0.02 + Math.max(0, L), TONGP[2]); }
+  V15.tong.visible = V15.pot.visible = !!o.tong; if (o.tong) { const a = o.tong.a, L = o.tong.lift || 0; V15.tong.position.set(TONGP[0], TONGP[1] + L, TONGP[2]); V15.tong.rotation.z = TL.TONG.PHIB + a / 2; V15.t1.rotation.z = a / 2; V15.t2.rotation.z = -a / 2;
+    V15.pot.position.set(TONGP[0] + TL.TONG.RP * Math.cos(TL.TONG.PHIB), TL.TONG.POTY + Math.max(0, L), TONGP[2]); }
   V15.sci.visible = V15.cloth.visible = !!o.sci; if (o.sci) { V15.sci.position.set(SCIP[0] + o.sci.cut, SCIP[1] + 0.012, SCIP[2]); V15.sci.rotation.x = -Math.PI / 2; V15.s1.rotation.z = o.sci.a / 2; V15.s2.rotation.z = -o.sci.a / 2; }
   if (o.well !== undefined) { const W = TL.WELL, d = o.well, top = W.BEAM - 0.1 - W.PR, yb = 0.05 + d, yh = 1.35 - d;
     const seg = (m, x, y1, y2) => { m.position.set(x, (y1 + y2) / 2, 0); m.scale.y = Math.max(0.01, y2 - y1); };
@@ -71,6 +75,6 @@ Object.assign(C11, {
 /* the hand that holds the tongs (make_tongs.py): one picture per gap between the strips at the hand (mm); the nearest one is drawn,
    its top strip on the top strip of the tongs, turned to the strip's angle on the screen */
 const TONG_IMG = [{"g": 43, "anchor": [1166.6666666666667, 1148.6133333333332], "ang": 0, "pxPerMm": 6.666666666666667}, {"g": 36, "anchor": [1166.6666666666667, 1148.6133333333332], "ang": 0, "pxPerMm": 6.666666666666667}, {"g": 29, "anchor": [1166.6666666666667, 1148.6133333333332], "ang": 0, "pxPerMm": 6.666666666666667}, {"g": 22, "anchor": [1166.6666666666667, 1148.6133333333332], "ang": 0, "pxPerMm": 6.666666666666667}, {"g": 15, "anchor": [1166.6666666666667, 1148.6133333333332], "ang": 0, "pxPerMm": 6.666666666666667}, {"g": 8, "anchor": [1166.6666666666667, 1148.6133333333332], "ang": 0, "pxPerMm": 6.666666666666667}];
-function handTong(P, a, o = 1) { const g = 2 * TL.TONG.F * Math.sin(a / 2) * 1000; let i = 0; TONG_IMG.forEach((q, k) => { if (Math.abs(q.g - g) < Math.abs(TONG_IMG[i].g - g)) i = k; });
-  const q = TONG_IMG[i], ang = a / 2 - 0.08, at = r => P(TONGP[0] + r * Math.cos(ang), TONGP[1] + r * Math.sin(ang) + 0.0015, TONGP[2] + 0.01), [x, y] = at(TL.TONG.F), [x2, y2] = at(TL.TONG.F + 0.1);
+function handTong(P, a, lift = 0, o = 1) { const g = 2 * TL.TONG.F * Math.sin(a / 2) * 1000; let i = 0; TONG_IMG.forEach((q, k) => { if (Math.abs(q.g - g) < Math.abs(TONG_IMG[i].g - g)) i = k; });
+  const q = TONG_IMG[i], ang = tongTop(a), at = r => P(TONGP[0] + r * Math.cos(ang), TONGP[1] + lift + r * Math.sin(ang) + 0.0015, TONGP[2] + 0.01), [x, y] = at(TL.TONG.F), [x2, y2] = at(TL.TONG.F + 0.1);
   return handImg('hand_tong_' + i + '.png', q.anchor, q.pxPerMm, x, y, Math.atan2(y2 - y, x2 - x) * 180 / Math.PI - q.ang, pxpm(P, [TONGP[0] + TL.TONG.F, TONGP[1], TONGP[2]]), o, false); }
