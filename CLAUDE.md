@@ -98,7 +98,7 @@ Notes for this chapter:
 - A skull may be shown (2026-11-25: it is not a living being); in video 3 the jaw, foot and arm are shown as bones.
 - Every force and machine is explained simply in the same order: who applies it, where and in which direction (arrow proportional to the force), what happens, where it is used.
 - The book numbers two figures ১১.১৫ (screwdrivers; human body).
-- Video 1: 35 parts, script approved 2026-11-25. ৫চ (চিত্র ১১.৩) approved with one gripping hand: `handGrip(x, y, angle, px per metre)` in `zones11.js`, picture `hand_grip.png` from `make_grip.py`. The rod is called "শক্ত দণ্ড" and rests on a small rounded stone as in the book.
+- Video 1 (বল ও সরল যন্ত্র কী) is finished in `class6-ch11-bol-1\`: 35 parts, 9 min 49 s, 1,130 words; first render 2026-11-26, then 23 parts re-rendered after my notes and ৭খ again on 2026-11-27. New files: `zones11.js` to `zones11e.js` (rod and stones, room set with door, switch and chair, tubewell, cart, marbles, bat, microbus, rubber, tools and well, can, shil-pata, mouse, ruler) and, in `science-video-template\hand\`, `hands3d.js` with `mesh_<pose>.js` (the 3D hands). The rod of চিত্র ১১.৩ is called "শক্ত দণ্ড" and rests on a small rounded stone as in the book. Start video 2 (লিভার, পাঠ ৪-৭) from a copy of this folder.
 
 ## Showing what an observer sees (every video, approved 2026-11-17)
 
@@ -127,6 +127,23 @@ Notes for this chapter:
 | A hand was drawn at the bamboo pole in ৩খ; I asked for it to be removed. | Draw a hand only where it does the action that is being shown (pushing, pressing, pulling); a labelled eye is enough to show where someone is. |
 | Hands looked like mittens, and the writing hand came in sideways with no clear grip on the pen. I asked for realistic hands, an upright writing hand and a correct pen grip (2026-11-18). | Realistic hands (fingers, knuckles, nails, thumb, shading, cuff; handPush, handFlat, handFinger, gripHand, handWrite in draw2d.js). The writing hand is upright, seen from above, the pen in the tripod grip. |
 | The pen hand still did not look like a real grip: in video 1 the fingers were flat plates, in video 2 the thumb and index finger were thin sticks with the pen across the palm. I sent a photo of a real grip (2026-11-18): the pen held by the thumb and the index finger, the other fingers supporting. A 2D redraw from that photo was still wrong: the thumb and index finger did not read as neighbours, so the finger on the pen looked like a little finger (I sent a photo of both sides of a right hand). Then the palm was missing (four sticks, fingers seeming to start at the wrist), the pen sank into the hand, and the first fit still left gaps and edges off the photo. I asked for a new version beside the old one and chose v2 (2026-11-18). | The pen hand is a 3D model built from the bones of a real right hand and fitted to the reference photo (`science-video-template\hand\`; the first version is kept in `hand_v1\`). `hand3d.js` builds the skeleton (four knuckles index, middle, ring, little along the top of a broad palm; the thumb from the base of the palm beside the index finger); `skin.js` lays one smooth skin over it (blended shapes, knuckles, crease shading); `fit.js` fits camera, joint angles, proportions, wrist and pen line to 12 points measured on the photo and to the photo's whole outline, while the thumb and index pads stay on the pen and the middle finger under it; `make_hand.py fit <photo>` runs the fit (the photo is only read, never stored in the project), `make_hand.py` renders `hand_side.png` and `hand.json`. The pen is drawn after the hand and only the thumb's last segment over the pen, so the pen never disappears into the hand. Outline match with the photo: v2 90.7 %, v1 84.7 %. `handPen` and `handWrite` in draw2d.js place the picture by its pen tip and pen angle (`HAND_IMG`). A hand in any new pose is made the same way, never drawn freehand: measure a photo of a real hand, fit, and check the overlay and the mismatch map before using it. |
+
+## Lessons from chapter 11, video 1 (do not repeat)
+
+| What was wrong | Rule for every video |
+|---|---|
+| Hands were flat pictures pasted over the 3D scene; their angle and size never matched the objects. | Hands are 3D meshes placed in the scene by coordinates (see the visual rules). |
+| Fingertip presses; one fingertip on a mouse. | Press with the palm, pull with a bent finger hooked in, the whole hand resting on a mouse. |
+| Hands on the pincers, scissors and tongs did not look properly held. | Tools are shown without hands; arrows show the force in and out. |
+| The cart puller's arm first went back, then looked like someone outside holding the shaft. | First work out where the person stands. A cart is pulled from between the shafts: one hand on each handle, four fingers outside, thumb inside, arms hanging nearly upright from the shoulders; the left hand is the mirrored right hand. |
+| The drawer was pulled from above. | Pull from the front, as a person standing in front of it would. |
+| On the switchboard the middle rocker looked off and the other two on. | Off = every rocker alike; on = the pressed one flipped. |
+| The label said গ্রামের পথ but the scene was a city, and the cart looked too big. | The scene matches its label; show true size next to known things (a house, a road). |
+| The shooting marble stopped dead after the hit. | Rolling balls keep their spin: after a hit each rolls on at v = (5/7) v_slide + (2/7) R w. |
+| The শিল rolled on the পাটা. | The শিল slides forward and back, level with the পাটা; it does not roll. |
+| The microbus pushers' hands were one above another. | People stand side by side; film them from behind at an angle. |
+| The hand pulling the well rope came from above. | Pulling down, the forearm is below the hand. |
+| A background render was stopped for low memory; one part failed when it was the first in a fresh page. | Render in the foreground, 3 parts per batch, each batch a fresh process. A part must not ask for a scene object before the first `W3.frame` has built the world. |
 
 Checks that caught problems and must be repeated every video: stills of every part before the full render (2 to 4 frames per part, tiled into one sheet), a phone-size sheet (`render.py phone`, 640x360 per frame) in which every word must be readable, then one frame per part taken from the joined video near the end of each part.
 

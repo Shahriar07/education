@@ -33,3 +33,5 @@ desktop.ini
 
 # check pictures made while comparing hands
 /hand-*.png
+
+*.stackdump

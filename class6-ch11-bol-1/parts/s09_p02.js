@@ -1,7 +1,12 @@
-/* ৯খ: script ready, drawing to do */
+/* ৯খ:  */
 part('s09_p02', { scene: 9, label: '৯খ', title: "ভেবে বলো",
   screen: "তিনটি প্রশ্ন, শুধু হিন্ট।" }, [
   { c: "ভেবে বলো। দেয়াল ঠেললে দেয়াল নড়ে না। তুমি কি বল দিচ্ছ? হিন্ট, \"করতে চায়\" কথাটা মনে করো।" },
   { c: "মাটির চেয়ে মসৃণ মেঝেতে মার্বেল বেশি দূর যায় কেন? হিন্ট, কে থামায়?" },
   { c: "কপিকল কীভাবে কাজ সহজ করে? হিন্ট, দড়িটা কোন দিকে টানো?" }
-], todoDraw('৯খ', "ভেবে বলো"));
+], function (t, S) {
+  let s = bg(NAVY), u = banner('ভেবে বলো', S.P(0, 0.02, 0.1), 1, 130);
+  [['দেয়াল ঠেললে দেয়াল নড়ে না। তুমি কি বল দিচ্ছ?', '"করতে চায়" কথাটা মনে করো'], ['মসৃণ মেঝেতে মার্বেল বেশি দূর যায় কেন?', 'কে থামায়?'], ['কপিকল কীভাবে কাজ সহজ করে?', 'দড়িটা কোন দিকে টানো?']].forEach(([a, b], i) => { const p = i ? S.P(i, 0, 0.12) : S.P(0, 0.12, 0.24); if (p <= 0) return; const h = S.P(i, 0.6, 0.72);
+    u += `<div class="abs rrow" style="left:110px;width:1700px;top:${300 + i * 205}px;padding:16px 40px 12px;opacity:${cl(p * 2).toFixed(2)};transform:translateX(${F(-80 * (1 - ease(p)))}px)"><div class="num">${BN(i + 1)}</div><div>${a}<br><span style="opacity:${h.toFixed(2)};color:${Y};font-size:46px">হিন্ট: ${b}</span></div></div>`; });
+  return { svg: s, ui: u };
+});
