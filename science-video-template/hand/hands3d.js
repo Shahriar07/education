@@ -30,6 +30,14 @@ const HANDS3D = (() => {
     scene.add(G); return G;
   }
   /* hide every hand, then place the ones asked for */
+  /* the forearm of a pose, in the mesh's own frame: from the anchor to the middle of the sleeve */
+  const fa = {};
+  function forearm(name) {
+    if (fa[name]) return fa[name];
+    const p = dec(HANDMESH[name].parts.cloth.p, Int16Array), n = p.length / 3, c = [0, 0, 0];
+    for (let i = 0; i < p.length; i++) c[i % 3] += p[i] / 10 / n;
+    return fa[name] = new T.Vector3(...c).sub(new T.Vector3(...HANDMESH[name].anchor)).normalize();
+  }
   function place(scene, list) {
     for (const k in pool) pool[k].forEach(g => g.visible = false);
     const used = {};
@@ -40,7 +48,17 @@ const HANDS3D = (() => {
       if (h.rod) {
         /* a grip on a rod: the rod's line in the hand (HANDMESH.axis) goes along h.rod, the back of the hand towards h.back */
         const a = new T.Vector3(...HANDMESH[h.n].axis).normalize(), b = new T.Vector3(0, 0, 1).sub(a.clone().multiplyScalar(a.z)).normalize(), c = a.clone().cross(b);
-        const A = new T.Vector3(...h.rod).normalize(), B0 = new T.Vector3(...h.back), B = B0.sub(A.clone().multiplyScalar(B0.dot(A))).normalize(), C = A.clone().cross(B);
+        const A = new T.Vector3(...h.rod).normalize();
+        let B;
+        if (h.toward) {
+          /* turn the hand about the rod so that its forearm points at h.toward (the shoulder): with the forearm's parts
+             fb, fc along the hand's b, c axes and u = the shoulder's direction square to the rod, w = A x u,
+             B = (fb u - fc w) / |(fb, fc)| puts the forearm in the plane of the rod and the shoulder, on the shoulder's side */
+          const f = forearm(h.n), fb = f.dot(b), fc = f.dot(c), t = new T.Vector3(...h.toward).sub(new T.Vector3(...h.at));
+          const u = t.sub(A.clone().multiplyScalar(t.dot(A))).normalize(), w = A.clone().cross(u);
+          B = u.clone().multiplyScalar(fb).sub(w.multiplyScalar(fc)).normalize();
+        } else { const B0 = new T.Vector3(...h.back); B = B0.sub(A.clone().multiplyScalar(B0.dot(A))).normalize(); }
+        const C = A.clone().cross(B);
         const Mw = new T.Matrix4().makeBasis(A, B, C), Mh = new T.Matrix4().makeBasis(a, b, c);
         G.quaternion.setFromRotationMatrix(Mw.multiply(Mh.transpose()));
       } else {
@@ -53,6 +71,11 @@ const HANDS3D = (() => {
          (three.js turns the faces round by itself for a mirrored matrix) */
       if (h.mirrorZ !== undefined) { G.updateMatrix(); G.matrixAutoUpdate = false;
         G.matrix.premultiply(new T.Matrix4().makeTranslation(0, 0, h.mirrorZ).multiply(new T.Matrix4().makeScale(1, 1, -1)).multiply(new T.Matrix4().makeTranslation(0, 0, -h.mirrorZ))); }
+      /* mirror: { p, n }: reflect in the plane through p with normal n (I - 2nn'), e.g. a left hand beside the right one on a rod */
+      else if (h.mirror) { const n = new T.Vector3(...h.mirror.n).normalize(), p = h.mirror.p, R = new T.Matrix4().set(
+          1 - 2 * n.x * n.x, -2 * n.x * n.y, -2 * n.x * n.z, 0, -2 * n.y * n.x, 1 - 2 * n.y * n.y, -2 * n.y * n.z, 0, -2 * n.z * n.x, -2 * n.z * n.y, 1 - 2 * n.z * n.z, 0, 0, 0, 0, 1);
+        G.updateMatrix(); G.matrixAutoUpdate = false;
+        G.matrix.premultiply(new T.Matrix4().makeTranslation(p[0], p[1], p[2]).multiply(R).multiply(new T.Matrix4().makeTranslation(-p[0], -p[1], -p[2]))); }
       else G.matrixAutoUpdate = true;
     });
   }
