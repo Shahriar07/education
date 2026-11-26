@@ -49,6 +49,11 @@ const HANDS3D = (() => {
       }
       const a = new T.Vector3(...HANDMESH[h.n].anchor).multiplyScalar(0.001).applyQuaternion(G.quaternion);
       G.position.set(h.at[0] - a.x, h.at[1] - a.y, h.at[2] - a.z);
+      /* mirrorZ: reflect the placed right hand in the plane z = mirrorZ, which makes it a left hand on the other side
+         (three.js turns the faces round by itself for a mirrored matrix) */
+      if (h.mirrorZ !== undefined) { G.updateMatrix(); G.matrixAutoUpdate = false;
+        G.matrix.premultiply(new T.Matrix4().makeTranslation(0, 0, h.mirrorZ).multiply(new T.Matrix4().makeScale(1, 1, -1)).multiply(new T.Matrix4().makeTranslation(0, 0, -h.mirrorZ))); }
+      else G.matrixAutoUpdate = true;
     });
   }
   return { place };
