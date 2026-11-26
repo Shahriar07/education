@@ -2,29 +2,31 @@
 
 This is the project instruction file for Claude Code. Keep it in the project root. The rules below apply to every video in this project.
 
-An online copy, readable and editable from any computer, is the Claude Doc "বিজ্ঞান ভিডিও সিরিজ: নির্দেশনা ও CLAUDE.md": https://claude.ai/artifact/SbedAWR74MootFgSQL74QL (tab 1 = this file down to the `---` line, tab 2 = `science-video-instructions.md`). Whenever you change either file, make the same change in the doc, and before starting work read the doc for edits the user made there and bring them into these files.
+An online copy, readable and editable from any computer, is the Claude Doc "বিজ্ঞান ভিডিও সিরিজ: নির্দেশনা ও CLAUDE.md": https://claude.ai/artifact/SbedAWR74MootFgSQL74QL (tab 1 = this file, tab 2 = `science-video-instructions.md`, which this file imports at the end). Whenever you change either file, make the same change in the doc, and before starting work read the doc for edits the user made there and bring them into these files.
 
 ## Project setup on this computer
 
-This project lives on two computers. Check which one you are on before using a path.
+This project lives on two computers, each with a clone of the same git repository (GitHub `Shahriar07/education`). Check which one you are on before using a path. Pull `main` before starting work, and work on a branch with a pull request, so the two computers never edit the same file at once.
 
-| | Chapter 10 computer (this folder) | Chapter 9 computer |
+| | Other laptop | Home PC |
 |---|---|---|
-| Project root | `D:\Personal\Self-Study\education\education` (moved here from `C:\Users\h.m.shahriar\Downloads\goti` on 2026-11-18; it is a git repository) | `C:\Users\H M Shahriar\Downloads\books` (contains spaces: always quote it) |
-| Class six science book | `Science_compressed.pdf` in the root | `Science_compressed-6.pdf` |
-| Shared template | `science-video-template\` | `template\` |
-| Video folders | `class6-ch10-goti-1\` ... | `class6-ch09-alo\` |
+| Project root | `D:\Personal\Self-Study\education\education` (moved here from `C:\Users\h.m.shahriar\Downloads\goti` on 2026-11-18) | `D:\Projects\AI-educational-video\education` (cloned 2026-11-25) |
+| Class six science book | `Science_compressed.pdf` in the root | `C:\Users\H M Shahriar\Downloads\books\Science_compressed-6.pdf` (the path contains spaces: always quote it). The same folder has the class 7, class 8 and class 9-10 books |
+| Python environment | `.venv` in the root | Not created yet: follow "Setting up on a new computer" in `README.md` before the first render |
+| Used for | Chapters 10 and 11 | Chapter 9 (the first videos), review and backup |
+
+- `C:\Users\H M Shahriar\Downloads\books` on the home PC is where chapter 9 was first built (`class6-ch09-alo\`, using `template\`). Its source is now in this repository as `class6-ch09-alo\`. Read the textbooks there, but do not build in that folder.
 
 - The book has 139 pages, about 38 MB, and no text layer: text extraction returns nothing. To read it, render the needed pages to images and look at them. Render only the pages of the chapter you need, not the whole book.
 - PDF page numbers differ from printed page numbers. In the class six book, PDF page = printed page + 5 for chapters nine and ten. Check the offset again for other chapters and books.
 - Before planning any video, read the whole chapter from the PDF, including the exercise pages, and build the table of figures and activities from what you actually see. Send me the brief of the textbook first, then the plan (see "How to work").
-- On this computer the Read tool cannot render PDF pages (no poppler). What works: copy the PDF into a scratch folder under a non-.pdf name, serve the folder with `python -m http.server` on 127.0.0.1, and render the pages with pdf.js (cdnjs) in the built-in browser, then screenshot them. Navigating straight to a .pdf opens a save dialog for the user, so do not.
-- Where videos are kept: never anywhere under a `.claude` folder (my rule, 2026-11-24: it would fill drive C). On this computer every video goes in its own sub-directory of `D:\Personal\Self-Study\education\education\`: `<video folder>\out\` (full video, clips, `send\`). When working in a git worktree under `.claude\worktrees\`, the rendered files still go to that folder; `render.py` from video 3 on does this by itself. Keep temporary pages, frames and PDF copies small and delete them when done. The home laptop has a different directory: never use the D: path there; use the folder that holds this CLAUDE.md on that computer as the project root, and if it is not clear, ask me once and write it in the table above.
+- On the other laptop the Read tool cannot render PDF pages (no poppler). What works: copy the PDF into a scratch folder under a non-.pdf name, serve the folder with `python -m http.server` on 127.0.0.1, and render the pages with pdf.js (cdnjs) in the built-in browser, then screenshot them. Navigating straight to a .pdf opens a save dialog for the user, so do not.
+- Where videos are kept: never anywhere under a `.claude` folder (my rule, 2026-11-24: it would fill drive C). Every video goes in its own sub-directory of the project root (see the table above): `<video folder>\out\` (full video, clips, `send\`). When working in a git worktree under `.claude\worktrees\`, the rendered files still go to that folder; `render.py` from video 3 on does this by itself. Keep temporary pages, frames and PDF copies small and delete them when done. Never use one computer's path on the other. On any further computer, use the folder that holds this CLAUDE.md as the project root, and if it is not clear, ask me once and add a column to the table above.
 - Layout: the shared template folder, then one folder per video with `parts/` (one source file per part, `s05_p03.js`), `out/` (clips, joined video, srt, parts list) and `script.md`.
-- Rendering needs Python with Playwright, Google Chrome, ffmpeg, and the Hind Siliguri font files from the template. Do not install these system-wide. On this computer they are in `.venv` in the project root (`playwright` and `imageio-ffmpeg`, which carries an ffmpeg with libx264); Playwright drives the installed Google Chrome. Run everything as `..\.venv\Scripts\python.exe -X utf8 render.py ...` from the video folder. Check that these work before building, and tell me what is missing.
+- Rendering needs Python with Playwright, Google Chrome, ffmpeg, and the Hind Siliguri font files from the template. Do not install these system-wide. On each computer they are in `.venv` in the project root (`playwright` and `imageio-ffmpeg`, which carries an ffmpeg with libx264); Playwright drives the installed Google Chrome. Run everything as `..\.venv\Scripts\python.exe -X utf8 render.py ...` from the video folder. Check that these work before building, and tell me what is missing.
 - The `render.py` inside the template is the old per-scene one from video 1 (Linux Chrome path). Do not use it.
 
-### Reference build: `class6-ch10-goti-1\` (start every new video from a copy of the latest video folder; for video 3 that is `class6-ch10-goti-2\`)
+### Reference build: `class6-ch10-goti-1\` (start every new video from a copy of the latest finished 3D video folder, by date; never from `class6-ch09-alo\`)
 
 | File | What it is | Copy as is? |
 |---|---|---|
@@ -63,6 +65,7 @@ Notes for this chapter:
 
 - Several textbook figures show a person (৯.১, ৯.৩, ৯.৬). Keep the arrangement of the figure but replace the person with a single eye or a hand, as the visual rules require.
 - The chapter does not cover atoms, electrons, waves, transparency, shadows, or the Sun-to-Earth travel time. Video 1 included these; they are outside the textbook.
+- Video 1 (আলো কী ও কীভাবে চলে, পাঠ ১-২) was built twice on the home PC. The first build (nine long scenes) is the old scene files in `science-video-template\`; its video was delivered. The second build, in small parts, is `class6-ch09-alo\` (31 parts, 9 min 31 s, 2D only: SVG drawings with `science-video-template\core.js`, no three.js). Only 20 of its 31 parts were rendered: the render stopped at `s06_p04` on a 30-second screenshot timeout, so its joined video ends after `s06_p03`. Its own commands are in `class6-ch09-alo\out\delivery-note.md` (`gen.py`, `render.py`, `deliver.py`). It is older than the motion videos and does not follow the later rules (3D, text size, hands), so do not use it as a reference build.
 
 ### Chapter 10, গতি: lessons and figures (printed pages 82 to 92)
 
@@ -146,183 +149,10 @@ Checks that caught problems and must be repeated every video: stills of every pa
 
 ---
 
-You are making one episode of a Bangla educational YouTube series for school science (Bangladesh NCTB curriculum, classes 6 to 10). Every episode follows the same structure, look and rules, so students recognise the format. Only the topic content changes. Follow every rule in this file; where two rules seem to conflict, ask me.
+## General rules for every episode
 
-## This video
+The general rules (structure, core principles, visual rules, narration, style, how to work, what to deliver, checklist) are kept in one place, `science-video-instructions.md`, and imported here. Change a rule only in that file, never by copying it into this one.
 
-- Class: [e.g. সপ্তম শ্রেণি]
-- Subject: [e.g. বিজ্ঞান]
-- Chapter number and name: [e.g. অধ্যায় ১০: বিদ্যুৎ ও চুম্বকের ঘটনা]
-- Topic: [e.g. চুম্বক কী ও কীভাবে কাজ করে]
-- Part, only if this topic is split across videos: [e.g. পর্ব ১/২, otherwise leave empty]
+@science-video-instructions.md
 
-## Core principles (most important)
-
-### 1. Turn the textbook's static pictures into motion
-
-The main purpose of the series is to show, as animation, what the textbook can only show as a still figure.
-
-- Before planning, go through the chapter and list every figure, diagram and activity (চিত্র and কাজ) that belongs to this topic.
-- Each of them must appear in the video as a moving version: the ray travels, the object falls, the magnet pulls, the needle turns.
-- Keep the same arrangement and viewing angle as the textbook figure, so a student can match the video to the book page.
-- In the plan, include a table: textbook figure or activity number, what it shows, which scene animates it. A figure may be left out only if I approve it.
-- If you cannot read the textbook pages, say so and ask me to attach them. Do not guess what the figures contain.
-
-### 2. Stay inside the textbook for that class
-
-- Teach only what the textbook chapter for that class teaches, at the depth it teaches it, using its terms and definitions.
-- Do not add explanations from higher classes. Example of what went wrong in video 1: explaining light with electrons and waves is too advanced for class six, where the book stops at light travelling in straight lines, reflection and absorption.
-- Simple everyday analogies are welcome when they explain a textbook idea. A new scientific concept that is not in the chapter is not.
-- If you think one idea beyond the textbook is necessary, propose it in the plan as a separate, clearly marked item and wait for my approval. The default is to leave it out.
-
-### 3. Follow the laws of physics exactly
-
-Every diagram and motion must be physically correct, calculated and not drawn by eye.
-
-- **Angles:** compute them. In reflection the angle of incidence equals the angle of reflection, measured from the normal, and the normal is drawn. In refraction use Snell's law with real refractive indices (air 1.00, water 1.33, glass about 1.5).
-- **Motion:** compute positions from the real equations for each frame (uniform velocity: s = vt; uniform acceleration: v = u + at, s = ut + ½at²; free fall with g = 9.8 m/s²; projectile paths as parabolas). If a speed, distance or time is shown on screen, the numbers must be consistent with each other and with the motion drawn.
-- **Forces:** arrows point in the true direction, and their lengths are proportional to the magnitudes. The arrow of a hand's force starts just outside the hand, never over the fingers. Every force is explained in the same order: who applies it, where and in which direction, what happens, where it is used.
-- **Light and shadow:** all rays from a distant source are parallel; shadows fall on the side away from the source and in line with the rays; the lit side of any object faces the source.
-- **Space scenes:** the lit half of the Earth, Moon or a planet always faces the Sun. Day and night sides must be drawn and must agree with every ray in the scene.
-- **Scale:** when true scale is impossible (Sun and Earth, atoms), keep directions and proportions correct where you can and put a small on-screen note: "স্কেল অনুযায়ী নয়".
-- In the delivery note, list each calculation you used (formula and values), so I can check it.
-
-### 4. Draw real things realistically
-
-- Everyday objects must look like the real thing in shape, proportion, colour and shading. A student should recognise the object instantly without a label.
-- Whatever a label or sign names must be there: a shop sign "ফল ঘর" needs fruit in the shop, a "বই ঘর" books, a "ফার্মেসি" medicine boxes.
-- Example of what went wrong in video 1: the mango was a flat yellow blob and did not look real. A mango needs its true shape (fuller at the shoulder, a slight beak near the tip), a colour gradient (green to yellow with a red-orange blush), a highlight, a shadow and a short stem.
-- Before using an object, look at a frame of it by itself and ask whether it would pass for that object. If not, redraw it. Check mentally against how the real object looks in Bangladesh (a kolshi, a tin roof, a rickshaw, a hurricane lamp).
-- Diagram elements (rays, arrows, labels) stay simple and clean. Realism applies to the objects, not to the diagram marks.
-
-### 5. Build the video in small parts
-
-- Split every scene into short parts (shots) of roughly 10 to 30 seconds, each showing one idea. A part that grows past 30 seconds is split in two.
-- Each part is its own source file and its own rendered clip, named by scene and part: `s03_p02.mp4`. All clips use identical size, frame rate and encoder settings.
-- The full video is made by joining the clips without re-encoding.
-- When I ask for a change, change and re-render only the affected part, then re-join. Never rebuild the whole video for a local change.
-- Keep a parts list (scene, part, start time, length, one-line description, file name) and deliver it with the video, so I can point to a part by its name.
-- Captions and narration are also split by part, so I can record and re-record voice part by part.
-
-## Visual rules (strict)
-
-- Never draw a complete living creature: no human, animal, bird, fish or insect, and no face, head or human-shaped shadow or silhouette.
-- A separate hand, finger or eye may be drawn when needed (a hand lighting a candle, an eye at the end of a light ray).
-- A skull or a bone may be shown (2026-11-25: it is not a living being).
-- The visible arm ends near the elbow: the sleeve ends at most 23 to 25 cm from the wrist, at the hand's own scale. Never a long straight arm reaching out of the picture. The hand is at true scale against the object it holds.
-- Hands are 3D meshes placed in the 3D scene by coordinates, never flat pictures pasted over it (my request, 2026-11-26: "hater coordinate ta thik vabe analyze kore boshate hobe"). make_meshes.py in science-video-template\hand exports each pose (grip, grip0, gripD, push, cup, hook, pad, mouse) as mesh_<pose>.js; hands3d.js places one from its anchor point, the direction the fingers point and the direction the back of the hand faces (a grip: the rod's direction and the back). Work out where the person stands and where the forearm must go before placing a hand: a puller's forearm reaches ahead of the cart, a rope is pulled with the forearm below the hand, pushers stand side by side, a drawer is pulled from the front.
-- Tools that are held and worked by hand (pincers, scissors, tongs, pliers) are shown on their own, without a hand (my rule, 2026-11-26: a hand on a tool did not look properly held). Arrows show where the hand's force goes in and where the tool's force comes out. A hand is drawn only for a simple push, press, pull or grip of a big object (a stone, a rod, a cart, a door, a drawer, a mouse, a can's ring), and then as real hands do it: pressing with the palm, pulling with a bent finger hooked in, the whole hand resting on a mouse.
-- When there is no photo of a hand's pose, a drawing from a book may be used for the arrangement only (never copied), and the finger joints are calculated so that every segment rests on the object (make_grip.py in science-video-template\hand). Say in the delivery note that it was not fitted to a photo. Show the old and the new hand side by side and wait for approval.
-- Hands are drawn realistically: palm and five separate fingers with knuckles and nails, the thumb coming from the right place, skin with light and shade, a wrist and a shirt cuff. Never a mitten or a blob.
-- A hand writing in a khata is seen from above as the writer sees it: upright (long up and down), wrist and sleeve coming up from the bottom of the picture. The pen or pencil is held correctly (tripod grip: between thumb and index finger, resting on the middle finger, ring and little fingers curled under), tilted, with its tip on the paper. Students learn the grip from the picture.
-- Do not draw trees, plants or crop fields. A fruit such as a mango is allowed. Sky, sun, moon, stars, water, buildings and objects are allowed.
-- Everything must move: rays travel, objects slide in, numbers count up. No static slides, except title and recap cards.
-- Voice is recorded by me afterwards. Render the video without audio, with the full narration shown as captions at the bottom.
-
-## Viewing angle
-
-- Show experiments and set-ups from the side, at eye level, the way the textbook figure shows them. Example of what went wrong in video 1: the three-cards-and-candle experiment was shown from above, which made the cards, the candle and the table hard to recognise.
-- Do not use a top view for objects that students know from the side (candle, table, card, glass, bottle).
-- If something cannot be seen from the side (for example a card sliding sideways), use a slightly raised three-quarter view that still shows the objects' familiar shapes. Use a top view only when the textbook figure itself is a top view.
-- 3D is always preferred (my rule, 2026-11-18): it helps students see the content. Everything with real objects or places is built in 3D: experiments, activities, textbook figures that show objects (a box, a slope, a fan, a ruler, a pebble on a thread), rooms, yards and streets. Keep the textbook figure's arrangement and viewing angle by putting the 3D camera at that angle (a side view at eye level is a 3D camera at eye level); when depth helps, as with a swing, use a slightly raised three-quarter view. Only diagrams (paths, arrows, number lines), term cards, title, recap and question cards, and space scenes stay 2D.
-
-## Lessons from video 1 (do not repeat)
-
-| What was wrong | Rule for every video |
-|---|---|
-| The Moon was drawn between the Sun and the Earth while the narration said sunlight bounces off it to us. | Place the Moon above and to the right of the Earth, on the night side. Draw the Earth with a day half facing the Sun and a night half. The ray goes Sun to Moon, then Moon to the night side of the Earth, so it is clear that moonlight reaches the side where it is night. |
-| The experiment was shown from above. | Side view, as in the textbook figure. |
-| The mango did not look real. | Realistic objects, checked frame by frame. |
-| Electrons and waves were used to explain light for class six. | Stay inside the textbook for that class. |
-| The video was built as nine long scenes. | Small parts of 10 to 30 seconds, each a separate clip. |
-| Some diagrams were drawn by eye. | Compute angles, paths and proportions from the physics. |
-
-## How to work
-
-1. Read the textbook chapter for this class and topic (search the web, or use the pages I attach). List what it covers, with its figures and activities. Tell me if the topic belongs to a different class or chapter than I wrote. Then start by giving me a brief of what the textbook has, before any plan: for each lesson of the topic, its main points and definitions in the book's own terms, its figures, activities, worked examples with their numbers, the exercise questions that belong to it, and any mistake or mismatch in the book. Keep it short, only what the book says, with page numbers and none of our own ideas.
-2. After the brief, send me a one-page plan for me to check, and wait for my approval. The plan contains:
-   - the hook and the three learning points;
-   - the scenes and their parts, one line each;
-   - the table of textbook figures and activities and where each is animated;
-   - the physics that will be calculated (which laws, which values);
-   - the home experiment and the next-video teaser;
-   - anything beyond the textbook that you propose, marked clearly;
-   - your questions.
-3. After I approve, write the full script.
-4. Build the parts. Send me one finished part early (the first diagram-heavy one) so I can confirm the look before you build the rest.
-5. Before sending the full video, check still frames from every part against the checklist at the end of this file.
-
-## Fixed episode structure (about 10 minutes)
-
-| Scene | Length | What it does |
-|---|---|---|
-| 1. Hook and title | about 1:00 | An everyday situation that poses a puzzle, told as "ধরো, তুমি ...". Ends with the question on a card, then the title card and "আজ যা জানব" with exactly three points. |
-| 2. Core idea 1 | about 1:00 | The first idea from the chapter, starting from things the student sees every day. |
-| 3. Core idea 2 | about 1:00 | The second idea. Includes one example for a village home and one for a city flat. |
-| 4. Core idea 3 | about 1:00 | The third idea. Corrects one common wrong belief ("অনেকে ভাবে ... আসলে ঘটনা ঠিক উল্টো"). |
-| 5. The textbook figures in motion | about 1:30 | The chapter's main diagrams, animated step by step in the same arrangement as the book, with each label appearing as it is named. |
-| 6. Why it happens | about 1:30 | The explanation at the textbook's own level, as 2 or 3 numbered cases shown one at a time, each ending with its term card, then all cases side by side. |
-| 7. Around us | about 0:55 | 3 or 4 quick real-life examples, each tagged with the idea it belongs to. Ends with a question the student answers, then the answer. |
-| 8. নিজে করো | about 0:50 | One safe experiment with household items, preferably the textbook's own activity, shown from the side. Materials list, numbered steps, result, and "কেন এমন হলো? উত্তরটা কমেন্টে লিখে জানাও". Add a safety notice if fire, blades, electricity or heat is involved. |
-| 9. Recap and teaser | about 1:00 | "আজ যা শিখলাম" with three numbered points, "ভেবে বলো" with three questions, then a puzzle that leads to the next video and a "পরের ভিডিও" card. |
-
-Title format, used for the YouTube title and the on-screen title card:
-`শ্রেণি | বিষয় | অধ্যায় নম্বর ও নাম | টপিক`, with `পর্ব ১/২` at the end only when one topic is split across videos.
-
-## Narration rules
-
-- One narrator, speaking directly to the student as "তুমি". No dialogue. When the textbook uses named people, the narration may keep those names as the student's friends ("তুমি আর তোমার বন্ধু আরিয়ান", "তোমার বন্ধুরা"). They are still never drawn: show where a friend is with a labelled eye.
-- Friendly storyteller tone, not a classroom lecture. Short sentences. Standard Bangla (চলিত).
-- Put the student inside each situation ("ধরো, তুমি ..."), and ask real questions with a pause before answering.
-- About 1,100 to 1,200 Bangla words in total, at roughly 2 words per second.
-- Every new term is introduced once, slowly, with a term card showing the Bangla word and the English word below it. Use the textbook's own Bangla terms.
-- Use examples that both village and city students know: tin roof, pond, clay pot, clothesline, rickshaw, bus window, mango, load-shedding. Avoid examples that need expensive items.
-
-## Visual style (same in every episode)
-
-- 1920x1080, 30 fps, MP4 (H.264). Font: Hind Siliguri for all Bangla text.
-- Colours: navy `#0f1b3d` for explanation backgrounds, yellow `#FFC83D` as the accent and for light or energy, dark ink `#1a1a2e` for text on yellow. Everyday scenes use warm, natural colours.
-- Persistent chip at the top left: "শ্রেণি · বিষয় · অধ্যায় নম্বর", 42 px bold, with the chapter number in yellow and a clear gap before it.
-- Text size: nothing below 40 px in the 1920x1080 frame, labels bold. Most students watch on a phone, where the frame shrinks to about a third.
-- Caption bar: dark rounded bar at the bottom centre, white text, at most two lines, one or two sentences at a time. Nothing important is drawn behind it.
-- Term card: yellow rounded card with a white border, large Bangla term and smaller English term, pops in and stays about 3 seconds.
-- Banner: yellow pill for segment names ("নিজে করো", "আজ যা শিখলাম", "ভেবে বলো").
-- Question card: white rounded card with navy text.
-- Title card: navy background with slowly rotating faint rays, three chips (class, subject, chapter), the topic in very large type with the key word in yellow, a yellow line that draws itself under the title, then three numbered cards for "আজ যা জানব".
-- Numbered steps and cases use a yellow circle with a Bangla numeral. Correct and wrong results use a green tick and a red cross.
-- Each scene fades in and out through navy. Parts inside a scene cut directly.
-
-## How to build it
-
-- If `science-video-template.zip` is attached, reuse `core.js` (captions, timing, term cards, banners, rays) and the styles in `index.html`. Its scene files are the old video 1 and show the look only; they do not follow the rules on parts, side views, realism or textbook level, so do not copy their content or structure.
-- If it is not attached, build the same thing: an HTML page with an SVG layer for drawings and an HTML layer for text, a function that draws any frame of any part, and a script that screenshots each frame with headless Chrome and pipes them to ffmpeg.
-- One source file and one MP4 per part. Join with ffmpeg's concat demuxer and `-c copy`.
-- Drive all timing from the captions: each part is a list of caption segments, each segment's length is calculated from its word count, and every animation is keyed to a segment. This lets you refit a part to my recorded voice by changing only its segment durations.
-- Put physical quantities in named constants and compute geometry from them (for example `n_water = 1.33`, `g = 9.8`), never as hand-picked pixel positions.
-- Everything with real objects or places is 3D, built in metres (3D is always preferred); only diagrams, term cards, title, recap and question cards, and space scenes stay 2D. On this computer, start from the reference build described under "Project setup".
-
-## What to deliver
-
-1. The script as a doc: a details table (title, textbook reference, length, narration style, visual rule), the table of textbook figures and where each is animated, then every scene and part with an "On screen" paragraph and the Bangla narration, then recording notes and a glossary (Bangla term, English, first used in which part).
-2. The full video as one MP4, and the separate clip for every part.
-3. The parts list (scene, part, start time, length, description, file name).
-4. An `.srt` file with every caption and its timing.
-5. A short note with: the physics calculations used, anything you could not verify against the textbook, and which parts you checked frame by frame.
-
-## Checklist before sending
-
-- [ ] Every figure and activity of the topic in the textbook is animated, or its omission was approved.
-- [ ] Nothing is taught that is beyond the textbook for this class, unless approved.
-- [ ] Every angle, path, speed and force is calculated, and on-screen numbers agree with the motion.
-- [ ] Light direction, shadows and lit sides agree in every frame; day and night sides are correct in space scenes.
-- [ ] Every real object looks like the real thing.
-- [ ] Experiments and set-ups are shown from the side, matching the textbook figure.
-- [ ] No complete living creature, face, silhouette, tree, plant or crop field appears.
-- [ ] The video is made of separate parts of 10 to 30 seconds, and the parts list is included.
-- [ ] Bangla text renders correctly, and captions do not cover anything important.
-- [ ] Title, chip and term cards follow the fixed format.
-- [ ] Every "who sees what" is filmed from that person's eyes, after one outside view of who is where.
-- [ ] Every moving thing stays in view for its whole sentence, including near the end of each part.
-- [ ] Every change from the textbook (a person moved, an object replaced or left out) is listed in the delivery note and was approved.
-- [ ] Every word on screen is readable in frames shrunk to phone size (640x360), the chip included.
-- [ ] Every sign, shop and labelled object shows what it says (a fruit shop shows fruit).
+For this project, "How to build it" also means: start from the reference build described under "Project setup".

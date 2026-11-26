@@ -8,19 +8,33 @@ This repository holds the instructions, scripts and source code, so that any com
 
 | File | What it is |
 |---|---|
-| [`CLAUDE.md`](CLAUDE.md) | Project instructions: setup on each computer, the reference build, chapter tables, lessons learned, and the general rules (from the `---` line on) |
-| [`science-video-instructions.md`](science-video-instructions.md) | The general rules for every episode (structure, visual rules, physics, checklist), portable to any project |
-| Online copy | Claude Doc "বিজ্ঞান ভিডিও সিরিজ: নির্দেশনা ও CLAUDE.md": https://claude.ai/artifact/SbedAWR74MootFgSQL74QL (tab 1 = `CLAUDE.md` down to the `---` line, tab 2 = `science-video-instructions.md`) |
+| [`CLAUDE.md`](CLAUDE.md) | Project instructions: setup on each computer, the reference build, chapter tables, lessons learned. At its end it imports the general rules with `@science-video-instructions.md`, so Claude Code reads both |
+| [`science-video-instructions.md`](science-video-instructions.md) | The general rules for every episode (structure, visual rules, physics, checklist), portable to any project. The only copy of these rules |
+| Online copy | Claude Doc "বিজ্ঞান ভিডিও সিরিজ: নির্দেশনা ও CLAUDE.md": https://claude.ai/artifact/SbedAWR74MootFgSQL74QL (tab 1 = `CLAUDE.md`, tab 2 = `science-video-instructions.md`) |
 
-Keep the three in step: a rule changed in one is changed in the others.
+A general rule is changed only in `science-video-instructions.md` (and its doc tab); a project fact only in `CLAUDE.md` (and its doc tab).
+
+## Computers
+
+| | Other laptop | Home PC |
+|---|---|---|
+| Project root | `D:\Personal\Self-Study\education\education` | `D:\Projects\AI-educational-video\education` |
+| Textbooks | `Science_compressed.pdf` in the root | `C:\Users\H M Shahriar\Downloads\books\` (class 6 science is `Science_compressed-6.pdf`; also class 7, class 8 and class 9-10) |
+| Used for | Chapters 10 and 11 | Chapter 9, review and backup |
+
+Both are clones of this repository. Pull `main` before starting, work on a branch, and merge through a pull request, so the two computers do not change the same file at once.
 
 ## Videos
 
 | Folder | Video | Lessons | Parts | Length | Status |
 |---|---|---|---|---|---|
+| [`class6-ch09-alo/`](class6-ch09-alo/) | আলো কী ও কীভাবে চলে | অধ্যায় ৯, পাঠ ১-২ | 31 | 9:31 | Partly rendered: 20 of 31 parts (stopped at `s06_p04`). Older 2D build, see below |
 | [`class6-ch10-goti-1/`](class6-ch10-goti-1/) | স্থিতি ও গতি কী | অধ্যায় ১০, পাঠ ১-২ | 32 | 9:36 | Finished |
 | [`class6-ch10-goti-2/`](class6-ch10-goti-2/) | নানা প্রকার গতি | অধ্যায় ১০, পাঠ ৩-৮ | 34 | 9:55 | Finished |
-| `class6-ch10-goti-3/` | দূরত্ব ও সরণ, দ্রুতি ও বেগ | অধ্যায় ১০, পাঠ ৯-১০ | | | Not started: copy `class6-ch10-goti-2/` |
+| [`class6-ch10-goti-3/`](class6-ch10-goti-3/) | দূরত্ব ও সরণ, দ্রুতি ও বেগ | অধ্যায় ১০, পাঠ ৯-১২ | 30 | 9:21 | Finished |
+| [`class6-ch11-bol-1/`](class6-ch11-bol-1/) | বল ও সরল যন্ত্র কী | অধ্যায় ১১, পাঠ ১-৩ | 35 | about 10:00 | In progress on the other laptop: plan and script approved, scenes 1 and 2 drawn |
+
+New videos start from a copy of the latest finished 3D video folder (see "Reference build" in `CLAUDE.md`).
 
 Each video folder contains:
 
@@ -33,7 +47,11 @@ Each video folder contains:
 | `render.py` | Renders and joins the clips (commands below) |
 | `out/parts-list.md`, `out/video.srt`, `out/delivery-note.md` | Parts list with start times, captions, and the delivery note (physics used, changes from the book, checks done) |
 
-[`science-video-template/`](science-video-template/) holds the shared fonts (Hind Siliguri), `lib/three.min.js` and the old `core.js`. Its `render.py` is the old per-scene one: do not use it.
+From video 3 on, new places live in their own files next to `world3d.js` (`zones3.js`, `zones11.js`).
+
+`class6-ch09-alo/` is the older build of the light video and works differently: 2D only (SVG drawings, no three.js), using `science-video-template/core.js` and `parts.js`; the narration is in `narration.json` (`gen.py` turns it into `narration.js`), the part notes in `parts_meta.json`, and `deliver.py` writes the script, captions and parts list. Its commands are at the end of [`class6-ch09-alo/out/delivery-note.md`](class6-ch09-alo/out/delivery-note.md). Do not copy it for a new video.
+
+[`science-video-template/`](science-video-template/) holds the shared fonts (Hind Siliguri), `lib/three.min.js` and `core.js` (used by `class6-ch09-alo/`). Its scene files `s1.js` to `s9.js` are the first, nine-scene build of the light video, and its `render.py` is the old per-scene one: do not use them for new videos.
 
 [`science-video-template/hand/`](science-video-template/hand/) is the hand that holds the pen: a 3D model of a right hand built from real bone lengths, with one smooth skin, fitted to a photo of a real writing hand (12 measured points and the photo's whole outline), and rendered once to `hand_side.png`. Every video uses that picture through `handPen` and `handWrite` in `draw2d.js`. The first version is kept in [`hand_v1/`](science-video-template/hand_v1/).
 
@@ -45,6 +63,8 @@ Each video folder contains:
 | `pose.js`, `fit_pose.js` | The pose and views; `fit_pose.js` is written by the fit |
 | `solve.js` | Older helper: finger angles for a given pen line |
 | `make_hand.py` | Runs the fit and renders the picture |
+| `make_grip.py` | The hand closed round a rod (same bones and skin), rendered to `hand_grip.png` and `grip.json`; used in chapter 11 through `handGrip` in `zones11.js` |
+| `make_pose.py` | Open hands: `hand_push.png` (palm flat, pushing) and `hand_point.png` (index finger pressing), with their anchors in `poses.json` |
 
 To fit to a photo (the photo is only read, never stored in the project) and render:
 
@@ -61,7 +81,7 @@ Then copy the numbers in `hand.json` (pen tip, angle, `penPx`) into `HAND_IMG` i
 ## Setting up on a new computer
 
 1. Clone the repository.
-2. Put the class six science book in the root as `Science_compressed.pdf` (the NCTB PDF, 139 pages, scanned). It is only needed for reading the chapters, not for rendering.
+2. Get the class six science book (the NCTB PDF, 139 pages, scanned). On the other laptop it is `Science_compressed.pdf` in the root; on the home PC it stays in `C:\Users\H M Shahriar\Downloads\books\`. It is only needed for reading the chapters, not for rendering. Add the new computer's paths to the table in `CLAUDE.md`.
 3. Install Google Chrome and Python 3.
 4. Create the Python environment in the root (it stays inside the project; nothing is installed system-wide):
 
