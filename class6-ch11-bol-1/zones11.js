@@ -45,6 +45,7 @@ frameV3 = function (o) {
   const on = o.lever !== undefined; V11.stone.visible = V11.ful.visible = V11.rod.visible = on; if (!on) return;
   const th = o.lever; V11.rod.position.set(...lvPt(th, V11.mid)); V11.rod.rotation.z = Math.PI / 2 - th;
   V11.stone.position.set(...lvStone(th)); V11.stone.rotation.z = -th;
+  if (!V11.wood) { V11.wood = V11.rod.material; V11.ironM = new THREE.MeshStandardMaterial({ color: '#3d4247', roughness: 0.45, metalness: 0.7 }); } V11.rod.material = o.iron ? V11.ironM : V11.wood;
 };
 const C11 = { lever: () => ({ pos: [LV.X - 0.28, 0.6, LV.Z + 3.2], look: [LV.X - 0.28, 0.31, LV.Z], fov: 25.5 }) };
 /* placeholder for a part whose narration is ready and drawing is not */
