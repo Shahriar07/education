@@ -9,7 +9,8 @@ part('s02_p01', { scene: 2, label: '২ক', first: true, title: "ড্রয�
   const R = ROAD.ROOM, T = R.TABLE, X = R.X, D = 0.34, tO = S.A(1) + 0.5, tC = S.A(2) + 0.6;
   const dr = t < S.A(2) ? trap(t - tO, D, 1.6, 0.4) : t < S.A(3) ? D - trap(t - tC, D, 1.6, 0.4) : D * (0.5 - 0.5 * Math.cos(S.P(3) * 2 * Math.PI));
   const P = W3.frame({ cam: { pos: [X + T[0] + 0.8, 1.5, T[2] + 1.75], look: [X + T[0] - 0.02, T[1] - 0.12, T[2] + 0.3], fov: 36 }, room: { drawer: dr }, geo: true });
-  let s = '', u = ''; const zf = T[2] + 0.34 + dr, A = P(X + T[0] + 0.1, T[1] - 0.095, zf + 0.02), B = P(X + T[0] + 0.1, T[1] - 0.095, zf + 0.26);
+  let s = '', u = ''; { const [kx, ky] = P(X + T[0], T[1] - 0.095, T[2] + 0.33 + dr), ho = S.P(1, 0, 0.12); s += handHook(kx, ky + 4, -8, pxpm(P, [X + T[0], T[1] - 0.1, T[2] + 0.33]), ho); }
+  const zf = T[2] + 0.34 + dr, A = P(X + T[0] + 0.1, T[1] - 0.095, zf + 0.02), B = P(X + T[0] + 0.1, T[1] - 0.095, zf + 0.26);
   const pull = t < S.A(2) ? S.P(1, 0.1, 0.25) : t >= S.A(3) ? (S.P(3) < 0.5 ? 1 : 0) : 0, push = t >= S.A(2) && t < S.A(3) ? S.P(2, 0.1, 0.25) : t >= S.A(3) && S.P(3) >= 0.5 ? 1 : 0;
   if (pull > 0) { s += arrow2(A[0], A[1], B[0], B[1], pull); u += lab(B[0] + 130, B[1] + 20, big('টান'), 'move', pull); }
   if (push > 0) { s += arrow2(B[0], B[1], A[0], A[1], push, '#7fd1ff'); u += lab(B[0] + 130, B[1] + 20, big('ধাক্কা'), 'move', push); }

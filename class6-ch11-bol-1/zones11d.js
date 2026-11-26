@@ -62,7 +62,7 @@ frameV3 = function (o) {
   V15.pin.visible = o.pin !== undefined; if (V15.pin.visible) { V15.pin.position.set(...PINP); V15.pin.rotation.y = Math.PI; V15.p1.rotation.z = o.pin / 2; V15.p2.rotation.z = -o.pin / 2; }
   V15.tong.visible = V15.pot.visible = !!o.tong; if (o.tong) { const a = o.tong.a, L = o.tong.lift || 0; V15.tong.position.set(TONGP[0], TONGP[1] + L, TONGP[2]); V15.tong.rotation.z = TL.TONG.PHIB + a / 2; V15.t1.rotation.z = a / 2; V15.t2.rotation.z = -a / 2;
     V15.pot.position.set(TONGP[0] + TL.TONG.RP * Math.cos(TL.TONG.PHIB), TL.TONG.POTY + Math.max(0, L), TONGP[2]); }
-  V15.sci.visible = V15.cloth.visible = !!o.sci; if (o.sci) { V15.sci.position.set(SCIP[0] + o.sci.cut, SCIP[1] + 0.012, SCIP[2]); V15.sci.rotation.x = -Math.PI / 2; V15.s1.rotation.z = o.sci.a / 2; V15.s2.rotation.z = -o.sci.a / 2; }
+  V15.sci.visible = !!o.sci && !o.sci.hand; V15.cloth.visible = !!o.sci; if (o.sci) { V15.sci.position.set(SCIP[0] + o.sci.cut, SCIP[1] + 0.012, SCIP[2]); V15.sci.rotation.x = -Math.PI / 2; V15.s1.rotation.z = o.sci.a / 2; V15.s2.rotation.z = -o.sci.a / 2; }
   if (o.well !== undefined) { const W = TL.WELL, d = o.well, top = W.BEAM - 0.1 - W.PR, yb = 0.05 + d, yh = 1.35 - d;
     const seg = (m, x, y1, y2) => { m.position.set(x, (y1 + y2) / 2, 0); m.scale.y = Math.max(0.01, y2 - y1); };
     seg(V15.rL, -W.PR, yb + 0.37, top); seg(V15.rR, W.PR, yh, top); V15.buck.position.set(-W.PR, yb, 0); V15.wheel.rotation.z = d / W.PR; }
@@ -78,3 +78,13 @@ const TONG_IMG = [{"g": 43, "anchor": [1166.6666666666667, 1148.6133333333332], 
 function handTong(P, a, lift = 0, o = 1) { const g = 2 * TL.TONG.F * Math.sin(a / 2) * 1000; let i = 0; TONG_IMG.forEach((q, k) => { if (Math.abs(q.g - g) < Math.abs(TONG_IMG[i].g - g)) i = k; });
   const q = TONG_IMG[i], ang = tongTop(a), at = r => P(TONGP[0] + r * Math.cos(ang), TONGP[1] + lift + r * Math.sin(ang) + 0.0015, TONGP[2] + 0.01), [x, y] = at(TL.TONG.F), [x2, y2] = at(TL.TONG.F + 0.1);
   return handImg('hand_tong_' + i + '.png', q.anchor, q.pxPerMm, x, y, Math.atan2(y2 - y, x2 - x) * 180 / Math.PI - q.ang, pxpm(P, [TONGP[0] + TL.TONG.F, TONGP[1], TONGP[2]]), o, false); }
+/* the hand holding the scissors (make_scissors.py): one picture per opening of the blades (degrees); the scissors are in the picture.
+   The pivot goes on (x, y) and the picture is turned so that its lower blade lies along the table (screen angle ang). */
+const SCI_IMG = [{"th": 36, "anchor": [1491.428571428571, 1194.1367975429887], "low": 21.745863051883855, "pxPerMm": 4.285714285714286}, {"th": 28, "anchor": [1491.428571428571, 1194.1367975429887], "low": 17.929616079797896, "pxPerMm": 4.285714285714286}, {"th": 20, "anchor": [1491.428571428571, 1194.1367975429887], "low": 14.132722749603479, "pxPerMm": 4.285714285714286}, {"th": 12, "anchor": [1491.428571428571, 1194.1367975429887], "low": 10.351403536837557, "pxPerMm": 4.285714285714286}, {"th": 5, "anchor": [1491.428571428571, 1194.1367975429887], "low": 7.052392929348749, "pxPerMm": 4.285714285714286}];
+function handSci(x, y, ang, th, pm, o = 1) { let i = 0; SCI_IMG.forEach((q, k) => { if (Math.abs(q.th - th) < Math.abs(SCI_IMG[i].th - th)) i = k; }); const q = SCI_IMG[i];
+  return handImg('hand_sci_' + i + '.png', q.anchor, q.pxPerMm, x, y, ang - q.low, pm, o, false); }
+/* the hand squeezing the pincers: the same fist as on the tongs (the top handle under the palm, the fingers round the bottom handle),
+   its thumb towards the jaws. The top handle leaves the pivot at +a/2 (the pincers are turned round, handles to +x). */
+function handPin(P, a, o = 1) { const r = 0.1, g = 2 * r * Math.sin(a / 2) * 1000; let i = 0; TONG_IMG.forEach((q, k) => { if (Math.abs(q.g - g) < Math.abs(TONG_IMG[i].g - g)) i = k; });
+  const q = TONG_IMG[i], at = d => P(PINP[0] + d * Math.cos(a / 2), PINP[1] + d * Math.sin(a / 2) + 0.006, PINP[2]), [x, y] = at(r), [x2, y2] = at(r - 0.1);
+  return handImg('hand_tong_' + i + '.png', q.anchor, q.pxPerMm, x, y, Math.atan2(y2 - y, x2 - x) * 180 / Math.PI - 180 + q.ang, pxpm(P, [PINP[0] + r, PINP[1], PINP[2]]), o, true); }   // mirrored: the thumb points to the jaws, the palm stays on top

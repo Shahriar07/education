@@ -131,7 +131,7 @@ frameV3 = function (o) {
 };
 Object.assign(C11, {
   boulder: () => ({ pos: [LV.X - 0.22, 0.42, LV.Z + 2.6], look: [LV.X - 0.22, 0.2, LV.Z], fov: 21 }),
-  door: () => ({ pos: [ST.X - 0.6, 1.5, 2.4], look: [ST.X - 1.55, 1.0, -2.4], fov: 38 }),
+  door: () => ({ pos: [ST.X - 0.9, 1.4, 1.6], look: [ST.X - 1.75, 1.05, -2.4], fov: 34 }),
   sw: () => ({ pos: [ST.X + 2.85, 1.52, 1.25], look: [ST.X + 3.82, 1.45, -0.02], fov: 29 }),
   chair: () => ({ pos: [ST.X + 2.6, 1.4, 2.0], look: [ST.X + 1.05, 0.42, -0.9], fov: 30 }),
   pump: () => ({ pos: [ST.TW[0] - 0.25, 1.15, ST.TW[1] + 4.2], look: [ST.TW[0] - 0.25, 0.86, ST.TW[1]], fov: 35 }),
@@ -147,3 +147,5 @@ const handPad = (x, y, a, pm, o = 1, flip = false) => handImg('hand_pad.png', [6
 const handFingersPush = (x, y, pm, o = 1) => handImg('hand_push.png', [818.6, 1044.9], 3.75, x, y - 0.055 * pm, 0, pm, o, true, true);
 /* the palm pressing straight down, fingers to the right (the heel of the hand on the contact point) */
 const handPalmDown = (x, y, pm, o = 1) => handPush3(x + 0.03 * pm, y, 90, pm, o);
+/* a cupped hand, palm to the left (catching); flipY: the other hand, fingers down */
+const handCup = (x, y, a, pm, o = 1, flipY = false) => handImg('hand_cup.png', [818.6, 1044.9], 3.7500, x, y, a, pm, o, false, flipY);

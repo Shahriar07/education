@@ -9,8 +9,10 @@ JS = r"""
 (which) => {
 const T3 = THREE, V3 = HAND.V, K = 0.85;
 const C = { size: K, shape: { wid: 1.14 }, arm: { w: 1.0, flat: 0.74, taper: 1.1 }, pen: { tip: [400,400,400], web: [400,450,400], roll: 0 } };
+const CUP = which === 'cup'; if (CUP) which = 'push';
 const Q = which === 'push' ? Object.assign(C, { wrist: { ext: -72, dev: 0 }, index: { abd: 6, flex: [-4, 5, 3] }, middle: { abd: 1, flex: [-4, 4, 3] }, ring: { abd: -4, flex: [-4, 5, 3] }, little: { abd: -10, flex: [-4, 7, 4] }, thumb: { dir: [-0.72, 0.69, 0.06], up: [-0.3, 0, 0.95], flex: [2, 4] } })
  : Object.assign(C, { wrist: { ext: -25, dev: 0 }, index: { abd: 0, flex: [12, 14, 10] }, middle: { abd: 0, flex: [72, 98, 50] }, ring: { abd: 0, flex: [78, 98, 50] }, little: { abd: 0, flex: [82, 95, 50] }, thumb: { dir: [-0.3, 0.78, -0.55], up: [-0.8, 0.1, 0.55], flex: [28, 42] } });
+if (CUP) Object.assign(Q, { index: { abd: 8, flex: [12, 22, 14] }, middle: { abd: 2, flex: [12, 22, 14] }, ring: { abd: -5, flex: [14, 24, 15] }, little: { abd: -12, flex: [18, 26, 16] }, thumb: { dir: [-0.72, 0.62, -0.3], up: [-0.3, 0, 0.95], flex: [12, 18] } });   // a cupped hand: every finger a little bent, the thumb forward
 Object.assign(POSE, Q);
 while (scene.children.length) scene.remove(scene.children[0]);
 scene.add(new T3.HemisphereLight(0xffffff, 0x6e5f56, 0.75), key, key.target, fill, fill.target);
@@ -33,6 +35,6 @@ with sync_playwright() as p:
     pg = b.new_page(viewport={"width": 2400, "height": 2400}); pg.set_default_timeout(0); pg.on("pageerror", lambda e: print("ERR", e))
     pg.goto((HERE / "hand3d.html").as_uri(), timeout=0); pg.wait_for_function("window.READY === true", timeout=0)
     out = {}
-    for w in ("push", "point"):
+    for w in ("push", "point", "cup"):
         out[w] = pg.evaluate(JS, w); (HERE / f"hand_{w}.png").write_bytes(pg.locator("#c").screenshot(omit_background=True))
     (HERE / "poses.json").write_text(json.dumps(out, indent=1)); print(out); b.close()
