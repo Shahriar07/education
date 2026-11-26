@@ -68,3 +68,9 @@ Object.assign(C11, {
   well: () => ({ pos: [TL.WELL.X + 0.4, 1.5, 4.3], look: [TL.WELL.X + 0.1, 1.05, 0], fov: 40 }),
 });
 /* the opening of the pincers' handles shrinks by u; the jaws close by the same angle (rigid arms) */
+/* the hand that holds the tongs (make_tongs.py): one picture per gap between the strips at the hand (mm); the nearest one is drawn,
+   its top strip on the top strip of the tongs, turned to the strip's angle on the screen */
+const TONG_IMG = [{"g": 43, "anchor": [1166.6666666666667, 1148.6133333333332], "ang": 0, "pxPerMm": 6.666666666666667}, {"g": 36, "anchor": [1166.6666666666667, 1148.6133333333332], "ang": 0, "pxPerMm": 6.666666666666667}, {"g": 29, "anchor": [1166.6666666666667, 1148.6133333333332], "ang": 0, "pxPerMm": 6.666666666666667}, {"g": 22, "anchor": [1166.6666666666667, 1148.6133333333332], "ang": 0, "pxPerMm": 6.666666666666667}, {"g": 15, "anchor": [1166.6666666666667, 1148.6133333333332], "ang": 0, "pxPerMm": 6.666666666666667}, {"g": 8, "anchor": [1166.6666666666667, 1148.6133333333332], "ang": 0, "pxPerMm": 6.666666666666667}];
+function handTong(P, a, o = 1) { const g = 2 * TL.TONG.F * Math.sin(a / 2) * 1000; let i = 0; TONG_IMG.forEach((q, k) => { if (Math.abs(q.g - g) < Math.abs(TONG_IMG[i].g - g)) i = k; });
+  const q = TONG_IMG[i], ang = a / 2 - 0.08, at = r => P(TONGP[0] + r * Math.cos(ang), TONGP[1] + r * Math.sin(ang) + 0.0015, TONGP[2] + 0.01), [x, y] = at(TL.TONG.F), [x2, y2] = at(TL.TONG.F + 0.1);
+  return handImg('hand_tong_' + i + '.png', q.anchor, q.pxPerMm, x, y, Math.atan2(y2 - y, x2 - x) * 180 / Math.PI - q.ang, pxpm(P, [TONGP[0] + TL.TONG.F, TONGP[1], TONGP[2]]), o, false); }

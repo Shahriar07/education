@@ -15,9 +15,9 @@ part('s06_p04', { scene: 6, label: '৬ঘ', title: "পাঁচ উপায�
   else { const sq = t < S.A(3) ? 0 : 0.5 - 0.5 * Math.cos(Math.max(0, t - S.A(3) - 0.4) * 1.6), a0 = 0.36, a = a0 * (1 - sq); P = W3.frame({ cam: C11.bench(TL.X + 0.2, 22), tong: { a, lift: 0 }, sun: [-14, 34, 26] });
     const pt = (r, side) => { const ang = side * a / 2 - 0.08; return P(TONGP[0] + r * Math.cos(ang), TONGP[1] + r * Math.sin(ang), TONGP[2] + 0.01); };
     const [fx, fy] = pt(TL.TONG.F, 1), [ex, ey] = pt(TL.TONG.L, 1), [fx0, fy0] = (() => { const ang = a0 / 2 - 0.08; return P(TONGP[0] + TL.TONG.F * Math.cos(ang), TONGP[1] + TL.TONG.F * Math.sin(ang), TONGP[2] + 0.01); })(), [ex0, ey0] = (() => { const ang = a0 / 2 - 0.08; return P(TONGP[0] + TL.TONG.L * Math.cos(ang), TONGP[1] + TL.TONG.L * Math.sin(ang), TONGP[2] + 0.01); })();
-    s += handPoint(fx, fy - 4, 0, pxpm(P, [TL.X, TL.TY, 0]));
+    s += handTong(P, a);
     if (t >= S.A(3)) { s += `<line x1="${F(fx0 + 60)}" y1="${F(fy0)}" x2="${F(fx + 60)}" y2="${F(fy)}" stroke="${Y}" stroke-width="12" stroke-linecap="round"/><line x1="${F(ex0 + 50)}" y1="${F(ey0)}" x2="${F(ex + 50)}" y2="${F(ey)}" stroke="#7fd1ff" stroke-width="12" stroke-linecap="round"/>`;
-      u += lab(fx + 190, fy - 30, 'আঙুল: অল্প', 'move', S.P(3, 0.3, 0.45)) + lab(ex + 190, ey - 30, 'মাথা: ২.৫ গুণ', 'move', S.P(3, 0.55, 0.7)); }
+      u += lab(fx + 190, fy - 30, 'হাতে: অল্প', 'move', S.P(3, 0.3, 0.45)) + lab(ex + 190, ey - 30, 'মাথা: ২.৫ গুণ', 'move', S.P(3, 0.55, 0.7)); }
     u += lab(1640, 170, 'চিমটা', 'name'); s += head(5); u += hd('গতি ও দূরত্ব বাড়ায়'); }
   return { gl: true, svg: s, ui: u };
 });
