@@ -1,13 +1,15 @@
 /* Chapter 11, video 1, scenes 3 and 4: marbles on earth, toy car, cricket bat and ball, microbus. Metres, seconds.
    Physics (named constants, every position computed per frame):
-   - marbles: equal masses, e = 0.95: the shooter arrives at 0.80 m/s, leaves at 0.80(1-e)/2 = 0.02 m/s, the hit marble
-     takes 0.80(1+e)/2 = 0.78 m/s; rolling friction on earth slows both at mu g = 0.05 x 9.8 = 0.49 m/s²: 0.62 m in 1.59 s
+   - marbles: equal masses, e = 0.95: the shooter arrives at 0.80 m/s rolling; the hit leaves it 0.02 m/s but still spinning,
+     the target 0.78 m/s without spin; rolling again they go (5/7)0.78 = 0.557 and (5/7)0.02 + (2/7)0.80 = 0.243 m/s;
+     rolling friction on earth slows both at mu g = 0.05 x 9.8 = 0.49 m/s²: target 0.32 m in 1.14 s, shooter 0.06 m in 0.50 s
    - cart: a steady push adds a = 0.30 m/s² to its 0.45 m/s; toy car 0.6 m/s stopped by a hand in 0.5 s (a = 1.2 m/s²)
    - cricket ball: in at 12 m/s, out at (14, 8) m/s, parabolas with g = 9.8; shown at 1/5 speed
    - microbus 1800 kg: resistance 0.03 x 1800 x 9.8 = 529 N; one person 200 N (friction matches it: no motion);
      five people 1000 N: a = (1000 - 529) / 1800 = 0.26 m/s² */
 const MB2 = { R: 0.0125, E: 0.95, U: 0.80, A: 0.05 * 9.8, X: 836, Z: 3.2 };
-MB2.V2 = MB2.U * (1 + MB2.E) / 2; MB2.V1 = MB2.U * (1 - MB2.E) / 2; MB2.T2 = MB2.V2 / MB2.A; MB2.S2 = MB2.V2 * MB2.V2 / (2 * MB2.A);
+MB2.V2 = 5 / 7 * MB2.U * (1 + MB2.E) / 2; MB2.V1 = 5 / 7 * MB2.U * (1 - MB2.E) / 2 + 2 / 7 * MB2.U;   // rolling after the hit (spin taken into account)
+MB2.T2 = MB2.V2 / MB2.A; MB2.S2 = MB2.V2 * MB2.V2 / (2 * MB2.A);
 MB2.D0 = 0.4; MB2.U0 = Math.sqrt(MB2.U * MB2.U + 2 * MB2.A * MB2.D0); MB2.TIN = (MB2.U0 - MB2.U) / MB2.A;          // the throw: 1.02 m/s, 0.44 s to the hit
 /* positions (centre x) of the shooter and the target, tau seconds after the hit (negative = before) */
 function marbles(tau) {
@@ -16,7 +18,7 @@ function marbles(tau) {
   const q2 = Math.min(tau, MB2.T2), q1 = Math.min(tau, MB2.V1 / MB2.A);
   return { m1: hitX + MB2.V1 * q1 - MB2.A * q1 * q1 / 2, m2: MB2.X + MB2.V2 * q2 - MB2.A * q2 * q2 / 2, v1: Math.max(0, MB2.V1 - MB2.A * tau), v2: Math.max(0, MB2.V2 - MB2.A * tau) };
 }
-const BAT = { X: 1560, Z: 20, SLOW: 0.2, VIN: [-12, 2.52], VOUT: [14, 8], HIT: [0.075, 0.5], G: 9.8, W: 0.31 };          // ball 7.5 cm in front of the bat's centre line
+const BAT = { X: 1560, Z: 20, SLOW: 0.2, VIN: [-12, 2.52], VOUT: [9, 12], HIT: [0.075, 0.5], G: 9.8, W: 0.31 };          // ball 7.5 cm in front of the bat's centre line
 BAT.TIN = 8 / 12;
 /* the ball tau real seconds after the hit */
 function batBall(tau) { const [vx, vy] = tau < 0 ? BAT.VIN.map((v, i) => i ? v - BAT.G * BAT.TIN : v) : BAT.VOUT, q = tau < 0 ? tau : tau;
@@ -85,10 +87,12 @@ Object.assign(C11, {
   marble: cx => ({ pos: [cx, 0.075, MB2.Z + 0.55], look: [cx, 0.012, MB2.Z], fov: 30 }),
   toy: cx => ({ pos: [cx, 0.36, 2.0], look: [cx, 0.06, 0.9], fov: 34 }),
   bat: () => ({ pos: [BAT.X + 1.1, 0.95, BAT.Z + 2.7], look: [BAT.X + 1.1, 0.85, BAT.Z], fov: 58 }),
-  mbus: cx => ({ pos: [cx - 0.6, 1.7, 6.6], look: [cx - 0.6, 0.95, MBUS.Z], fov: 42 }),
+  mbus: cx => ({ pos: [cx - 6.4, 1.9, MBUS.Z + 5.2], look: [cx - 1.0, 1.0, MBUS.Z], fov: 38 }),
 });
 /* pushing hands at the back of something, (x, y) = palms, n pairs spread over the height dy px */
 function pushHands(x, y, pm, n, o = 1, a = 8) { let s = ''; for (let i = 0; i < n; i++) { const yy = y + (n > 1 ? (i - (n - 1) / 2) * 62 : 0), xx = x - (i % 2) * 10; s += handPush3(xx - 5, yy - 18, a, pm, o) + handPush3(xx, yy + 6, a, pm, o); } return s; }
 /* a hand facing left (the push picture unmirrored), palm at (x, y) */
 const handStop = (x, y, a, pm, o = 1) => handImg('hand_push.png', [818.6, 1044.9], 3.75, x, y, a, pm, o, false);
 const RED = '#ff6b5e';
+/* n people side by side behind the microbus (rear face x = cx - 2.44), two palms each */
+const mbusHands = (cx, n, d = 0) => { const out = []; for (let i = 0; i < n; i++) { const zc = MBUS.Z + (n > 1 ? -0.62 + 1.24 * i / (n - 1) : 0); [-0.11, 0.11].forEach(dz => out.push(H3.push([cx - 2.44 - d, 1.08, zc + dz], [1, 0, 0]))); } return out; };

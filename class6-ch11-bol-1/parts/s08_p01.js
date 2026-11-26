@@ -7,10 +7,10 @@ part('s08_p01', { scene: 8, label: '৮ক', first: true, title: "নিজে �
   { c: "তিন, অন্য মাথায় হাতের তালু দিয়ে চাপ দাও। বই উঠল?" }
 ], function (t, S) {
   const step = t >= S.A(3) ? 3 : t >= S.A(2) ? 2 : t >= S.A(1) ? 1 : 0, show = [7, 1, 3, 7][step], k = step === 3 ? ease(S.P(3, 0.35, 0.8)) : 0, p = RL.L / 2;
-  const P = W3.frame({ cam: C11.ruler(), ruler: { p, k, show }, room: {} }), pm = pxpm(P, [V16.RX, V16.TOP, V16.TZ]);
+  const ee = rulerEnd(p, k), P = W3.frame({ cam: C11.ruler(), ruler: { p, k, show }, room: {}, hands: step === 3 && S.P(3, 0.1) > 0 ? [H3.push([ee[0] - 0.035, ee[1] + 0.0015 + 0.05 * (1 - ease(S.P(3, 0.1, 0.3))), ee[2]], [0, -1, 0], [1, 0, 0])] : [] }), pm = pxpm(P, [V16.RX, V16.TOP, V16.TZ]);
   let s = '', u = banner('নিজে করো', step ? 1 : S.P(0, 0.02, 0.15), 1, 130);
   if (step === 0) { ['শক্ত স্কেল', 'মোটা পেনসিল', 'একটা বই'].forEach((n, i) => u += lab(560 + i * 400, 860, big(n), 'name', S.P(0, 0.3 + i * 0.15, 0.4 + i * 0.15))); }
   else { const steps = ['পেনসিলের উপর স্কেল আড়াআড়ি', 'এক মাথায় বইয়ের কিনারা', 'অন্য মাথায় তালুর চাপ']; s += badge(260, 300, step, S.P(step, 0, 0.15)); u += lab(700, 300, big(steps[step - 1]), 'move', S.P(step, 0.05, 0.2)); }
-  if (step === 3) { const e = rulerEnd(p, k), [x, y] = P(...e); s += handPalmDown(x - 0.02 * pm, y - 2, pm, S.P(3, 0.1, 0.3)); s += arrow2(x + 80, y - 160, x + 80, y - 160 + RL.W * 30, S.P(3, 0.3, 0.45)); if (k > 0.9) u += lab(760, 520, big('বই উঠল!'), 'rest'); }
+  if (step === 3) { const e = rulerEnd(p, k), [x, y] = P(...e);  s += arrow2(x + 80, y - 160, x + 80, y - 160 + RL.W * 30, S.P(3, 0.3, 0.45)); if (k > 0.9) u += lab(760, 520, big('বই উঠল!'), 'rest'); }
   return { gl: true, svg: s, ui: u };
 });

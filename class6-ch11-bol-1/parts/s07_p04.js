@@ -6,9 +6,9 @@ part('s07_p04', { scene: 7, label: '৭ঘ', last: true, title: "প্রশ্
   { c: "ঠিক! গতিশীল বস্তু স্থির হয়।" },
   { c: "বলটা তোমার দিকে আসছিল, আর হাত বল দিল উল্টো দিকে। তাই থেমে গেল।" }
 ], function (t, S) {
-  let u = '', s = ''; const V = ROAD.VIL, tq = S.A(2) + 0.2, xs = 4.2, st = t < S.A(2) ? Math.min(xs - 0.6, 1.2 * Math.max(0, t - 0.4)) : t < tq ? xs - 0.6 + 3 * (t - S.A(2)) : xs + 0.02, P = W3.frame({ cam: { pos: [V.X - 5 + Math.min(st, xs) + 0.15, 0.5, 2.55], look: [V.X - 5 + Math.min(st, xs) + 0.15, 0.2, 1.2], fov: 40 }, ballS: Math.min(st, xs), sun: [-14, 34, 26] }), pm = pxpm(P, [V.X - 5 + xs, 0.2, 1.2]);
+  let u = '', s = ''; const V = ROAD.VIL, tq = S.A(2) + 0.2, xs = 4.2, st = t < S.A(2) ? Math.min(xs - 0.6, 1.2 * Math.max(0, t - 0.4)) : t < tq ? xs - 0.6 + 3 * (t - S.A(2)) : xs + 0.02, P = W3.frame({ cam: { pos: [V.X - 5 + Math.min(st, xs) + 0.15, 0.5, 2.55], look: [V.X - 5 + Math.min(st, xs) + 0.15, 0.2, 1.2], fov: 40 }, ballS: Math.min(st, xs), hands: t >= S.A(2) ? [-0.075, 0.075].map(dz => H3.cup([V.X - 5 + Math.min(st, xs) + 0.112, 0.11, 1.2 + dz], [-1, 0, 0])) : [], sun: [-14, 34, 26] }), pm = pxpm(P, [V.X - 5 + xs, 0.2, 1.2]);
   const [hx, hy] = P(V.X - 5 + xs + 0.12, 0.12, 1.2), [bx, by] = P(V.X - 5 + Math.min(st, xs), 0.11, 1.2), br = 0.11 * pm, ho = t >= S.A(2) ? S.P(2, 0, 0.1) : 0;
-  if (ho > 0) s += handCup(bx + br * 0.87 + 4, by - br * 0.5, -25, pm, ho) + handCup(bx + br * 0.87 + 4, by + br * 0.5, 25, pm, ho, true);
+  void ho; void br;
   if (t < S.A(2)) u += card('চলন্ত বল হাত দিয়ে ধরলে<br>কোন প্রভাব দেখা যায়?', S.P(0, 0.05, 0.25), 1, 150, 1150, 66);
   if (t >= S.A(1) && t < S.A(2)) u += lab(960, 520, big('ভাবো...'), 'name', S.P(1, 0.1, 0.3));
   if (t >= S.A(2)) { s += tick(1500, 300, 40, S.P(2, 0.3, 0.5)); u += lab(1300, 300, big('স্থির হয়'), 'rest', S.P(2, 0.3, 0.5)); }

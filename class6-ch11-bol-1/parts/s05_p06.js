@@ -9,12 +9,10 @@ part('s05_p06', { scene: 5, label: '৫চ', last: true, title: "চিত্র
   /* the hand goes down smoothly during sentence 2; the tilt follows from the hand's height */
   const k = ease(S.P(2, 0.1, 0.95)), yA = th => lvPt(th, -LV.A)[1], yh = yA(LV.TH0) + (yA(LV.TH1) - yA(LV.TH0)) * k;
   let lo = LV.TH1, hi = LV.TH0; for (let i = 0; i < 40; i++) { const m = (lo + hi) / 2; yA(m) < yh ? lo = m : hi = m; } const th = t < S.A(2) ? LV.TH0 : (lo + hi) / 2;
-  const P = W3.frame({ cam: C11.lever(), lever: th, sun: [-14, 34, 26] });
+  /* the 3D hand comes down onto the rod in the first quarter of sentence 1, then grips it */
+  const ho = S.P(1, 0, 0.25), P = W3.frame({ cam: C11.lever(), lever: th, hands: ho > 0 ? [lvHand3(th, 0.15 * (1 - ease(ho)))] : [], sun: [-14, 34, 26] });
   let s = '', u = figTag('চিত্র ১১.৩: সরল যন্ত্র');
-  const pm = pxpm(P, [LV.X, 0.2, LV.Z]), hp = lvPt(th, -LV.A, LV.R), [hx, hy] = P(...hp), ho = S.P(1, 0, 0.25), lift = 120 * (1 - ease(ho));
-  /* the hand: 0.19 m long; pressing on the top of the rod, turned with it */
-  if (ho > 0 && window.FLAT_HAND) s += `<g transform="translate(${F(hx)},${F(hy - lift)}) rotate(${F(th * 180 / Math.PI)})"><path transform="scale(${(pm * 0.19 / 200).toFixed(3)})" d="M-250 -97 L-232 -41 L-640 -168 L-680 -262 Z" fill="#2a6f97" stroke="#1f5577" stroke-width="2" opacity="${ho.toFixed(2)}"/>${handFlat(0, 2, pm * 0.19 / 200, ho)}</g>`;
-  if (ho > 0 && !window.FLAT_HAND) { const [gx, gy] = P(...lvPt(th, -LV.A)), [ex, ey] = P(...lvPt(th, -LV.A + 0.3)); s += handGrip(gx, gy - lift, Math.atan2(ey - gy, ex - gx) * 180 / Math.PI, pm, ho); }
+  const pm = pxpm(P, [LV.X, 0.2, LV.Z]), hp = lvPt(th, -LV.A, LV.R), [hx, hy] = P(...hp);
   const [sx, sy] = P(...lvStone(th)), [fx] = P(LV.X, 0, LV.Z + 0.1), [, fy] = P(LV.X, 0, LV.Z + 0.1), [rx, ry] = P(...lvPt(th, -0.62));
   u += lab(rx, ry - 60, 'শক্ত দণ্ড', 'name', S.P(0, 0.35, 0.45)) ;
   u += lab(fx - 265, fy - 42, 'ঠেস দেওয়া পাথর', 'name', S.P(0, 0.15, 0.25));

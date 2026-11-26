@@ -37,16 +37,31 @@ buildV3 = function (k) {
   const wt = canvasTex(512, 64, c => { c.fillStyle = '#a9743f'; c.fillRect(0, 0, 512, 64); for (let i = 0; i < 70; i++) { c.strokeStyle = `rgba(${rnd() < 0.5 ? '70,40,14' : '214,164,104'},${0.1 + rnd() * 0.3})`; c.lineWidth = 0.6 + rnd() * 1.6; const y = rnd() * 64; c.beginPath(); c.moveTo(0, y); c.bezierCurveTo(170, y + 4 * (rnd() - 0.5), 340, y + 4 * (rnd() - 0.5), 512, y); c.stroke(); } });
   wt.center.set(0.5, 0.5); wt.rotation = Math.PI / 2;
   const L = LV.A + 0.08 + LV.TAIL, rod = cyl(LV.R, LV.R, L, new THREE.MeshStandardMaterial({ map: wt, roughness: 0.75 }), 0, 0, 0, undefined, 28); rod.rotation.order = 'ZYX'; scene.add(rod);
-  V11 = { stone, ful, rod, mid: (LV.TAIL - LV.A - 0.08) / 2 };
+  V11 = { stone, ful, rod, mid: (LV.TAIL - LV.A - 0.08) / 2, scene };
 };
-/* o.lever = tilt of the rod in radians (the three objects are hidden when it is not given) */
+/* o.lever = tilt of the rod in radians (the three objects are hidden when it is not given);
+   o.hands = 3D hands placed by coordinates (science-video-template/hand/hands3d.js) */
 frameV3 = function (o) {
   _frame3(o);
+  HANDS3D.place(V11.scene, o.hands);
   const on = o.lever !== undefined; V11.stone.visible = V11.ful.visible = V11.rod.visible = on; if (!on) return;
   const th = o.lever; V11.rod.position.set(...lvPt(th, V11.mid)); V11.rod.rotation.z = Math.PI / 2 - th;
   V11.stone.position.set(...lvStone(th)); V11.stone.rotation.z = -th;
   if (!V11.wood) { V11.wood = V11.rod.material; V11.ironM = new THREE.MeshStandardMaterial({ color: '#3d4247', roughness: 0.45, metalness: 0.7 }); } V11.rod.material = o.iron ? V11.ironM : V11.wood;
 };
+/* 3D hands by coordinates (world metres). dir = the way the palm pushes (the palm faces it); up = the way the fingers point */
+const H3 = {
+  push: (at, dir, up = [0, 1, 0], n = 'push') => ({ n, at, y: up, z: dir.map(v => -v) }),
+  grip: (at, rod, back, n = 'grip0') => ({ n, at, rod, back }),
+  hook: (at, fingers, back = [0, 1, 0]) => ({ n: 'hook', at, y: fingers, z: back }),
+  pad: (at, fingers, back) => ({ n: 'pad', at, y: fingers, z: back }),
+  mouse: (at, forward) => ({ n: 'mouse', at, y: forward, z: [0, 1, 0] }),
+  cup: (at, dir, up = [0, 1, 0]) => ({ n: 'cup', at, y: up, z: dir.map(v => -v) }),
+  back: (at, dir, d) => at.map((v, i) => v - dir[i] * d),   // a point d metres back from at, against dir (a hand coming in)
+};
+/* the 3D hand gripping the rod at its end (tilt th): the person stands behind the rod, the fingers curl over it towards
+   the camera, the thumb points along the rod to the fulcrum; drop = metres above the rod while the hand comes in */
+function lvHand3(th, drop = 0) { const p = lvPt(th, -LV.A); return { n: 'grip', at: [p[0], p[1] + drop, p[2]], rod: [-Math.cos(th), Math.sin(th), 0], back: [Math.sin(th), Math.cos(th), 0] }; }
 const C11 = { lever: () => ({ pos: [LV.X - 0.28, 0.6, LV.Z + 3.2], look: [LV.X - 0.28, 0.31, LV.Z], fov: 25.5 }) };
 /* placeholder for a part whose narration is ready and drawing is not */
 const todoDraw = (label, title) => () => ({ svg: bg(NAVY) + txt(960, 480, label, 120, { c: Y }) + txt(960, 600, title, 60) });
@@ -65,7 +80,7 @@ const handPoint = (x, y, a, pm, o = 1) => handImg('hand_point.png', [1527.7, 195
 function lvTilt(k) { const yA = th => lvPt(th, -LV.A)[1], yh = yA(LV.TH0) + (yA(LV.TH1) - yA(LV.TH0)) * k; let lo = LV.TH1, hi = LV.TH0; for (let i = 0; i < 40; i++) { const m = (lo + hi) / 2; yA(m) < yh ? lo = m : hi = m; } return k <= 0 ? LV.TH0 : (lo + hi) / 2; }
 /* the gripping hand on the rod at tilt th */
 function lvHand(P, th, o, lift = 0) { const pm = pxpm(P, [LV.X, 0.2, LV.Z]), [gx, gy] = P(...lvPt(th, -LV.A)), [ex, ey] = P(...lvPt(th, -LV.A + 0.3)); return handGrip(gx, gy - lift, Math.atan2(ey - gy, ex - gx) * 180 / Math.PI, pm, o); }
-const ST = { X: 6400, CART: 5500, CZ: 3.6, TW: [846.6, 1.2], WR: 0.42 };
+const ST = { X: 6400, CART: 5500 - 40, CZ: 2.0, TW: [846.6, 1.2], WR: 0.42 };
 let V12 = null;
 const _b11 = buildV3, _f11 = frameV3;
 buildV3 = function (k) {
@@ -124,7 +139,7 @@ frameV3 = function (o) {
   _f11(o);
   if (o.boulder !== undefined) { V11.stone.visible = true; V11.stone.rotation.z = 0; V11.stone.position.set(LV.X + o.boulder, LV.ST[1] * 0.80, LV.Z); }
   const T = ROAD.ROOM.TABLE, d = o.room && o.room.drawer; V12.din.visible = d !== undefined && !!o.geo; if (V12.din.visible) V12.din.position.set(ROAD.ROOM.X + T[0], T[1] - 0.042, T[2] + d);
-  const q = o.set || {}; V12.G.visible = !!o.set; V12.door.rotation.y = -(q.door || 0) * Math.PI / 180; V12.rock[1].rotation.z = (q.sw ? -0.16 : 0.16); V12.rock[0].rotation.z = V12.rock[2].rotation.z = 0.16; V12.bm.emissiveIntensity = q.sw ? 1.4 : 0; V12.bl.intensity = q.sw ? 0.9 : 0;
+  const q = o.set || {}; V12.G.visible = !!o.set; V12.door.rotation.y = -(q.door || 0) * Math.PI / 180; V12.rock[1].rotation.z = (q.sw ? 0.16 : -0.16); V12.rock[0].rotation.z = V12.rock[2].rotation.z = -0.16;   // off: all alike; on: the middle one flipped V12.bm.emissiveIntensity = q.sw ? 1.4 : 0; V12.bl.intensity = q.sw ? 0.9 : 0;
   V12.chair.visible = q.chair !== undefined; if (V12.chair.visible) V12.chair.position.set(ST.X + 1, 0, -1.6 + q.chair);
   V12.tw.visible = o.pump !== undefined; if (V12.tw.visible) { const a = o.pump * Math.PI / 180; V12.arm.rotation.z = a; V12.rodp.position.y = 1.06 + 0.09 * Math.sin(a); V12.water.visible = !!o.water; }
   V12.cart.visible = o.cart !== undefined; if (V12.cart.visible) { V12.cart.position.x = ST.CART + o.cart; V12.wheels.forEach(w => { w.rotation.z = -o.cart / ST.WR; }); }
@@ -135,8 +150,10 @@ Object.assign(C11, {
   sw: () => ({ pos: [ST.X + 2.85, 1.52, 1.25], look: [ST.X + 3.82, 1.45, -0.02], fov: 29 }),
   chair: () => ({ pos: [ST.X + 2.6, 1.4, 2.0], look: [ST.X + 1.05, 0.42, -0.9], fov: 30 }),
   pump: () => ({ pos: [ST.TW[0] - 0.25, 1.15, ST.TW[1] + 4.2], look: [ST.TW[0] - 0.25, 0.86, ST.TW[1]], fov: 35 }),
-  cart: x => ({ pos: [ST.CART + x + 0.3, 1.35, ST.CZ + 6.2], look: [ST.CART + x + 0.3, 0.58, ST.CZ], fov: 30 }),
+  cart: x => ({ pos: [ST.CART + x + 0.4, 1.45, ST.CZ + 5.6], look: [ST.CART + x + 0.4, 0.8, ST.CZ - 1], fov: 36 }),
 });
+/* the cart's hands at cart position C (world x of its centre); rear = pushing palms, front = the puller's fist */
+const cartHands = (C, rear = true, front = true) => [...(rear ? [-0.22, 0.22].map(dz => H3.push([C - 1.11, 0.72, ST.CZ + dz], [1, 0, 0])) : []), ...(front ? [H3.grip([C + 1.98, 0.68, ST.CZ + 0.46], [1, 0, 0], [0, 0, -1], 'gripD')] : [])];
 const big = (s) => `<span style="font-size:52px">${s}</span>`;
 /* ---- new hands (2026-11-26) ---- */
 /* how real hands do it: a hooked index finger pulls a ring; the whole hand rests on a mouse; a bent finger's pad presses a switch */

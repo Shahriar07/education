@@ -8,7 +8,7 @@ part('s03_p04', { scene: 3, label: '৩ঘ', last: true, title: "ব্যাট
   const tHit = S.A(1) + 0.4, tau = (t - tHit) * BAT.SLOW, rep = t >= S.A(2), ball = tau > -BAT.TIN && (tau < 1.0 || rep) ? batBall(rep ? -0.02 : tau) : null;
   const P = W3.frame({ cam: C11.bat(), cricket: { phi: batPhi(rep ? -0.02 / 20 : tau), ball: rep ? batBall(0) : ball }, sun: [-14, 34, 26] }), pm = pxpm(P, [BAT.X, 1, BAT.Z]);
   let s = '', u = ''; const H = [BAT.X - 0.02, 1.05], ph = batPhi(rep ? 0 : tau), hp = d => P(H[0] + d * Math.sin(ph), H[1] - d * Math.cos(ph), BAT.Z), [ax, ay] = hp(0.06), [bx, by] = hp(0.3);
-  const ang = Math.atan2(by - ay, bx - ax) * 180 / Math.PI; s += handGrip(...hp(0.07).slice(0, 2), ang, pm) + handGrip(...hp(0.17).slice(0, 2), ang, pm);
+  const ang = Math.atan2(by - ay, bx - ax) * 180 / Math.PI; void ang; void pm;
   const path = (a, b) => { const p = []; for (let k = 0; k <= 30; k++) { const q = a + (b - a) * k / 30, [x, y] = batBall(q); p.push([x, y, BAT.Z]); } return p; };
   if (tau > -BAT.TIN) s += path3(P, path(-BAT.TIN, Math.min(0, rep ? 0 : tau)), '#fff', 5, '3 12');
   if (tau > 0 || rep) s += path3(P, path(0, rep ? 0.9 : Math.min(tau, 0.9)), Y, 6, '3 12');

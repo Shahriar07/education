@@ -69,7 +69,7 @@ frameV3 = function (o) {
 };
 Object.assign(C11, {
   bench: (x, f = 28) => ({ pos: [x, TL.TY + 0.22, TL.Z + 0.75], look: [x, TL.TY + 0.06, TL.Z], fov: f }),
-  well: () => ({ pos: [TL.WELL.X + 0.4, 1.5, 4.3], look: [TL.WELL.X + 0.1, 1.05, 0], fov: 40 }),
+  well: () => ({ pos: [TL.WELL.X + 0.5, 1.35, 3.0], look: [TL.WELL.X + 0.1, 1.0, 0], fov: 44 }),
 });
 /* the opening of the pincers' handles shrinks by u; the jaws close by the same angle (rigid arms) */
 /* the hand that holds the tongs (make_tongs.py): one picture per gap between the strips at the hand (mm); the nearest one is drawn,

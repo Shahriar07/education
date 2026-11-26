@@ -14,11 +14,11 @@ part('s06_p03', { scene: 6, label: '৬গ', title: "পাঁচ উপায�
     const f = S.P(1, 0.3, 0.45), Fh = 60, [hx1, hy1] = pt(-TL.PIN.H * 0.75, 1), [hx2, hy2] = pt(-TL.PIN.H * 0.75, -1), [jx1, jy1] = pt(TL.PIN.J, 1), [jx2, jy2] = pt(TL.PIN.J, -1);
     s += arrow2(hx1, hy1 - 20 - Fh, hx1, hy1 - 20, f) + arrow2(hx2, hy2 + 20 + Fh, hx2, hy2 + 20, f) + arrow2(jx1 - 30, jy1 - 30 - Fh * 5, jx1 - 30, jy1 - 30, f, RED) + arrow2(jx2 - 30, jy2 + 30 + Fh * 5, jx2 - 30, jy2 + 30, f, RED);
     u += lab(hx1 + 140, hy1 - 70, 'হাতের চাপ', 'move', f) + lab(jx1 - 220, jy1 - 160, big('৫ গুণ জোরে'), 'move', f) + lab(1640, 170, 'সাঁড়াশি', 'name'); s += head(1); u += hd('বল কয়েকগুণ বাড়ায়'); }
-  else if (t < S.A(3)) { const k = ease(S.P(2, 0.3, 0.8)), th = lvTilt(k); P = W3.frame({ cam: C11.lever(), lever: th, iron: true, sun: [-14, 34, 26] }); s += lvHand(P, th, 1);
+  else if (t < S.A(3)) { const k = ease(S.P(2, 0.3, 0.8)), th = lvTilt(k); P = W3.frame({ cam: C11.lever(), lever: th, iron: true, hands: [lvHand3(th)], sun: [-14, 34, 26] });
     const [hx, hy] = P(...lvPt(th, -LV.A)), [sx, sy] = P(...lvStone(th)), pm = pxpm(P, [LV.X, 0.2, LV.Z]), W = LV.M * LV.G, N = 0.62;
     s += arrow2(hx, hy + pm * 0.075, hx, hy + pm * 0.075 + lvForce(th) * N) + arrow2(sx, sy, sx, sy + W * N, 1, RED); u += lab(hx - 150, hy + 150, 'অল্প চাপ', 'move') + lab(sx + 200, sy + 120, 'পাথরের ভার', 'move') + lab(1640, 170, 'শাবল', 'name'); s += head(2); u += hd('কম বলে কাজ'); }
-  else { const d = t < S.A(4) ? 0 : 0.6 * ease(S.P(4, 0.05, 0.9)); P = W3.frame({ cam: C11.well(), well: d, sun: [-14, 34, 26] }); const W = TL.WELL, [rx, ry] = P(W.X + W.PR, 1.35 - d + 0.05, 0), [bx, by] = P(W.X - W.PR, 0.05 + d + 0.12, 0), pm = pxpm(P, [W.X, 1, 0]);
-    s += handGrip(rx, ry, 90, pm); if (t >= S.A(4)) { const o = S.P(4, 0.1, 0.25); s += arrow2(rx + 60, ry - 40, rx + 60, ry + 130, o) + arrow2(bx - 70, by + 60, bx - 70, by - 110, o, '#7fd1ff'); u += lab(rx + 200, ry + 50, big('টানো নিচে'), 'move', o) + lab(bx - 230, by - 30, big('ওঠে উপরে'), 'move', o); }
+  else { const d = t < S.A(4) ? 0 : 0.6 * ease(S.P(4, 0.05, 0.9)); const W = TL.WELL, hy3 = 1.35 - d + 0.08; P = W3.frame({ cam: C11.well(), well: d, hands: [H3.grip([TL.WELL.X + TL.WELL.PR, hy3, 0], [0, -1, 0], [1, 0, 0], 'gripD')], sun: [-14, 34, 26] }); const [rx, ry] = P(W.X + W.PR, 1.35 - d + 0.05, 0), [bx, by] = P(W.X - W.PR, 0.05 + d + 0.12, 0), pm = pxpm(P, [W.X, 1, 0]);
+    if (t >= S.A(4)) { const o = S.P(4, 0.1, 0.25); s += arrow2(rx + 60, ry - 40, rx + 60, ry + 130, o) + arrow2(bx - 70, by + 60, bx - 70, by - 110, o, '#7fd1ff'); u += lab(rx + 200, ry + 50, big('টানো নিচে'), 'move', o) + lab(bx - 230, by - 30, big('ওঠে উপরে'), 'move', o); }
     u += lab(1640, 170, 'কপিকল', 'name'); s += head(3); u += hd('সুবিধার দিকে বল'); }
   return { gl: true, svg: s, ui: u };
 });

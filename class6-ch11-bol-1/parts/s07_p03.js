@@ -4,8 +4,8 @@ part('s07_p03', { scene: 7, label: '৭গ', title: "মাউসে ক্ল�
   { c: "কম্পিউটারের মাউসে ক্লিক করতেও আঙুল বল দেয়।" },
   { c: "আঙুলের ছোট্ট ধাক্কায় স্থির বোতামটা নিচে নামে। এত অল্প বলেও কাজ হয়।" }
 ], function (t, S) {
-  const c = Math.max(0, t - 1.2) % 1.6, pr2 = c < 0.25 ? 1 : 0, P = W3.frame({ cam: C11.b7(0.8, 15, 0.26), table7: true, sun: [-14, 34, 26] }), pm = pxpm(P, [B7.X + 0.75, B7.TY + 0.03, 0]);
-  let s = '', u = ''; const [x, y] = P(B7.X + 0.75 - 0.03, B7.TY + 0.036 - 0.0018 * pr2, -0.008); s += handMouse(x, y + 2 * pr2, 0, pm);
+  const c = Math.max(0, t - 1.2) % 1.6, pr2 = c < 0.25 ? 1 : 0, P = W3.frame({ cam: C11.b7(0.8, 15, 0.26), mouse: pr2, hands: [H3.mouse([B7.X + 0.75, B7.TY, 0], [-1, 0, 0])], sun: [-14, 34, 26] }), pm = pxpm(P, [B7.X + 0.75, B7.TY + 0.03, 0]);
+  let s = '', u = ''; const [x, y] = P(B7.X + 0.75 - 0.03, B7.TY + 0.036 - 0.0018 * pr2, -0.008); void pm;
   if (pr2) s += arrow2(x - 20, y - 260, x - 20, y - 130, 1); u += lab(x + 120, y - 230, big('ধাক্কা'), 'move', S.P(0, 0.4, 0.5)); u += lab(1640, 170, 'মাউস', 'name');
   return { gl: true, svg: s, ui: u };
 });

@@ -53,6 +53,7 @@ window.showOcc = v => { if (occ) occ.material.colorWrite = v; };
 window.draw2 = () => { renderer.autoClear = true; scene.traverse(o => { if (o.isLight) o.layers.enableAll(); }); renderer.clear(); renderer.render(scene, cam); };
 draw2();
 const px = p => { const q = p.clone().project(cam); return [(q.x + 1) * N / 2, (1 - q.y) * N / 2]; };
+window.ANCHOR3 = (which === 'mouse' ? mc.clone() : anchor()).toArray();   // for make_meshes.py: the anchor in hand coordinates (mm)
 return { anchor: px(anchor()), pxPerMm: N / view.span, flex: { index: P.index.flex, middle: P.middle.flex, ring: P.ring.flex, little: P.little.flex } };
 }
 """
