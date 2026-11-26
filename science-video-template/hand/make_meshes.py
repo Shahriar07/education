@@ -22,6 +22,7 @@ POSES = {   # name: (script, js argument, replacements, anchor)
     "grip": ("make_grip.py", None, {"EXT": "-38", "DEV": "26", "A1Y": "82"}, GRIP),
     "grip0": ("make_grip.py", None, {"EXT": "0", "DEV": "0", "A1Y": "82"}, GRIP),
     "gripD": ("make_grip.py", None, {"EXT": "0", "DEV": "35", "A1Y": "82"}, GRIP),
+    "gripV": ("make_grip.py", None, {"EXT": "-68", "DEV": "-18", "A1Y": "82"}, GRIP),   # arms hanging from the shoulders: the forearm nearly upright above the hand
     "gripX": ("make_grip.py", None, {"EXT": "-55", "DEV": "-15", "A1Y": "52"}, GRIPX),   # a diagonal power grip, the forearm along the rod
     "gripR": ("make_grip.py", None, {"EXT": "-30", "DEV": "-35", "A1Y": "82"}, GRIP),   # wrist bent to the thumb side: the forearm goes along the rod, past the thumb
     "push": ("make_pose.py", "push", {}, {"anchor": [0, 72 * K, -14 * K]}),

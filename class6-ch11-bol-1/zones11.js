@@ -152,8 +152,8 @@ Object.assign(C11, {
   pump: () => ({ pos: [ST.TW[0] - 0.25, 1.15, ST.TW[1] + 4.2], look: [ST.TW[0] - 0.25, 0.86, ST.TW[1]], fov: 35 }),
   cart: x => ({ pos: [ST.CART + x + 0.4, 1.45, ST.CZ + 5.6], look: [ST.CART + x + 0.4, 0.8, ST.CZ - 1], fov: 36 }),
 });
-/* the cart's hands at cart position C (world x of its centre); rear = pushing palms, front = the puller's fist from above: the back of the hand up, the four fingers round the shaft's outer side, the thumb on its inner side, the person stands between the shafts, a right hand on the right (+z) shaft and the mirrored left hand on the other; each forearm rises inwards to the body and a little forwards */
-const cartHands = (C, rear = true, front = true) => [...(rear ? [-0.22, 0.22].map(dz => H3.push([C - 1.11, 0.72, ST.CZ + dz], [1, 0, 0])) : []), ...(front ? [H3.grip([C + 1.75, 0.68, ST.CZ + 0.46], [-1, 0, 0], [0, 1, 0], 'gripR'), Object.assign(H3.grip([C + 1.75, 0.68, ST.CZ + 0.46], [-1, 0, 0], [0, 1, 0], 'gripR'), { mirrorZ: ST.CZ })] : [])];
+/* the cart's hands at cart position C (world x of its centre); rear = pushing palms, front = the puller's fist from above: the back of the hand up, the four fingers round the shaft's outer side, the thumb on its inner side, the person stands between the shafts, a right hand on the right (+z) shaft and the mirrored left hand on the other; the arms hang from the shoulders, so each forearm rises nearly upright, a little inwards */
+const cartHands = (C, rear = true, front = true) => [...(rear ? [-0.22, 0.22].map(dz => H3.push([C - 1.11, 0.72, ST.CZ + dz], [1, 0, 0])) : []), ...(front ? [H3.grip([C + 1.75, 0.68, ST.CZ + 0.46], [-1, 0, 0], [0, 1, 0], 'gripV'), Object.assign(H3.grip([C + 1.75, 0.68, ST.CZ + 0.46], [-1, 0, 0], [0, 1, 0], 'gripV'), { mirrorZ: ST.CZ })] : [])];
 const big = (s) => `<span style="font-size:52px">${s}</span>`;
 /* ---- new hands (2026-11-26) ---- */
 /* how real hands do it: a hooked index finger pulls a ring; the whole hand rests on a mouse; a bent finger's pad presses a switch */
