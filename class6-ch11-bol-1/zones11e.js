@@ -67,7 +67,8 @@ frameV3 = function (o) {
   V16.ghosts.forEach((g, i) => { const d = o.ghosts && o.ghosts[i]; g.visible = d !== undefined; if (g.visible) g.position.set(LV.X + d, 0, LV.Z - 0.1); });
 };
 /* the finger end of the ruler (world), for the hand and the arrows */
-function rulerEnd(p, k) { const st = rulerState(p, k), X = V16.RX + 0.12, Y = V16.TOP; return [X + st.p + (RL.L - st.p) * Math.cos(st.th), Y + RL.H + 0.003 + (RL.L - st.p) * Math.sin(st.th), V16.TZ]; }
+function rulerEnd(p, k) { if (!V16) W3.frame({ cam: C11.ruler() });   // the world is built on the first frame; a part may ask for the ruler before that
+  const st = rulerState(p, k), X = V16.RX + 0.12, Y = V16.TOP; return [X + st.p + (RL.L - st.p) * Math.cos(st.th), Y + RL.H + 0.003 + (RL.L - st.p) * Math.sin(st.th), V16.TZ]; }
 Object.assign(C11, {
   b7: (x, f = 26, h = 0.3) => ({ pos: [B7.X + x, B7.TY + h, 0.62], look: [B7.X + x, B7.TY + 0.05, 0], fov: f }),
   ruler: () => ({ pos: [ROAD.ROOM.X + ROAD.ROOM.TABLE[0] + 0.24, ROAD.ROOM.TABLE[1] + 0.2, ROAD.ROOM.TABLE[2] + 0.62], look: [ROAD.ROOM.X + ROAD.ROOM.TABLE[0] + 0.24, ROAD.ROOM.TABLE[1] + 0.03, ROAD.ROOM.TABLE[2]], fov: 34 }),
