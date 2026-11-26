@@ -2,7 +2,7 @@
    (ruler lever).
    Ruler lever (নিজে করো): a 30 cm ruler on a pencil 8 mm thick; the book's edge (0.45 kg book, half its weight on the
    ruler = 2.2 N) on one end, the finger on the other. Balance about the pencil: finger force = 2.2 N x (book arm / finger arm).
-   With the pencil in the middle the arms are 15 and 15 cm (2.2 N); near the book 5 and 25 cm (0.44 N); far 25 and 5 (11 N). */
+   With the pencil in the middle the arms are 15 and 15 cm (2.2 N); 10 cm from the book 10 and 20 cm (1.1 N); 20 cm from it 20 and 10 cm (4.4 N). The finger arrow is drawn at 70 px per newton. */
 const B7 = { X: 6800, TY: 0.78 };
 const RL = { L: 0.30, H: 0.008, W: 0.45 * 9.8 / 2 };
 let V16 = null;
