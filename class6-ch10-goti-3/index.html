@@ -6,6 +6,9 @@
 @font-face{font-family:"Hind Siliguri";font-weight:400;src:url("../science-video-template/fonts/hind-siliguri-bengali-400-normal.woff2") format("woff2");}
 @font-face{font-family:"Hind Siliguri";font-weight:600;src:url("../science-video-template/fonts/hind-siliguri-bengali-600-normal.woff2") format("woff2");}
 @font-face{font-family:"Hind Siliguri";font-weight:700;src:url("../science-video-template/fonts/hind-siliguri-bengali-700-normal.woff2") format("woff2");}
+/* the 400 and 600 files draw the digit ১ (U+09E7) in a looped form that reads like ৯ or ৬; take that one glyph from the 700 file */
+@font-face{font-family:"Hind Siliguri";font-weight:400;src:url("../science-video-template/fonts/hind-siliguri-700-digit-one.woff2") format("woff2");unicode-range:U+09E7;}
+@font-face{font-family:"Hind Siliguri";font-weight:600;src:url("../science-video-template/fonts/hind-siliguri-700-digit-one.woff2") format("woff2");unicode-range:U+09E7;}
 html,body{margin:0;padding:0;background:#000;}
 #stage{position:relative;width:1920px;height:1080px;overflow:hidden;font-family:"Hind Siliguri",sans-serif;}
 #gl,#svg{position:absolute;left:0;top:0;}
