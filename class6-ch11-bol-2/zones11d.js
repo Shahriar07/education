@@ -4,6 +4,9 @@
    - tongs (চিমটা): 0.30 long, fingers 0.12 from the joint: the tips move 0.30 / 0.12 = 2.5 times as far as the fingers
    - fixed pulley: the rope goes over the wheel: pull down d, the bucket rises d, the force only turns round
    - scissors: blades 0.09, handles 0.08 from the pivot */
+/* offset of each finger bow from the blade line (m): bow outer radius 0.023; with the blades closed to -2 degrees the two bows
+   are 0.047 m apart, centre to centre: they just touch and cannot pass each other */
+const SC_BOW = 0.0247;
 const TL = { X: 6600, TY: 0.78, Z: 0, PIN: { H: 0.16, J: 0.032 }, TONG: { L: 0.30, F: 0.12 }, SC: { B: 0.09, H: 0.08 }, WELL: { X: 6610, Z: 0, R: 0.55, BEAM: 2.05, PR: 0.11 } };
 let V15 = null;
 const _b14 = buildV3, _f14 = frameV3;
@@ -27,7 +30,9 @@ buildV3 = function (k) {
   /* scissors: two blades and two ring handles, the cloth lying on the table */
   const sci = new THREE.Group(); scene.add(sci);
   const blade = (s) => { const g = new THREE.Group(), sh = new THREE.Shape(); sh.moveTo(0, 0); sh.lineTo(TL.SC.B, s * 0.002); sh.lineTo(TL.SC.B * 0.2, s * 0.016); sh.lineTo(0, s * 0.012); sh.closePath();
-    const b = new THREE.Mesh(new THREE.ExtrudeGeometry(sh, { depth: 0.003, bevelEnabled: false }), steel); g.add(b); const r = new THREE.Mesh(new THREE.TorusGeometry(0.018, 0.005, 10, 28), mat('#2e6fbf', { roughness: 0.5 })); r.position.set(-TL.SC.H + 0.012, -s * 0.01, 0); g.add(r); box(TL.SC.H - 0.03, 0.008, 0.006, mat('#2e6fbf'), -(TL.SC.H - 0.03) / 2, -s * 0.003, 0, g); return g; };
+    const b = new THREE.Mesh(new THREE.ExtrudeGeometry(sh, { depth: 0.003, bevelEnabled: false }), steel); g.add(b); const r = new THREE.Mesh(new THREE.TorusGeometry(0.018, 0.005, 10, 28), mat('#2e6fbf', { roughness: 0.5 })); r.position.set(-TL.SC.H + 0.012, -s * SC_BOW, 0); g.add(r);
+    /* the shank bends from the pivot down (or up) to the bow, so the bows sit SC_BOW off the blade line: closed, they just touch */
+    const sk = box(Math.hypot(0.045, SC_BOW - 0.004), 0.008, 0.006, mat('#2e6fbf'), -0.0275, -s * (SC_BOW - 0.004) / 2 - s * 0.002, 0, g); sk.rotation.z = s * Math.atan2(SC_BOW - 0.004, 0.045); return g; };
   const s1 = blade(1), s2 = blade(-1); s2.position.z = 0.004; sci.add(s1, s2);
   const clothT = canvasTex(256, 256, c => { c.fillStyle = '#2f6fb8'; c.fillRect(0, 0, 256, 256); c.fillStyle = '#f4d35e'; for (let y = 0; y < 256; y += 32) for (let x = (y / 32) % 2 * 16; x < 256; x += 32) { c.beginPath(); c.arc(x + 8, y + 8, 6, 0, 7); c.fill(); } });
   const cloth = new THREE.Mesh(new THREE.PlaneGeometry(0.3, 0.22), new THREE.MeshStandardMaterial({ map: clothT, roughness: 1, side: THREE.DoubleSide })); cloth.rotation.x = -Math.PI / 2; cloth.position.set(TL.X + 0.42, TL.TY + 0.002, TL.Z); scene.add(cloth);

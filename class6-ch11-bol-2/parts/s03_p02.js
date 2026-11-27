@@ -8,7 +8,7 @@ part('s03_p02', { scene: 3, label: '৩খ', title: "চিত্র ১১.৬:
   /* কাঁচি (fig 11.6), standing upright at 90 degrees to the cloth. Blades 9 cm, rings 8 cm from the pivot (the fulcrum).
      Open: a = 30 degrees: tips 4.7 cm apart, rings 4.1 cm apart. The cloth's edge starts in the middle of the blades (4.5 cm from
      the pivot, inside the open jaws). Three cuts: the blades close until they cross a little (a = -2 degrees, they slide past each
-     other), the meeting point runs from the pivot to the tips and cuts the cloth it passes; then they open and move 4.5 cm on. Then the scissors are pushed deep:
+     other) and the finger bows, 2.5 cm off the blade line, just touch, the meeting point runs from the pivot to the tips and cuts the cloth it passes; then they open and move 4.5 cm on. Then the scissors are pushed deep:
      the cloth (the load) only 2 cm from the pivot. Finger force F = R d / 0.08 (R drawn 160 px, F at most 160 px) */
   const A0 = SCI_UP.A0, X0 = SCI_UP.EDGE, T = 1.7, x00 = X0 - 0.045, ST = 0.045, AMIN = -0.035;
   let a = A0, xp = x00, cutEnd = X0;
@@ -23,7 +23,7 @@ part('s03_p02', { scene: 3, label: '৩খ', title: "চিত্র ১১.৬:
   let s = '', u = '';
   if (cutEnd > X0 + 0.002) s += path3(P, [[X0, TL.TY + 0.0025, SCI_UP.Z], [cutEnd, TL.TY + 0.0025, SCI_UP.Z]], '#14110e', 6, '');
   const d = Math.max(0.005, cutEnd - xp), R = 160, Fh = Math.min(160, R * d / TL.SC.H), [px, py] = P(xp, SCI_UP.Y, SCI_UP.Z);
-  const r1 = P(...sciPt(xp, a, -0.068, -0.01)), r2 = P(...sciPt(xp, 0, -0.068, 0.01)), dir = [r2[0] - r1[0], r2[1] - r1[1]], nn = Math.hypot(...dir), ux = dir[0] / nn, uy = dir[1] / nn;
+  const r1 = P(...sciPt(xp, a, -0.068, -SC_BOW)), r2 = P(...sciPt(xp, 0, -0.068, SC_BOW)), dir = [r2[0] - r1[0], r2[1] - r1[1]], nn = Math.hypot(...dir), ux = dir[0] / nn, uy = dir[1] / nn;
   const oA = S.P(0, 0.05, 0.2), oB = S.P(0, 0.3, 0.45), oC = S.P(0, 0.55, 0.7);
   s += ringDot(px, py, oA); u += lab(px + 10, py + 110, 'ফালক্রাম', 'name', oA);
   s += arrow2(r1[0] - ux * (Fh + 34), r1[1] - uy * (Fh + 34), r1[0] - ux * 34, r1[1] - uy * 34, oB) + arrow2(r2[0] + ux * (Fh + 34), r2[1] + uy * (Fh + 34), r2[0] + ux * 34, r2[1] + uy * 34, oB);
