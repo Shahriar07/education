@@ -1,0 +1,7 @@
+Chapter 9 video 1: rendered captions and parts list
+
+Captions (.srt) for every part and the whole video, and the parts list,
+from a full render with render-all.bat. Video files stay out of git.
+
+Co-Authored-By: Claude Opus 5.5 <noreply@anthropic.com>
+Claude-Session: https://claude.ai/code/session_01XvjNiophSX8vcQacqpK4Sb
