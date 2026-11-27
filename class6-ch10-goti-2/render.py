@@ -16,8 +16,10 @@ import imageio_ffmpeg
 
 FPS = 30
 HERE = Path(__file__).resolve().parent
-OUT = HERE / "out"
-OUT.mkdir(exist_ok=True)
+# rendered files never go under .claude (CLAUDE.md): from a worktree, write to the same folder in the project root
+ROOT = next((p.parent for p in HERE.parents if p.name == ".claude"), None)
+OUT = ROOT / HERE.name / "out" if ROOT else HERE / "out"
+OUT.mkdir(parents=True, exist_ok=True)
 CHROME = r"C:\Program Files\Google\Chrome\Application\chrome.exe"
 FFMPEG = imageio_ffmpeg.get_ffmpeg_exe()
 BN = str.maketrans("0123456789", "০১২৩৪৫৬৭৮৯")

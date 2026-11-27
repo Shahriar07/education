@@ -4,6 +4,9 @@
    - tongs (চিমটা): 0.30 long, fingers 0.12 from the joint: the tips move 0.30 / 0.12 = 2.5 times as far as the fingers
    - fixed pulley: the rope goes over the wheel: pull down d, the bucket rises d, the force only turns round
    - scissors: blades 0.09, handles 0.08 from the pivot */
+/* offset of each finger bow from the blade line (m): bow outer radius 0.023; with the blades closed to -2 degrees the two bows
+   are 0.047 m apart, centre to centre: they just touch and cannot pass each other */
+const SC_BOW = 0.0247;
 const TL = { X: 6600, TY: 0.78, Z: 0, PIN: { H: 0.16, J: 0.032 }, TONG: { L: 0.30, F: 0.12 }, SC: { B: 0.09, H: 0.08 }, WELL: { X: 6610, Z: 0, R: 0.55, BEAM: 2.05, PR: 0.11 } };
 let V15 = null;
 const _b14 = buildV3, _f14 = frameV3;
@@ -27,7 +30,9 @@ buildV3 = function (k) {
   /* scissors: two blades and two ring handles, the cloth lying on the table */
   const sci = new THREE.Group(); scene.add(sci);
   const blade = (s) => { const g = new THREE.Group(), sh = new THREE.Shape(); sh.moveTo(0, 0); sh.lineTo(TL.SC.B, s * 0.002); sh.lineTo(TL.SC.B * 0.2, s * 0.016); sh.lineTo(0, s * 0.012); sh.closePath();
-    const b = new THREE.Mesh(new THREE.ExtrudeGeometry(sh, { depth: 0.003, bevelEnabled: false }), steel); g.add(b); const r = new THREE.Mesh(new THREE.TorusGeometry(0.018, 0.005, 10, 28), mat('#2e6fbf', { roughness: 0.5 })); r.position.set(-TL.SC.H + 0.012, -s * 0.01, 0); g.add(r); box(TL.SC.H - 0.03, 0.008, 0.006, mat('#2e6fbf'), -(TL.SC.H - 0.03) / 2, -s * 0.003, 0, g); return g; };
+    const b = new THREE.Mesh(new THREE.ExtrudeGeometry(sh, { depth: 0.003, bevelEnabled: false }), steel); g.add(b); const r = new THREE.Mesh(new THREE.TorusGeometry(0.018, 0.005, 10, 28), mat('#2e6fbf', { roughness: 0.5 })); r.position.set(-TL.SC.H + 0.012, -s * SC_BOW, 0); g.add(r);
+    /* the shank bends from the pivot down (or up) to the bow, so the bows sit SC_BOW off the blade line: closed, they just touch */
+    const sk = box(Math.hypot(0.045, SC_BOW - 0.004), 0.008, 0.006, mat('#2e6fbf'), -0.0275, -s * (SC_BOW - 0.004) / 2 - s * 0.002, 0, g); sk.rotation.z = s * Math.atan2(SC_BOW - 0.004, 0.045); return g; };
   const s1 = blade(1), s2 = blade(-1); s2.position.z = 0.004; sci.add(s1, s2);
   const clothT = canvasTex(256, 256, c => { c.fillStyle = '#2f6fb8'; c.fillRect(0, 0, 256, 256); c.fillStyle = '#f4d35e'; for (let y = 0; y < 256; y += 32) for (let x = (y / 32) % 2 * 16; x < 256; x += 32) { c.beginPath(); c.arc(x + 8, y + 8, 6, 0, 7); c.fill(); } });
   const cloth = new THREE.Mesh(new THREE.PlaneGeometry(0.3, 0.22), new THREE.MeshStandardMaterial({ map: clothT, roughness: 1, side: THREE.DoubleSide })); cloth.rotation.x = -Math.PI / 2; cloth.position.set(TL.X + 0.42, TL.TY + 0.002, TL.Z); scene.add(cloth);
@@ -54,6 +59,8 @@ TL.TONG.PHIB = -Math.asin((TONGP[1] - TL.TY - 0.0015) / TL.TONG.L); TL.TONG.RP =
 TL.TONG.POTY = TONGP[1] + TL.TONG.RP * Math.sin(TL.TONG.PHIB) + 0.0015 + 0.02;                     // potato centre: on the bottom strip
 TL.TONG.AMIN = Math.asin((TL.TONG.POTY + 0.02 + 0.0015 - TONGP[1]) / TL.TONG.RP) - TL.TONG.PHIB;     // the top strip on the potato's top
 const tongTop = a => TL.TONG.PHIB + a;
+const SCI_UP = { Z: TL.Z + 0.45, Y: TL.TY + 0.0005, EDGE: TL.X + 0.27, A0: 0.52 };
+const sciPt = (xp, ang, x, y) => [xp + x * Math.cos(ang) - y * Math.sin(ang), SCI_UP.Y + x * Math.sin(ang) + y * Math.cos(ang), SCI_UP.Z];
 const SCIP = [TL.X + 0.25, TL.TY + 0.012, TL.Z + 0.05];
 /* o.pin = opening (rad), o.tong = {a: opening (rad), lift}, o.sci = {a, cut (m)}, o.well = d (m of rope pulled) */
 frameV3 = function (o) {
@@ -63,6 +70,9 @@ frameV3 = function (o) {
   V15.tong.visible = V15.pot.visible = !!o.tong; if (o.tong) { const a = o.tong.a, L = o.tong.lift || 0; V15.tong.position.set(TONGP[0], TONGP[1] + L, TONGP[2]); V15.tong.rotation.z = TL.TONG.PHIB + a / 2; V15.t1.rotation.z = a / 2; V15.t2.rotation.z = -a / 2;
     V15.pot.position.set(TONGP[0] + TL.TONG.RP * Math.cos(TL.TONG.PHIB), TL.TONG.POTY + Math.max(0, L), TONGP[2]); }
   V15.sci.visible = !!o.sci && !o.sci.hand; V15.cloth.visible = !!o.sci; if (o.sci) { V15.sci.position.set(SCIP[0] + o.sci.cut, SCIP[1] + 0.012, SCIP[2]); V15.sci.rotation.x = -Math.PI / 2; V15.s1.rotation.z = o.sci.a / 2; V15.s2.rotation.z = -o.sci.a / 2; }
+  /* o.sciUp {a, xp}: the scissors upright (blades in the vertical plane, at 90 degrees to the cloth): the lower blade level just
+     under the cloth, the upper blade open by a; the cloth overhangs the bench's front edge so the lower blade runs under it */
+  if (o.sciUp) { const u = o.sciUp; V15.sci.visible = V15.cloth.visible = true; V15.sci.rotation.set(0, 0, u.a / 2); V15.sci.position.set(u.xp, SCI_UP.Y, SCI_UP.Z); V15.cloth.position.set(TL.X + 0.42, TL.TY + 0.002, TL.Z + 0.40); }
   if (o.well !== undefined) { const W = TL.WELL, d = o.well, top = W.BEAM - 0.1 - W.PR, yb = 0.05 + d, yh = 1.35 - d;
     const seg = (m, x, y1, y2) => { m.position.set(x, (y1 + y2) / 2, 0); m.scale.y = Math.max(0.01, y2 - y1); };
     seg(V15.rL, -W.PR, yb + 0.37, top); seg(V15.rR, W.PR, yh, top); V15.buck.position.set(-W.PR, yb, 0); V15.wheel.rotation.z = d / W.PR; }
