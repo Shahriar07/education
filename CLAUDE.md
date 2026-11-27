@@ -94,11 +94,12 @@ Notes for this chapter:
 
 ### Chapter 11, বল ও সরল যন্ত্র (PDF pages 98 to 107, printed 93 to 102)
 
-- Three videos (approved 2026-11-25): (1) পাঠ ১-৩ in `class6-ch11-bol-1\`, (2) পাঠ ৪-৭ লিভার, (3) পাঠ ৮-১২. Plan: `class6-ch11-bol-1\plan.md`.
+- Two videos: (1) পাঠ ১-৩ in `class6-ch11-bol-1\`, (2) পাঠ ৪-১২ in `class6-ch11-bol-2\` (first planned as three videos on 2026-11-25; I merged videos 2 and 3 on 2026-11-27 because the lever had started in video 1). Plans: `plan.md` in each folder.
 - A skull may be shown (2026-11-25: it is not a living being); in video 3 the jaw, foot and arm are shown as bones.
 - Every force and machine is explained simply in the same order: who applies it, where and in which direction (arrow proportional to the force), what happens, where it is used.
 - The book numbers two figures ১১.১৫ (screwdrivers; human body).
-- Video 1 (বল ও সরল যন্ত্র কী) is finished in `class6-ch11-bol-1\`: 35 parts, 9 min 49 s, 1,130 words; first render 2026-11-26, then 23 parts re-rendered after my notes and ৭খ again on 2026-11-27. New files: `zones11.js` to `zones11e.js` (rod and stones, room set with door, switch and chair, tubewell, cart, marbles, bat, microbus, rubber, tools and well, can, shil-pata, mouse, ruler) and, in `science-video-template\hand\`, `hands3d.js` with `mesh_<pose>.js` (the 3D hands). The rod of চিত্র ১১.৩ is called "শক্ত দণ্ড" and rests on a small rounded stone as in the book. Start video 2 (লিভার, পাঠ ৪-৭) from a copy of this folder.
+- Video 1 (বল ও সরল যন্ত্র কী) is finished in `class6-ch11-bol-1\`: 35 parts, 9 min 49 s, 1,130 words; first render 2026-11-26, then 23 parts re-rendered after my notes and ৭খ again on 2026-11-27. New files: `zones11.js` to `zones11e.js` (rod and stones, room set with door, switch and chair, tubewell, cart, marbles, bat, microbus, rubber, tools and well, can, shil-pata, mouse, ruler) and, in `science-video-template\hand\`, `hands3d.js` with `mesh_<pose>.js` (the 3D hands). The rod of চিত্র ১১.৩ is called "শক্ত দণ্ড" and rests on a small rounded stone as in the book. On 2026-11-27 the scissors (৬ঘ), the microbus hands (৪ক-৪খ) and the marbles (৩খ) were redone and 10 parts re-rendered for the caption digit ১.
+- Video 2 (লিভার, হেলানো তল, কপিকল ও মানবদেহ, পাঠ ৪-১২) is finished in `class6-ch11-bol-2\`: 36 parts, 11 min 25 s, 1,343 words, delivered 2026-11-27. New files: `zones11f.js` (plank lever), `zones11g.js` (workshop, জাঁতি, হাতুড়ি, ঢেঁকি, shop নিক্তি), `zones11h.js` (truck, ramp and drum, bridge and stairs, jack screw, flag pole, movable pulley, wheel and axle, screwdrivers), `zones11i.js` (bottle opener, door knob, ruler and coins, and the 2D bones: skull with jaw, foot, arm); `hands3d.js` gained `mirror` and `toward`. Its `index.html` takes the digit ১ from the 700 font file for weights 400 and 600, which draw it in a looped form. Start chapter 12 from a copy of this folder.
 
 ## Showing what an observer sees (every video, approved 2026-11-17)
 
@@ -143,6 +144,7 @@ Notes for this chapter:
 | The shooting marble stopped dead after the hit. | Rolling balls keep their spin: after a hit each rolls on at v = (5/7) v_slide + (2/7) R w. |
 | The শিল rolled on the পাটা. | The শিল slides forward and back, level with the পাটা; it does not roll. |
 | The microbus pushers' hands were one above another. | People stand side by side; film them from behind at an angle. |
+| (Later) Both hands of each microbus pusher were the same right hand, so both thumbs pointed one way (2026-11-27). | The two hands of one person are a right hand and its mirror image (`mirrorZ`, `mirror`): when pushing, both thumbs point inward, the right hand's thumb on its left side and the left hand's on its right. |
 | The hand pulling the well rope came from above. | Pulling down, the forearm is below the hand. |
 | A background render was stopped for low memory; one part failed when it was the first in a fresh page. | Render in the foreground, 3 parts per batch, each batch a fresh process. A part must not ask for a scene object before the first `W3.frame` has built the world. |
 
