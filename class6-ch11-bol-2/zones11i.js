@@ -57,12 +57,22 @@ frameV3 = function (o) {
     /* the cap turns about the same far edge by the same angle: its near edge rides on the lip */
     V20.cap.position.set(fx + BO.CR * Math.cos(b), cb + BO.CR * Math.sin(b), 0); V20.cap.rotation.z = b; }
   V20.dr.visible = o.door !== undefined; if (o.door !== undefined) { V20.knob.rotation.z = o.door; V20.bolt.position.x = 0.46 - 0.012 * Math.min(1, Math.abs(o.door) / 0.8); }
+  /* o.sciUp {a, xp}: video 1's scissors stood upright (blades in the vertical plane, at 90 degrees to the cloth): the lower
+     blade stays level just under the cloth, the upper blade opens by a above it; each ring turns with its own blade, so the
+     rings open by the same angle (tips 9 cm, rings 8 cm from the pivot). The cloth overhangs the bench's front edge
+     (z = 0.35 m) so that the lower blade can run under it; xp = the pivot's x */
+  if (o.sciUp) { const u = o.sciUp; V15.sci.visible = V15.cloth.visible = true; V15.sci.rotation.set(0, 0, u.a / 2); V15.sci.position.set(u.xp, SCI_UP.Y, SCI_UP.Z);
+    V15.cloth.position.set(TL.X + 0.42, TL.TY + 0.002, TL.Z + 0.40); }
   const c = o.coins; V20.cn.visible = V20.band.visible = !!c;
   if (c) { const p = c.p / 100, th = coinTilt(c), x0 = CN.L / 2; V20.rul.position.set(-(p - x0) * 0, 2 * CN.R + 0.0015, 0);
     V20.rul.position.x = (x0 - p) * Math.cos(th); V20.rul.position.y = 2 * CN.R + 0.0015 - (x0 - p) * Math.sin(th); V20.rul.rotation.z = -th;
     V20.band.position.set(CN.X, WS.TY + CN.R, CN.Z); V20.band.visible = c.show >= 1;
     const on = c.show >= 2; [[V20.sL, 0.05], [V20.sR, 0.25], [V20.sR2, 0.25]].forEach(([g, m], i) => { g.visible = on && (i < 2 || c.nR > 5); g.position.set(m - x0, 0.0015 + (i === 2 ? 5 * CN.CT : 0), 0); }); }
 };
+/* upright scissors: the plane of the blades (z) and the pivot's height (the lower blade's edge just under the cloth) */
+const SCI_UP = { Z: TL.Z + 0.45, Y: TL.TY + 0.0005, EDGE: TL.X + 0.27, A0: 0.52 };
+/* a point given in the upright scissors' own plane: from the pivot (xp), turned by ang (0 = the lower blade's line) */
+const sciPt = (xp, ang, x, y) => [xp + x * Math.cos(ang) - y * Math.sin(ang), SCI_UP.Y + x * Math.sin(ang) + y * Math.cos(ang), SCI_UP.Z];
 /* the ruler's tilt (rad, + = right end down): balanced -> 0, otherwise it turns until its lower end touches the bench */
 function coinTilt(c) { const p = c.p / 100, mL = 5 * (0.05 - p), mR = (c.nR || 5) * (0.25 - p), net = mL + mR; if (Math.abs(net) < 1e-4 || c.show < 2) return 0;
   const arm = net > 0 ? 0.30 - p : p, a = Math.asin((2 * CN.R + 0.0015) / arm); return (net > 0 ? 1 : -1) * a * (c.k === undefined ? 1 : c.k); }
