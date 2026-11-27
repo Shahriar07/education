@@ -6,17 +6,18 @@ part('s03_p02', { scene: 3, label: '৩খ', title: "চিত্র ১১.৬:
   { c: "কারণ ভারবাহু ছোট হয়ে যায়, তাই যান্ত্রিক সুবিধা বাড়ে। এজন্য মোটা কাপড় কাঁচির গোড়ার দিক দিয়ে কাটা হয়।" }
 ], function (t, S) {
   /* কাঁচি (fig 11.6), standing upright at 90 degrees to the cloth. Blades 9 cm, rings 8 cm from the pivot (the fulcrum).
-     Open: a = 30 degrees: tips 4.7 cm apart, rings 4.1 cm apart. Three cuts: the blades close (the meeting point runs from the
-     pivot towards the tips and cuts the cloth it passes), open again and move 5 cm forward. Then the scissors are pushed deep:
+     Open: a = 30 degrees: tips 4.7 cm apart, rings 4.1 cm apart. The cloth's edge starts in the middle of the blades (4.5 cm from
+     the pivot, inside the open jaws). Three cuts: the blades close until they cross a little (a = -2 degrees, they slide past each
+     other), the meeting point runs from the pivot to the tips and cuts the cloth it passes; then they open and move 4.5 cm on. Then the scissors are pushed deep:
      the cloth (the load) only 2 cm from the pivot. Finger force F = R d / 0.08 (R drawn 160 px, F at most 160 px) */
-  const A0 = SCI_UP.A0, X0 = SCI_UP.EDGE, T = 1.7, x00 = X0 - 0.075;
+  const A0 = SCI_UP.A0, X0 = SCI_UP.EDGE, T = 1.7, x00 = X0 - 0.045, ST = 0.045, AMIN = -0.035;
   let a = A0, xp = x00, cutEnd = X0;
   if (t >= S.A(1)) { const q = Math.max(0, t - S.A(1) - 0.4), n = Math.min(2, Math.floor(q / T)), ph = q >= 3 * T ? 1 : (q % T) / T;
-    for (let i = 0; i < n; i++) cutEnd = Math.max(cutEnd, x00 + 0.05 * i + 0.085);
-    xp = x00 + 0.05 * n + (q >= 3 * T ? 0 : 0.05 * ease(cl((ph - 0.62) / 0.38)) * (n < 2 ? 1 : 0));
-    const close = ph < 0.45 ? ease(ph / 0.45) : ph < 0.62 ? 1 : 1 - ease((ph - 0.62) / 0.38); a = A0 - (A0 - 0.04) * close;
-    if (q < 3 * T) cutEnd = Math.max(cutEnd, x00 + 0.05 * n + 0.09 * (ph < 0.62 ? close : 1));
-    else { cutEnd = Math.max(cutEnd, x00 + 0.05 * 2 + 0.085); a = A0; xp = x00 + 0.1; } }
+    for (let i = 0; i < n; i++) cutEnd = Math.max(cutEnd, x00 + ST * i + 0.09);
+    xp = x00 + ST * n + (q >= 3 * T ? 0 : ST * ease(cl((ph - 0.62) / 0.38)) * (n < 2 ? 1 : 0));
+    const close = ph < 0.45 ? ease(ph / 0.45) : ph < 0.62 ? 1 : 1 - ease((ph - 0.62) / 0.38); a = A0 - (A0 - AMIN) * close;
+    if (q < 3 * T) cutEnd = Math.max(cutEnd, x00 + ST * n + 0.09 * (ph < 0.62 ? close : 1));
+    else { cutEnd = Math.max(cutEnd, x00 + ST * 2 + 0.09); a = A0; xp = x00 + ST * 2; } }
   if (t >= S.A(2)) { const k = ease(S.P(2, 0.05, 0.35)); xp = xp + (cutEnd - 0.02 - xp) * k; a = A0 - (A0 - 0.3) * k; }
   const P = W3.frame({ cam: { pos: [TL.X + 0.27, TL.TY + 0.2, SCI_UP.Z + 0.5], look: [TL.X + 0.27, TL.TY - 0.01, SCI_UP.Z], fov: 32 }, sci: { a, cut: 0 }, sciUp: { a, xp }, sun: [-14, 34, 26] });
   let s = '', u = '';
