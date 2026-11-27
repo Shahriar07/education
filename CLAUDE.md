@@ -135,6 +135,7 @@ Notes for this chapter:
 | Hands were flat pictures pasted over the 3D scene; their angle and size never matched the objects. | Hands are 3D meshes placed in the scene by coordinates (see the visual rules). |
 | Fingertip presses; one fingertip on a mouse. | Press with the palm, pull with a bent finger hooked in, the whole hand resting on a mouse. |
 | Hands on the pincers, scissors and tongs did not look properly held. | Tools are shown without hands; arrows show the force in and out. |
+| (Video 2) The scissors lay flat on the cloth; the finger holes did not open with the blades and overlapped when closed (2026-11-27). | Scissors stand at 90° to the cloth with the cloth inside the open blades; each finger hole turns with its blade, and when the blades close the holes just touch, never overlap. |
 | The cart puller's arm first went back, then looked like someone outside holding the shaft. | First work out where the person stands. A cart is pulled from between the shafts: one hand on each handle, four fingers outside, thumb inside, arms hanging nearly upright from the shoulders; the left hand is the mirrored right hand. |
 | The drawer was pulled from above. | Pull from the front, as a person standing in front of it would. |
 | On the switchboard the middle rocker looked off and the other two on. | Off = every rocker alike; on = the pressed one flipped. |
