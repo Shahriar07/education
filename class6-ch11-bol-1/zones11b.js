@@ -95,4 +95,6 @@ function pushHands(x, y, pm, n, o = 1, a = 8) { let s = ''; for (let i = 0; i < 
 const handStop = (x, y, a, pm, o = 1) => handImg('hand_push.png', [818.6, 1044.9], 3.75, x, y, a, pm, o, false);
 const RED = '#ff6b5e';
 /* n people side by side behind the microbus (rear face x = cx - 2.44), two palms each */
-const mbusHands = (cx, n, d = 0) => { const out = []; for (let i = 0; i < n; i++) { const zc = MBUS.Z + (n > 1 ? -0.62 + 1.24 * i / (n - 1) : 0); [-0.11, 0.11].forEach(dz => out.push(H3.push([cx - 2.44 - d, 1.08, zc + dz], [1, 0, 0]))); } return out; };
+/* each pusher stands behind the bus facing +x, so the right hand is on the +z side; the left hand is the right one mirrored in
+   the plane through the middle of the body (z = zc), so the two thumbs point inwards, towards each other */
+const mbusHands = (cx, n, d = 0) => { const out = []; for (let i = 0; i < n; i++) { const zc = MBUS.Z + (n > 1 ? -0.62 + 1.24 * i / (n - 1) : 0), r = H3.push([cx - 2.44 - d, 1.08, zc + 0.11], [1, 0, 0]); out.push(r, Object.assign({}, r, { mirrorZ: zc })); } return out; };
