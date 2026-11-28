@@ -1,8 +1,8 @@
 # CLAUDE.md: Bangla science video series
 
-This is the project instruction file for Claude Code. Keep it in the project root. The rules below apply to every video in this project.
+This is the project instruction file for Claude Code. Keep it in the project root. It holds the facts of this project (computers, paths, the reference build, the chapter tables). The rules for every video, and how we work, are in the skill `science-video` (`.claude/skills/science-video/`): `SKILL.md` gives the stages and how to change a rule, and `rules/` holds the rules, one topic per file. This file imports all of them at the end.
 
-An online copy, readable and editable from any computer, is the Claude Doc "বিজ্ঞান ভিডিও সিরিজ: নির্দেশনা ও CLAUDE.md": https://claude.ai/artifact/SbedAWR74MootFgSQL74QL (tab 1 = this file, tab 2 = `science-video-instructions.md`, which this file imports at the end). Whenever you change either file, make the same change in the doc, and before starting work read the doc for edits the user made there and bring them into these files.
+An online copy, readable and editable from any computer, is the Claude Doc "বিজ্ঞান ভিডিও সিরিজ: নির্দেশনা ও CLAUDE.md": https://claude.ai/artifact/SbedAWR74MootFgSQL74QL (one tab per file: this file, `SKILL.md`, and under it one sub-tab per rule file). Whenever you change any of these files, make the same change in its tab, and before starting work read the doc for edits the user made there and bring them into these files.
 
 ## Project setup on this computer
 
@@ -35,12 +35,12 @@ This project lives on two computers, each with a clone of the same git repositor
 | `world3d.js` | three.js world in metres: street with buildings, lamp posts, bus stop, lake; bus with interior; two cars, one with interior; railway station and train; village yard with tin house, kolshi, football; balcony. Camera presets: `third`, `ariyan`, `seat`, `carYou`, `platform`, `yard`, `flat`, and `mix` for camera flights | Yes; add new places as new zones far along x |
 | `draw2d.js` | 2D drawings: study desk, book, khata, pen in hand, clock, Earth and Moon lit from one side, fan, swing, icons | Yes; add to it |
 | `parts\sNN_pMM.js` | One file per part: `meta` (scene, label, title, `screen` = the On-screen text for the script, `first`/`last` for the navy fade), the narration segments, and the draw function | No; write new ones |
-| `render.py` | `info` (part lengths), `stills <part> [t ...]` (check frames), `clip <part...>` or `clip all`, `join` (concat `-c copy`, video.srt, parts-list.md), `script` (rewrites the scene section of script.md from the parts), `phone <part:t ...>` (frames shrunk to phone size, tiled into out\phone.png), `chunks` (pieces to send) | Yes |
+| `render.py` | `info` (part lengths), `stills <part> [t ...]` (check frames), `clip <part...>` or `clip all`, `parallel [n] [part...]` (several fresh `clip` processes at once; from `class6-ch09-alo-1\` on), `join` (concat `-c copy`, video.srt, parts-list.md), `script` (rewrites the scene section of script.md from the parts), `phone <part:t ...>` (frames shrunk to phone size, tiled into out\phone.png), `chunks` (pieces to send) | Yes |
+| `render-all.bat` (from `class6-ch09-alo-1\` on) | One click: `.venv` setup, `render.py parallel`, `join`, `chunks`, commit, push, pull request. Set the branch name and title inside it | Yes; change the branch and title |
 
-- The narration lives only in the part files. After changing narration, run `render.py script` so script.md follows.
-- A part's draw function times its animation by segment index (`S.A(i)`, `S.P(i, a, b)`, `S.on(i)`). Add a new sentence at the end of a part, or shift every index in that part; check that anything shown "until the end" uses `t >= S.A(i)` rather than `S.on(i)`.
-- A full render of a 10-minute video takes about 30 minutes; run it in the background.
-- Sending video to me: files over 30 MB cannot be sent to my phone or the web. When a video is bigger, run `render.py chunks` (cap 30 MB, set by me on 2026-11-17): it groups whole parts, in order, into `out\send\video_1_of_N.mp4` ... of at most 30 MB each (joined with `-c copy`, so nothing is re-encoded) plus `join-list.txt`. Send those pieces; I join them myself. Cut only between parts, never inside one.
+To regenerate any finished video without the agent, use `make_video.py` (or `make_video.bat`) in the project root: `make_video.bat <video folder> [--parts ...] [--scenes ...] [--changed]`; every option is in `README.md`, "Regenerating a video without the agent". It drives the video's own `render.py`.
+
+How to use these files (narration only in the parts, segment indices, rendering without running out of memory, sending in 30 MB pieces): `rules/09-build-and-render.md` and `rules/10-checks-and-delivery.md` in the skill.
 
 ## Chapter index found so far (class six science)
 
@@ -66,6 +66,7 @@ Notes for this chapter:
 - Several textbook figures show a person (৯.১, ৯.৩, ৯.৬). Keep the arrangement of the figure but replace the person with a single eye or a hand, as the visual rules require.
 - The chapter does not cover atoms, electrons, waves, transparency, shadows, or the Sun-to-Earth travel time. Video 1 included these; they are outside the textbook.
 - Video 1 (আলো কী ও কীভাবে চলে, পাঠ ১-২) was built twice on the home PC. The first build (nine long scenes) is the old scene files in `science-video-template\`; its video was delivered. The second build, in small parts, is `class6-ch09-alo\` (31 parts, 9 min 31 s, 2D only: SVG drawings with `science-video-template\core.js`, no three.js). Only 20 of its 31 parts were rendered: the render stopped at `s06_p04` on a 30-second screenshot timeout, so its joined video ends after `s06_p03`. Its own commands are in `class6-ch09-alo\out\delivery-note.md` (`gen.py`, `render.py`, `deliver.py`). It is older than the motion videos and does not follow the later rules (3D, text size, hands), so do not use it as a reference build.
+- Two videos (my decision, 2026-11-28; the plan of 2026-11-26 had three: পাঠ ১-৩, ৪-৭, ৮-১০). (1) পাঠ ১-৩, আলো কীভাবে চলে ও আমরা কীভাবে দেখি, is finished in `class6-ch09-alo-1\`: 32 parts, 9 min 29 s, 1,030 words, all 3D; plan and delivery note in that folder. It replaces the two older builds above. (2) পাঠ ৪-১০ in one video, `class6-ch09-alo-2\`: reflection and absorption, the law of reflection, the image in a plane mirror and the periscope, with চিত্র ৯.৪ to ৯.১০ and the torch activity on five surfaces, each about a minute; about 12 minutes and about 1,400 words.
 
 ### Chapter 10, গতি: lessons and figures (printed pages 82 to 92)
 
@@ -101,61 +102,18 @@ Notes for this chapter:
 - Video 1 (বল ও সরল যন্ত্র কী) is finished in `class6-ch11-bol-1\`: 35 parts, 9 min 49 s, 1,130 words; first render 2026-11-26, then 23 parts re-rendered after my notes and ৭খ again on 2026-11-27. New files: `zones11.js` to `zones11e.js` (rod and stones, room set with door, switch and chair, tubewell, cart, marbles, bat, microbus, rubber, tools and well, can, shil-pata, mouse, ruler) and, in `science-video-template\hand\`, `hands3d.js` with `mesh_<pose>.js` (the 3D hands). The rod of চিত্র ১১.৩ is called "শক্ত দণ্ড" and rests on a small rounded stone as in the book. On 2026-11-27 the scissors (৬ঘ), the microbus hands (৪ক-৪খ) and the marbles (৩খ) were redone and 10 parts re-rendered for the caption digit ১.
 - Video 2 (লিভার, হেলানো তল, কপিকল ও মানবদেহ, পাঠ ৪-১২) is finished in `class6-ch11-bol-2\`: 36 parts, 11 min 25 s, 1,343 words, delivered 2026-11-27. New files: `zones11f.js` (plank lever), `zones11g.js` (workshop, জাঁতি, হাতুড়ি, ঢেঁকি, shop নিক্তি), `zones11h.js` (truck, ramp and drum, bridge and stairs, jack screw, flag pole, movable pulley, wheel and axle, screwdrivers), `zones11i.js` (bottle opener, door knob, ruler and coins, and the 2D bones: skull with jaw, foot, arm); `hands3d.js` gained `mirror` and `toward`. Its `index.html` takes the digit ১ from the 700 font file for weights 400 and 600, which draw it in a looped form. Start chapter 12 from a copy of this folder.
 
-## Showing what an observer sees (every video, approved 2026-11-17)
+## Rules for every video
 
-- When the narration says what someone sees, the camera is that person's eyes: on the ground at the bus stop for a friend standing there, inside the vehicle at the seat for "তুমি". Never show it from a third place.
-- Things that are at rest for that observer keep their place in the picture; things that move for that observer move across it. The picture itself must prove the statement in the caption.
-- Before the first eye view, show one short part from outside (third person, raised three-quarter view) with each person as a labelled eye, so it is clear who is where. Nothing is called স্থির or গতিশীল in that part.
-- Move between views with a continuous camera flight into the observer's eyes, not a cut. While looking through someone's eyes, show "কে দেখছে: <name>" at the top right and hide that person's own marker.
-- Inside a vehicle, its fixed parts (window frame, seat in front) must be visible and pinned as স্থির; seats line up with the windows as in a real bus.
+The rules (textbook, episode structure, physics, what may be drawn, hands, camera and observer, screen style, 2D diagrams, building and rendering, checks and delivery) and the stages of the work are kept in one place, the `science-video` skill, and imported here. Each rule file ends with its own "Lessons (do not repeat)" table of what went wrong and the rule that came from it. Change a rule only in its file (see "Changing a rule" in `SKILL.md`), never by copying it into this one.
 
-## Lessons from the motion video (do not repeat)
-
-| What was wrong | Rule for every video |
-|---|---|
-| Both views of "who sees what" were filmed from across the road. | The camera is the observer's eyes (see the section above). |
-| Inside the bus the window could not be seen: the glass was almost invisible and the camera was too close to it. Seats faced backwards and did not match the windows. | Glass has a visible tint and a highlight, every window has a frame; keep the camera far enough from the glass to see a frame, a seat and the outside at once. Check the inside against the outside: same window count and spacing, seats facing forward, one seat row per window. |
-| Inside a closed space (car cabin) everything was dark. | Add a soft light inside the cabin; use contrasting colours for seats, door panel and pillars. |
-| From a balcony looking straight down, the bus and car crossed the picture in about a second. | A moving thing must stay in view for the whole sentence about it. Look along the road, not across it, or time the vehicle so it is mid-picture during its sentence. |
-| A lamp post stood right in front of the balcony camera. | After choosing a camera spot, look at a frame and move the camera if a nearby object blocks the view. |
-| When narration was added, a part got longer and the bus drove off the screen before the end. | After any narration change, check a frame near the end of every changed part. |
-| A rickshaw or cycle cannot be shown without drawing its rider. | Use a closed vehicle (car, bus, train with dark windows) and say in the narration what the book uses; ask for approval in the plan. |
-| A textbook person (Anusheh at the bus stand) was moved to another place to fit a scene. | Allowed, but list every such change in the plan and in the delivery note for approval. |
-| On my phone the chip "অধ্যায় ১০" ran together: it was 34 px and semi-bold, the smallest text in the video, and on a phone it shrank to about 11 px. Some labels were 28 to 38 px. | No text below 40 px in the 1920x1080 frame, and bold for short labels. The chip is 42 px bold and its chapter number sits in its own yellow `<span class="cn">` with a gap after অধ্যায়. Before the full render, look at frames shrunk to phone size with `render.py phone`. |
-| Every shop on the street showed the same coloured boxes, so the fruit shop (ফল ঘর) had no fruit. I pointed this out on 2026-11-18. | Everything on screen shows what it is or what its label says: a fruit shop shows fruit, a bookshop books, a pharmacy medicine, a tea stall a kettle and glasses. Draw goods per shop type (shopGoods in world3d.js), and before the full render take a close look at every sign, shop and labelled object. |
-| The village swing (৪গ) swung sideways along its beam; a swing hangs on two ropes from the beam and swings forward and back. A flat side view of it was hard to read, and I asked for 3D from a raised angle (2026-11-18). | Every motion goes in its real direction. Things whose motion needs depth to be understood (a swing, anything moving towards or away from us) are shown in 3D from a raised three-quarter view, not as a flat side view. |
-| On the field (৪খ) the runner seemed to run off the track: the chalk lines were a lit strip and the inner line went dark on half the loop, so only the outer lines showed. | Painted ground lines use an unlit material. When something must move along a drawn line, draw its computed points over a rendered frame once and check that they lie on the line. |
-| A hand was drawn at the bamboo pole in ৩খ; I asked for it to be removed. | Draw a hand only where it does the action that is being shown (pushing, pressing, pulling); a labelled eye is enough to show where someone is. |
-| Hands looked like mittens, and the writing hand came in sideways with no clear grip on the pen. I asked for realistic hands, an upright writing hand and a correct pen grip (2026-11-18). | Realistic hands (fingers, knuckles, nails, thumb, shading, cuff; handPush, handFlat, handFinger, gripHand, handWrite in draw2d.js). The writing hand is upright, seen from above, the pen in the tripod grip. |
-| The pen hand still did not look like a real grip: in video 1 the fingers were flat plates, in video 2 the thumb and index finger were thin sticks with the pen across the palm. I sent a photo of a real grip (2026-11-18): the pen held by the thumb and the index finger, the other fingers supporting. A 2D redraw from that photo was still wrong: the thumb and index finger did not read as neighbours, so the finger on the pen looked like a little finger (I sent a photo of both sides of a right hand). Then the palm was missing (four sticks, fingers seeming to start at the wrist), the pen sank into the hand, and the first fit still left gaps and edges off the photo. I asked for a new version beside the old one and chose v2 (2026-11-18). | The pen hand is a 3D model built from the bones of a real right hand and fitted to the reference photo (`science-video-template\hand\`; the first version is kept in `hand_v1\`). `hand3d.js` builds the skeleton (four knuckles index, middle, ring, little along the top of a broad palm; the thumb from the base of the palm beside the index finger); `skin.js` lays one smooth skin over it (blended shapes, knuckles, crease shading); `fit.js` fits camera, joint angles, proportions, wrist and pen line to 12 points measured on the photo and to the photo's whole outline, while the thumb and index pads stay on the pen and the middle finger under it; `make_hand.py fit <photo>` runs the fit (the photo is only read, never stored in the project), `make_hand.py` renders `hand_side.png` and `hand.json`. The pen is drawn after the hand and only the thumb's last segment over the pen, so the pen never disappears into the hand. Outline match with the photo: v2 90.7 %, v1 84.7 %. `handPen` and `handWrite` in draw2d.js place the picture by its pen tip and pen angle (`HAND_IMG`). A hand in any new pose is made the same way, never drawn freehand: measure a photo of a real hand, fit, and check the overlay and the mismatch map before using it. |
-
-## Lessons from chapter 11, video 1 (do not repeat)
-
-| What was wrong | Rule for every video |
-|---|---|
-| Hands were flat pictures pasted over the 3D scene; their angle and size never matched the objects. | Hands are 3D meshes placed in the scene by coordinates (see the visual rules). |
-| Fingertip presses; one fingertip on a mouse. | Press with the palm, pull with a bent finger hooked in, the whole hand resting on a mouse. |
-| Hands on the pincers, scissors and tongs did not look properly held. | Tools are shown without hands; arrows show the force in and out. |
-| (Video 2) The scissors lay flat on the cloth; the finger holes did not open with the blades and overlapped when closed (2026-11-27). | Scissors stand at 90° to the cloth with the cloth inside the open blades; each finger hole turns with its blade, and when the blades close the holes just touch, never overlap. |
-| The cart puller's arm first went back, then looked like someone outside holding the shaft. | First work out where the person stands. A cart is pulled from between the shafts: one hand on each handle, four fingers outside, thumb inside, arms hanging nearly upright from the shoulders; the left hand is the mirrored right hand. |
-| The drawer was pulled from above. | Pull from the front, as a person standing in front of it would. |
-| On the switchboard the middle rocker looked off and the other two on. | Off = every rocker alike; on = the pressed one flipped. |
-| The label said গ্রামের পথ but the scene was a city, and the cart looked too big. | The scene matches its label; show true size next to known things (a house, a road). |
-| The shooting marble stopped dead after the hit. | Rolling balls keep their spin: after a hit each rolls on at v = (5/7) v_slide + (2/7) R w. |
-| The শিল rolled on the পাটা. | The শিল slides forward and back, level with the পাটা; it does not roll. |
-| The microbus pushers' hands were one above another. | People stand side by side; film them from behind at an angle. |
-| (Later) Both hands of each microbus pusher were the same right hand, so both thumbs pointed one way (2026-11-27). | The two hands of one person are a right hand and its mirror image (`mirrorZ`, `mirror`): when pushing, both thumbs point inward, the right hand's thumb on its left side and the left hand's on its right. |
-| The hand pulling the well rope came from above. | Pulling down, the forearm is below the hand. |
-| A background render was stopped for low memory; one part failed when it was the first in a fresh page. | Render in the foreground, 3 parts per batch, each batch a fresh process. A part must not ask for a scene object before the first `W3.frame` has built the world. |
-
-Checks that caught problems and must be repeated every video: stills of every part before the full render (2 to 4 frames per part, tiled into one sheet), a phone-size sheet (`render.py phone`, 640x360 per frame) in which every word must be readable, then one frame per part taken from the joined video near the end of each part.
-
----
-
-## General rules for every episode
-
-The general rules (structure, core principles, visual rules, narration, style, how to work, what to deliver, checklist) are kept in one place, `science-video-instructions.md`, and imported here. Change a rule only in that file, never by copying it into this one.
-
-@science-video-instructions.md
-
-For this project, "How to build it" also means: start from the reference build described under "Project setup".
+@.claude/skills/science-video/SKILL.md
+@.claude/skills/science-video/rules/01-textbook.md
+@.claude/skills/science-video/rules/02-episode-and-narration.md
+@.claude/skills/science-video/rules/03-physics.md
+@.claude/skills/science-video/rules/04-what-is-drawn.md
+@.claude/skills/science-video/rules/05-hands.md
+@.claude/skills/science-video/rules/06-camera-and-observer.md
+@.claude/skills/science-video/rules/07-screen-style.md
+@.claude/skills/science-video/rules/08-diagrams-2d.md
+@.claude/skills/science-video/rules/09-build-and-render.md
+@.claude/skills/science-video/rules/10-checks-and-delivery.md

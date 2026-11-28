@@ -8,11 +8,11 @@ This repository holds the instructions, scripts and source code, so that any com
 
 | File | What it is |
 |---|---|
-| [`CLAUDE.md`](CLAUDE.md) | Project instructions: setup on each computer, the reference build, chapter tables, lessons learned. At its end it imports the general rules with `@science-video-instructions.md`, so Claude Code reads both |
-| [`science-video-instructions.md`](science-video-instructions.md) | The general rules for every episode (structure, visual rules, physics, checklist), portable to any project. The only copy of these rules |
-| Online copy | Claude Doc "বিজ্ঞান ভিডিও সিরিজ: নির্দেশনা ও CLAUDE.md": https://claude.ai/artifact/SbedAWR74MootFgSQL74QL (tab 1 = `CLAUDE.md`, tab 2 = `science-video-instructions.md`) |
+| [`CLAUDE.md`](CLAUDE.md) | Project facts: setup on each computer, the reference build and its commands, the chapter tables. At its end it imports the skill's `SKILL.md` and every rule file, so Claude Code reads them all |
+| [`.claude/skills/science-video/`](.claude/skills/science-video/) | The skill `science-video`: [`SKILL.md`](.claude/skills/science-video/SKILL.md) (the stages of the work, the approval points, how to change a rule), [`rules/`](.claude/skills/science-video/rules/) (the rules for every video, one topic per file, each with its lessons table), [`templates/`](.claude/skills/science-video/templates/) (brief, plan, delivery note) and `bundle.py` (one Markdown file or a zip for use outside this project). The only copy of the rules |
+| Online copy | Claude Doc "বিজ্ঞান ভিডিও সিরিজ: নির্দেশনা ও CLAUDE.md": https://claude.ai/artifact/SbedAWR74MootFgSQL74QL (one tab per file: `CLAUDE.md`, `SKILL.md`, and under it one sub-tab per rule file) |
 
-A general rule is changed only in `science-video-instructions.md` (and its doc tab); a project fact only in `CLAUDE.md` (and its doc tab).
+A rule is changed only in its rule file (and its doc tab), as "Changing a rule" in `SKILL.md` describes; a project fact only in `CLAUDE.md` or this README (and the doc tab).
 
 ## Computers
 
@@ -32,7 +32,9 @@ Both are clones of this repository. Pull `main` before starting, work on a branc
 | [`class6-ch10-goti-1/`](class6-ch10-goti-1/) | স্থিতি ও গতি কী | অধ্যায় ১০, পাঠ ১-২ | 32 | 9:36 | Finished |
 | [`class6-ch10-goti-2/`](class6-ch10-goti-2/) | নানা প্রকার গতি | অধ্যায় ১০, পাঠ ৩-৮ | 34 | 9:55 | Finished |
 | [`class6-ch10-goti-3/`](class6-ch10-goti-3/) | দূরত্ব ও সরণ, দ্রুতি ও বেগ | অধ্যায় ১০, পাঠ ৯-১২ | 30 | 9:21 | Finished |
-| [`class6-ch11-bol-1/`](class6-ch11-bol-1/) | বল ও সরল যন্ত্র কী | অধ্যায় ১১, পাঠ ১-৩ | 35 | about 10:00 | In progress on the other laptop: plan and script approved, scenes 1 and 2 drawn |
+| [`class6-ch11-bol-1/`](class6-ch11-bol-1/) | বল ও সরল যন্ত্র কী | অধ্যায় ১১, পাঠ ১-৩ | 35 | 9:49 | Finished |
+| [`class6-ch11-bol-2/`](class6-ch11-bol-2/) | লিভার, হেলানো তল, কপিকল ও মানবদেহ | অধ্যায় ১১, পাঠ ৪-১২ | 36 | 11:25 | Finished |
+| [`class6-ch09-alo-1/`](class6-ch09-alo-1/) | আলো কীভাবে চলে ও আমরা কীভাবে দেখি | অধ্যায় ৯, পাঠ ১-৩ | 32 | 9:29 | Finished; replaces `class6-ch09-alo/`. Chapter 9 video 2 (পাঠ ৪-১০) goes in `class6-ch09-alo-2/` |
 
 New videos start from a copy of the latest finished 3D video folder (see "Reference build" in `CLAUDE.md`).
 
@@ -114,6 +116,31 @@ cd class6-ch10-goti-2
 | `..\.venv\Scripts\python.exe -X utf8 render.py chunks` | Split the joined video at part boundaries into pieces of at most 30 MB in `out\send\`, for sending to a phone |
 
 After a change to one part, render only that part and run `join` again.
+
+## Regenerating a video without the agent
+
+Every finished video can be rebuilt from its code by one file in the project root, with no AI agent: [`make_video.py`](make_video.py), or [`make_video.bat`](make_video.bat) on Windows. Double-click `make_video.bat` and type the number of the video; or run it from a terminal in the project root with options:
+
+| Command | What it does |
+|---|---|
+| `make_video.bat` | Lists the videos, asks which one, renders every part, joins them and splits into 30 MB pieces |
+| `make_video.bat class6-ch10-goti-2` | The same for that video |
+| `make_video.bat class6-ch10-goti-2 --parts s05_p03 s07_p01` | Only those parts, then joins again |
+| `make_video.bat class6-ch10-goti-2 --scenes 5 7` | Every part of scenes 5 and 7, then joins again |
+| `make_video.bat class6-ch10-goti-2 --changed` | Only parts with no clip yet, or whose code changed since their clip was made (after `git pull`) |
+| `make_video.bat class6-ch10-goti-2 --mark-done` | Records the clips already in `out\` as up to date (once, for clips made before `make_video.py` existed) |
+| `make_video.bat class6-ch10-goti-2 --list` | The video's parts with their length and title |
+| `make_video.bat --check` | Checks Python, `.venv`, Chrome and the fonts, and stops |
+| `make_video.bat --help` | Every option |
+
+Other options: `--workers N` (parts rendered at once; the default comes from the CPU count and free memory, at most 6), `--batch N` (parts per Chrome process, default 3), `--no-join`, `--no-chunks`, `--chunk-mb MB`, `--allow-missing` (join even if a part has no clip), `--dry-run` (show what would be rendered), `--chrome PATH`.
+
+What it does:
+
+- The first run creates `.venv` in the project root and installs `playwright` and `imageio-ffmpeg` into it (internet needed once). Only Python 3 and Google Chrome must be installed.
+- It calls the video's own `render.py` (`info`, `clip`, `join`, `chunks`), so a video is always rebuilt by the code that made it. Parts are rendered several at a time, at most 3 per fresh Chrome process, so memory does not run out; a part that fails is tried once more on its own.
+- It joins only when every part has a clip, and says which parts are missing.
+- `--changed` compares a fingerprint of each part's code (its part file and the shared page, world, zone and template files) with the one recorded when its clip was made, in `out\make-state.json` (not in git). Logs are in `out\make-*.log`.
 
 ## What is not in git
 

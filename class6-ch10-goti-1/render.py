@@ -18,7 +18,7 @@ FPS = 30
 HERE = Path(__file__).resolve().parent
 OUT = HERE / "out"
 OUT.mkdir(exist_ok=True)
-CHROME = r"C:\Program Files\Google\Chrome\Application\chrome.exe"
+CHROME = os.environ.get("CHROME_PATH", r"C:\Program Files\Google\Chrome\Application\chrome.exe")   # set CHROME_PATH where Chrome lives elsewhere
 FFMPEG = imageio_ffmpeg.get_ffmpeg_exe()
 BN = str.maketrans("0123456789", "০১২৩৪৫৬৭৮৯")
 
