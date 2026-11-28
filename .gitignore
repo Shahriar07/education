@@ -1,4 +1,4 @@
-# Keep in git: instructions (CLAUDE.md, science-video-instructions.md, README.md), each video's plan.md and
+# Keep in git: instructions (CLAUDE.md, README.md, the skill in .claude/skills/), each video's plan.md and
 # script.md, delivery notes, parts lists, captions (.srt) and all source code (html, js, py, fonts, three.js),
 # so any computer can rebuild a video. Keep out: anything large or regenerated.
 

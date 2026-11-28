@@ -1,0 +1,43 @@
+# 5. Hands
+
+Read at: stage 2 (the plan says where a hand is needed and which pose), stage 4 (placing every hand), stage 5 (checking frames).
+
+## When a hand is drawn
+
+- Draw a hand only where it does the action that is being shown (pushing, pressing, pulling); a labelled eye is enough to show where someone is.
+- Tools that are held and worked by hand (pincers, scissors, tongs, pliers) are shown on their own, without a hand (my rule, 2026-11-26: a hand on a tool did not look properly held). Arrows show where the hand's force goes in and where the tool's force comes out.
+- A hand is drawn only for a simple push, press, pull or grip of a big object (a stone, a rod, a cart, a door, a drawer, a mouse, a can's ring), and then as real hands do it: pressing with the palm, pulling with a bent finger hooked in, the whole hand resting on a mouse.
+
+## How a hand is drawn
+
+- The visible arm ends near the elbow: the sleeve ends at most 23 to 25 cm from the wrist, at the hand's own scale. Never a long straight arm reaching out of the picture. The hand is at true scale against the object it holds.
+- Hands are 3D meshes placed in the 3D scene by coordinates, never flat pictures pasted over it (my request, 2026-11-26: "hater coordinate ta thik vabe analyze kore boshate hobe"). make_meshes.py in science-video-template\hand exports each pose (grip, grip0, gripD, push, cup, hook, pad, mouse) as mesh_<pose>.js; hands3d.js places one from its anchor point, the direction the fingers point and the direction the back of the hand faces (a grip: the rod's direction and the back).
+- Work out where the person stands and where the forearm must go before placing a hand: a puller's forearm reaches ahead of the cart, a rope is pulled with the forearm below the hand, pushers stand side by side, a drawer is pulled from the front.
+- The two hands of one person are a right hand and its mirror image (`mirrorZ`, `mirror`): when pushing, both thumbs point inward, the right hand's thumb on its left side and the left hand's on its right.
+- Hands are drawn realistically: palm and five separate fingers with knuckles and nails, the thumb coming from the right place, skin with light and shade, a wrist and a shirt cuff. Never a mitten or a blob.
+- A hand that holds something (a pen, a tool) is not drawn freehand: build it as a 3D model from the bones of a real hand (a broad palm with the four knuckles along its top, the thumb from the base of the palm beside the index finger) and fit its pose to a photo of a real hand holding the same thing, from the same side. Check the model laid over the photo, and its mismatch map, before using it. Draw the held object after the hand, so it never disappears into the skin; only the parts of the hand that are really in front of it (a thumb pad) are drawn over it.
+- When there is no photo of a hand's pose, a drawing from a book may be used for the arrangement only (never copied), and the finger joints are calculated so that every segment rests on the object (make_grip.py in science-video-template\hand). Say in the delivery note that it was not fitted to a photo. Show the old and the new hand side by side and wait for approval.
+- A hand writing in a khata is seen from above as the writer sees it: upright (long up and down), wrist and sleeve coming up from the bottom of the picture. The pen or pencil is held correctly (tripod grip: between thumb and index finger, resting on the middle finger, ring and little fingers curled under), tilted, with its tip on the paper. Students learn the grip from the picture.
+
+## Tools and the people using them
+
+- Scissors stand at 90° to the cloth with the cloth inside the open blades; each finger hole turns with its blade, and when the blades close the holes just touch, never overlap.
+- A cart is pulled from between the shafts: one hand on each handle, four fingers outside, thumb inside, arms hanging nearly upright from the shoulders; the left hand is the mirrored right hand.
+- People pushing together stand side by side; film them from behind at an angle.
+
+## Lessons (do not repeat)
+
+| What was wrong | Rule for every video |
+|---|---|
+| (Motion video) A hand was drawn at the bamboo pole in ৩খ; I asked for it to be removed. | Draw a hand only where it does the action that is being shown (pushing, pressing, pulling); a labelled eye is enough to show where someone is. |
+| (Motion video) Hands looked like mittens, and the writing hand came in sideways with no clear grip on the pen. I asked for realistic hands, an upright writing hand and a correct pen grip (2026-11-18). | Realistic hands (fingers, knuckles, nails, thumb, shading, cuff; handPush, handFlat, handFinger, gripHand, handWrite in draw2d.js). The writing hand is upright, seen from above, the pen in the tripod grip. |
+| (Motion video) The pen hand still did not look like a real grip: in video 1 the fingers were flat plates, in video 2 the thumb and index finger were thin sticks with the pen across the palm. I sent a photo of a real grip (2026-11-18): the pen held by the thumb and the index finger, the other fingers supporting. A 2D redraw from that photo was still wrong: the thumb and index finger did not read as neighbours, so the finger on the pen looked like a little finger (I sent a photo of both sides of a right hand). Then the palm was missing (four sticks, fingers seeming to start at the wrist), the pen sank into the hand, and the first fit still left gaps and edges off the photo. I asked for a new version beside the old one and chose v2 (2026-11-18). | The pen hand is a 3D model built from the bones of a real right hand and fitted to the reference photo (`science-video-template\hand\`; the first version is kept in `hand_v1\`). `hand3d.js` builds the skeleton (four knuckles index, middle, ring, little along the top of a broad palm; the thumb from the base of the palm beside the index finger); `skin.js` lays one smooth skin over it (blended shapes, knuckles, crease shading); `fit.js` fits camera, joint angles, proportions, wrist and pen line to 12 points measured on the photo and to the photo's whole outline, while the thumb and index pads stay on the pen and the middle finger under it; `make_hand.py fit <photo>` runs the fit (the photo is only read, never stored in the project), `make_hand.py` renders `hand_side.png` and `hand.json`. The pen is drawn after the hand and only the thumb's last segment over the pen, so the pen never disappears into the hand. Outline match with the photo: v2 90.7 %, v1 84.7 %. `handPen` and `handWrite` in draw2d.js place the picture by its pen tip and pen angle (`HAND_IMG`). A hand in any new pose is made the same way, never drawn freehand: measure a photo of a real hand, fit, and check the overlay and the mismatch map before using it. |
+| (Chapter 11) Hands were flat pictures pasted over the 3D scene; their angle and size never matched the objects. | Hands are 3D meshes placed in the scene by coordinates. |
+| (Chapter 11) Fingertip presses; one fingertip on a mouse. | Press with the palm, pull with a bent finger hooked in, the whole hand resting on a mouse. |
+| (Chapter 11) Hands on the pincers, scissors and tongs did not look properly held. | Tools are shown without hands; arrows show the force in and out. |
+| (Chapter 11 video 2) The scissors lay flat on the cloth; the finger holes did not open with the blades and overlapped when closed (2026-11-27). | Scissors stand at 90° to the cloth with the cloth inside the open blades; each finger hole turns with its blade, and when the blades close the holes just touch, never overlap. |
+| (Chapter 11) The cart puller's arm first went back, then looked like someone outside holding the shaft. | First work out where the person stands. A cart is pulled from between the shafts: one hand on each handle, four fingers outside, thumb inside, arms hanging nearly upright from the shoulders; the left hand is the mirrored right hand. |
+| (Chapter 11) The drawer was pulled from above. | Pull from the front, as a person standing in front of it would. |
+| (Chapter 11) The microbus pushers' hands were one above another. | People stand side by side; film them from behind at an angle. |
+| (Chapter 11, later) Both hands of each microbus pusher were the same right hand, so both thumbs pointed one way (2026-11-27). | The two hands of one person are a right hand and its mirror image (`mirrorZ`, `mirror`): when pushing, both thumbs point inward, the right hand's thumb on its left side and the left hand's on its right. |
+| (Chapter 11) The hand pulling the well rope came from above. | Pulling down, the forearm is below the hand. |

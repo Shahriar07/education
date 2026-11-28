@@ -8,11 +8,11 @@ This repository holds the instructions, scripts and source code, so that any com
 
 | File | What it is |
 |---|---|
-| [`CLAUDE.md`](CLAUDE.md) | Project instructions: setup on each computer, the reference build, chapter tables, lessons learned. At its end it imports the general rules with `@science-video-instructions.md`, so Claude Code reads both |
-| [`science-video-instructions.md`](science-video-instructions.md) | The general rules for every episode (structure, visual rules, physics, checklist), portable to any project. The only copy of these rules |
-| Online copy | Claude Doc "বিজ্ঞান ভিডিও সিরিজ: নির্দেশনা ও CLAUDE.md": https://claude.ai/artifact/SbedAWR74MootFgSQL74QL (tab 1 = `CLAUDE.md`, tab 2 = `science-video-instructions.md`) |
+| [`CLAUDE.md`](CLAUDE.md) | Project facts: setup on each computer, the reference build and its commands, the chapter tables. At its end it imports the skill's `SKILL.md` and every rule file, so Claude Code reads them all |
+| [`.claude/skills/science-video/`](.claude/skills/science-video/) | The skill `science-video`: [`SKILL.md`](.claude/skills/science-video/SKILL.md) (the stages of the work, the approval points, how to change a rule), [`rules/`](.claude/skills/science-video/rules/) (the rules for every video, one topic per file, each with its lessons table), [`templates/`](.claude/skills/science-video/templates/) (brief, plan, delivery note) and `bundle.py` (one Markdown file or a zip for use outside this project). The only copy of the rules |
+| Online copy | Claude Doc "বিজ্ঞান ভিডিও সিরিজ: নির্দেশনা ও CLAUDE.md": https://claude.ai/artifact/SbedAWR74MootFgSQL74QL (one tab per file: `CLAUDE.md`, `SKILL.md`, and under it one sub-tab per rule file) |
 
-A general rule is changed only in `science-video-instructions.md` (and its doc tab); a project fact only in `CLAUDE.md` (and its doc tab).
+A rule is changed only in its rule file (and its doc tab), as "Changing a rule" in `SKILL.md` describes; a project fact only in `CLAUDE.md` or this README (and the doc tab).
 
 ## Computers
 
@@ -32,7 +32,9 @@ Both are clones of this repository. Pull `main` before starting, work on a branc
 | [`class6-ch10-goti-1/`](class6-ch10-goti-1/) | স্থিতি ও গতি কী | অধ্যায় ১০, পাঠ ১-২ | 32 | 9:36 | Finished |
 | [`class6-ch10-goti-2/`](class6-ch10-goti-2/) | নানা প্রকার গতি | অধ্যায় ১০, পাঠ ৩-৮ | 34 | 9:55 | Finished |
 | [`class6-ch10-goti-3/`](class6-ch10-goti-3/) | দূরত্ব ও সরণ, দ্রুতি ও বেগ | অধ্যায় ১০, পাঠ ৯-১২ | 30 | 9:21 | Finished |
-| [`class6-ch11-bol-1/`](class6-ch11-bol-1/) | বল ও সরল যন্ত্র কী | অধ্যায় ১১, পাঠ ১-৩ | 35 | about 10:00 | In progress on the other laptop: plan and script approved, scenes 1 and 2 drawn |
+| [`class6-ch11-bol-1/`](class6-ch11-bol-1/) | বল ও সরল যন্ত্র কী | অধ্যায় ১১, পাঠ ১-৩ | 35 | 9:49 | Finished |
+| [`class6-ch11-bol-2/`](class6-ch11-bol-2/) | লিভার, হেলানো তল, কপিকল ও মানবদেহ | অধ্যায় ১১, পাঠ ৪-১২ | 36 | 11:25 | Finished |
+| [`class6-ch09-alo-1/`](class6-ch09-alo-1/) | আলো কীভাবে চলে ও আমরা কীভাবে দেখি | অধ্যায় ৯, পাঠ ১-৩ | 32 | 9:29 | Finished; replaces `class6-ch09-alo/`. Chapter 9 video 2 (পাঠ ৪-১০) goes in `class6-ch09-alo-2/` |
 
 New videos start from a copy of the latest finished 3D video folder (see "Reference build" in `CLAUDE.md`).
 
