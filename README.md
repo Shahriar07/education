@@ -117,6 +117,31 @@ cd class6-ch10-goti-2
 
 After a change to one part, render only that part and run `join` again.
 
+## Regenerating a video without the agent
+
+Every finished video can be rebuilt from its code by one file in the project root, with no AI agent: [`make_video.py`](make_video.py), or [`make_video.bat`](make_video.bat) on Windows. Double-click `make_video.bat` and type the number of the video; or run it from a terminal in the project root with options:
+
+| Command | What it does |
+|---|---|
+| `make_video.bat` | Lists the videos, asks which one, renders every part, joins them and splits into 30 MB pieces |
+| `make_video.bat class6-ch10-goti-2` | The same for that video |
+| `make_video.bat class6-ch10-goti-2 --parts s05_p03 s07_p01` | Only those parts, then joins again |
+| `make_video.bat class6-ch10-goti-2 --scenes 5 7` | Every part of scenes 5 and 7, then joins again |
+| `make_video.bat class6-ch10-goti-2 --changed` | Only parts with no clip yet, or whose code changed since their clip was made (after `git pull`) |
+| `make_video.bat class6-ch10-goti-2 --mark-done` | Records the clips already in `out\` as up to date (once, for clips made before `make_video.py` existed) |
+| `make_video.bat class6-ch10-goti-2 --list` | The video's parts with their length and title |
+| `make_video.bat --check` | Checks Python, `.venv`, Chrome and the fonts, and stops |
+| `make_video.bat --help` | Every option |
+
+Other options: `--workers N` (parts rendered at once; the default comes from the CPU count and free memory, at most 6), `--batch N` (parts per Chrome process, default 3), `--no-join`, `--no-chunks`, `--chunk-mb MB`, `--allow-missing` (join even if a part has no clip), `--dry-run` (show what would be rendered), `--chrome PATH`.
+
+What it does:
+
+- The first run creates `.venv` in the project root and installs `playwright` and `imageio-ffmpeg` into it (internet needed once). Only Python 3 and Google Chrome must be installed.
+- It calls the video's own `render.py` (`info`, `clip`, `join`, `chunks`), so a video is always rebuilt by the code that made it. Parts are rendered several at a time, at most 3 per fresh Chrome process, so memory does not run out; a part that fails is tried once more on its own.
+- It joins only when every part has a clip, and says which parts are missing.
+- `--changed` compares a fingerprint of each part's code (its part file and the shared page, world, zone and template files) with the one recorded when its clip was made, in `out\make-state.json` (not in git). Logs are in `out\make-*.log`.
+
 ## What is not in git
 
 [`.gitignore`](.gitignore) keeps these out, because they are large or can be made again:

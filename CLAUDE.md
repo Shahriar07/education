@@ -38,6 +38,8 @@ This project lives on two computers, each with a clone of the same git repositor
 | `render.py` | `info` (part lengths), `stills <part> [t ...]` (check frames), `clip <part...>` or `clip all`, `parallel [n] [part...]` (several fresh `clip` processes at once; from `class6-ch09-alo-1\` on), `join` (concat `-c copy`, video.srt, parts-list.md), `script` (rewrites the scene section of script.md from the parts), `phone <part:t ...>` (frames shrunk to phone size, tiled into out\phone.png), `chunks` (pieces to send) | Yes |
 | `render-all.bat` (from `class6-ch09-alo-1\` on) | One click: `.venv` setup, `render.py parallel`, `join`, `chunks`, commit, push, pull request. Set the branch name and title inside it | Yes; change the branch and title |
 
+To regenerate any finished video without the agent, use `make_video.py` (or `make_video.bat`) in the project root: `make_video.bat <video folder> [--parts ...] [--scenes ...] [--changed]`; every option is in `README.md`, "Regenerating a video without the agent". It drives the video's own `render.py`.
+
 How to use these files (narration only in the parts, segment indices, rendering without running out of memory, sending in 30 MB pieces): `rules/09-build-and-render.md` and `rules/10-checks-and-delivery.md` in the skill.
 
 ## Chapter index found so far (class six science)

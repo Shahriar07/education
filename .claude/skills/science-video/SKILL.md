@@ -82,7 +82,7 @@ Rules: `10-checks-and-delivery.md`. Stills of every part, a close look at every 
 
 ### 6. Render, join, deliver (**wait** for my notes)
 
-Rules: `09` and `10`. Form: `templates/delivery-note.md`. Render, join, take one frame per part near its end, write the delivery note, split into 30 MB pieces with `render.py chunks`, and update the video's line in `CLAUDE.md` and `README.md`.
+Rules: `09` and `10`. Form: `templates/delivery-note.md`. Render, join and split into 30 MB pieces with `make_video.bat <video folder>` (or `--changed` after a fix), take one frame per part near its end, write the delivery note, and update the video's line in `CLAUDE.md` and `README.md`.
 
 ### 7. After my notes
 

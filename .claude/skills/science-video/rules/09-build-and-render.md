@@ -31,6 +31,17 @@ Read at: stage 4 (building), stage 6 (rendering and joining). The files of the r
 - Never one long background render of every part in one process: it was stopped twice when memory ran low (chapter 10 video 3, chapter 11 video 1). Render a few parts (about 3) per `render.py clip` call, each call a fresh process, in the foreground.
 - From `class6-ch09-alo-1\` on, `render.py parallel` runs several such fresh `clip` processes at once (about 1 GB of free memory per worker; `RENDER_WORKERS` or a number sets how many), and `render-all.bat` does setup, render, join, chunks, commit, push and pull request in one click.
 
+## Regenerating without the agent (my rule, 2026-11-28)
+
+Every finished video must be regenerable from its code without the AI agent, by `make_video.py` (`make_video.bat`) in the project root, with the parameters that choose the video and its parts. So every new video folder keeps the interface that `make_video.py` calls:
+
+- `render.py info` writes `out/info.json`, a list with each part's `name` (`sNN_pMM`), `dur` in seconds and, where it can, `scene`, `label` and `title`.
+- `render.py clip <part> ...` renders the named parts and prints `wrote <part>.mp4 ...` for each one; a failure prints `FFMPEG FAILED`, `PAGE ERRORS` or a traceback.
+- `render.py join` and `render.py chunks [MB]` work as in the reference build.
+- Chrome is taken from `CHROME_PATH` when it is set; nothing depends on the agent, on a path of one computer, or on a file outside the project.
+- Every file a part needs is in the video folder or in `science-video-template\`, so the fingerprint of `--changed` sees every change.
+- Before a video is delivered, run `make_video.bat <video folder> --changed --dry-run` once to see that it is found and its parts are listed.
+
 ## Lessons (do not repeat)
 
 | What was wrong | Rule for every video |

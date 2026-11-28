@@ -20,7 +20,7 @@ HERE = Path(__file__).resolve().parent
 ROOT = next((p.parent for p in HERE.parents if p.name == ".claude"), None)
 OUT = ROOT / HERE.name / "out" if ROOT else HERE / "out"
 OUT.mkdir(parents=True, exist_ok=True)
-CHROME = r"C:\Program Files\Google\Chrome\Application\chrome.exe"
+CHROME = os.environ.get("CHROME_PATH", r"C:\Program Files\Google\Chrome\Application\chrome.exe")   # set CHROME_PATH where Chrome lives elsewhere
 FFMPEG = imageio_ffmpeg.get_ffmpeg_exe()
 BN = str.maketrans("0123456789", "০১২৩৪৫৬৭৮৯")
 

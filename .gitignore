@@ -35,3 +35,4 @@ desktop.ini
 /hand-*.png
 
 *.stackdump
+**/out/make-state.json
